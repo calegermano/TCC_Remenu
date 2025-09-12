@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Usuario extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+
     use HasFactory, Notifiable;
 
     protected $table = 'usuarios';
@@ -21,7 +21,11 @@ class Usuario extends Authenticatable
         'tipo_id',
     ];
 
-    
+    public function getAuthPassword()
+    {
+        return $this->senha;
+    }
+
     protected $hidden = [
         'senha',
         'remember_token',
