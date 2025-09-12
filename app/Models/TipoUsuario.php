@@ -11,6 +11,9 @@ class TipoUsuario extends Model
 
     protected $table = 'tipo_usuario';
 
+    const ADMIN = 1;
+    const COMUM =2;
+
     protected $filaable =[
         'nome',
     ];
