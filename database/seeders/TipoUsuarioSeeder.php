@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class TipoUsuarioSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    //php artisan db:seed --class=TipoUsuarioSeeder//
     public function run(): void
     {
         DB::table('tipos_usuario')->insert([
