@@ -1,0 +1,111 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+/* ====== CORES ====== */
+.text-green {
+  color: #00c897;
+}
+
+.text-blue {
+  color: #00bfff;
+}
+
+.text-orange {
+  color: #ff7a00;
+}
+
+/* ====== BOTÃO DEGRADÊ ====== */
+.btn-gradient {
+  background: linear-gradient(90deg, #00c897, #00bfff);
+  color: #fff !important;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(90deg, #00b386, #00a3e0);
+  transform: scale(1.05);
+}
+
+/* ====== NAVBAR ====== */
+.navbar-nav .nav-item{
+    gap: 100px;
+}
+
+.navbar-brand span {
+  color: #00c897;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.nav-link {
+  color: #555;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-link:hover {
+  color: #00c897;
+}
+
+/* ====== HERO ====== */
+.hero {
+  background-color: #fff;
+}
+
+/* ====== IMAGEM ====== */
+.hero-image img {
+  max-height: 400px;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ====== CARDS ====== */
+.card {
+  border-radius: 16px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.span{
+    color: #50D9B0;
+}
+
+/* ====== ANIMAÇÃO DO MENU HAMBÚRGUER ====== */
+.navbar-collapse {
+  transition: all 0.35s ease;
+  transform-origin: top;
+}
+
+.navbar-collapse.animating.collapse:not(.show) {
+  display: block;
+  height: 0;
+  opacity: 0;
+  transform: scaleY(0.9);
+}
+
+.navbar-collapse.collapse.show {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.navbar-collapse.animating.collapse.show {
+  opacity: 0;
+  transform: scaleY(0.9);
+}
+
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+}
