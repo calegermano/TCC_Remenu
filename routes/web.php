@@ -6,6 +6,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 });
+
+Route::get('/footer', function () {
+    return view('footer');
+});
+
+Route::get('/header', function () {
+    return view('header');
+});
+
 Route::get('/login', [AuthController::class, 'showLoginForm']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
