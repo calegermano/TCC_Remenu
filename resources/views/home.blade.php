@@ -8,11 +8,14 @@
     <link rel="shortcut icon" href="{{ asset('assets/img/logo.png') }}" type="image/x-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"> 
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/header.css') }}">
 </head>
 <body>
 
@@ -22,25 +25,21 @@
             <a class="navbar-brand d-flex align-item-center fw-semibold" href="resources/views/home.blade.php">
             <img src="{{asset('assets/img/logo.png')}}" alt="logo" width="40" height="40" class="me-2">
             </a>
-
+            <span class="titulo">Remenu</span>
             <!-- botão -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav" aria-controls="menuNav" aria-expanded="false" aria-label="Alternar navegação">
             <span class="navbar-toggler-icon"></span>
             </button>
 
             <!--links menu-->
-            <div class="collapse navbar-collapse justify content-end" id="menuNav">
+            <div class="collapse navbar-collapse justify-content-end" id="menuNav">
                 <ul class ="navbar-nav mb-2 mb-">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Início</a>
+                        <a class="nav-link active" href="#">Início</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Receitas</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#"></a>
+                        <a class="nav-link active" href="#">Receitas</a>
                     </li>
 
                     <li class="nav-item">
@@ -55,18 +54,20 @@
                      <li class="nav-item">
                         <a class="nav-link active" href="#">Minha Geladeira</a>
                     </li>
-
                 </ul>
-            </div>
-        </div>
-    </nav>
+            </div>
+
+                <a href="#" class="profile-link d-none d-lg-block" aria-label="Perfil"> <i class="bi bi-person-fill"></i>
+                </a>
+            </div>            
+        </nav>
 
     <!--seçao principal-->
         <section class="hero text-center py-5">
             <div class="container">
                 <h1 class="fw-bold">
-                Transforme seus <span class="text-green">ingredientes</span> <br>em receitas <span
-                class="text-blue">Incríveis</span>
+                Transforme seus <span class="text-green"> ingredientes </span><br>em receitas<span
+                class="text-blue"> Incríveis</span>
                 </h1>
                 <p class="mt-3 text-muted">
                 A primeira plataforma focada em reduzir desperdício alimentar.<br>
@@ -76,9 +77,8 @@
             </div>
         </section>
 
-        <section>
-            <img src="{{asset('assets/img/home.png')}}" alt="Receitas" class="img-fluid mb-4 rounded">
-        </section>
+        <section class="parallax"></section>
+
         
         <section class="py-5" style="background: #f8f9fa;">
             <div class="container text-center">
@@ -131,6 +131,24 @@
             </div>
         </section>
 
+    <script>
+    window.addEventListener("scroll", function () {
+        const parallax = document.querySelector(".parallax");
+        const rect = parallax.getBoundingClientRect();
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    
+        // Posição da seção em relação à página
+        const offsetTop = parallax.offsetTop;
+        const height = parallax.offsetHeight;
+        const windowHeight = window.innerHeight;
+
+        // Só aplica o efeito enquanto o elemento está visível
+        if (scrollTop + windowHeight > offsetTop && scrollTop < offsetTop + height) {
+        const yPos = (scrollTop - offsetTop) * 0.9; // controla velocidade
+        parallax.style.backgroundPosition = `center ${yPos}px`;
+        }
+    });
+    </script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -24,7 +24,7 @@
             <a class="navbar-brand d-flex align-item-center fw-semibold" href="resources/views/home.blade.php">
             <img src="{{asset('assets/img/logo.png')}}" alt="logo" width="40" height="40" class="me-2">
             </a>
-
+            <span class="titulo">Remenu</span>
             <!-- botão -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav" aria-controls="menuNav" aria-expanded="false" aria-label="Alternar navegação">
             <span class="navbar-toggler-icon"></span>
@@ -34,11 +34,11 @@
             <div class="collapse navbar-collapse justify-content-end" id="menuNav">
                 <ul class ="navbar-nav mb-2 mb-">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Início</a>
+                        <a class="nav-link active" href="#">Início</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Receitas</a>
+                        <a class="nav-link active" href="#">Receitas</a>
                     </li>
 
                     <li class="nav-item">
@@ -54,12 +54,10 @@
                         <a class="nav-link active" href="#">Minha Geladeira</a>
                     </li>
                 </ul>
-                <a href="#" aria-label="profile-link ms-auto"> <i class="bi bi-person-fill"></i></a>
-                    </div>
+            </div>
 
-
-
-
+            <a href="#" class="profile-link d-none d-lg-block" aria-label="Perfil"> <i class="bi bi-person-fill"></i>
+            </a>
         </div>            
     </nav>
 
