@@ -1,0 +1,129 @@
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('/assets/img/salada-frutas.png');
+    background-size: cover;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;/*tem q ver isso*/
+    padding: 20px;
+}
+
+.login-box {
+    background: white;
+    border-radius: 50px;
+    width: 440px;/*e isso*/
+    height: 580px;
+    box-shadow: 0 15px 35px rgba(65, 58, 58, 0.1);
+    padding: 60px;
+    text-align: center;
+}
+
+.logo img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.logo h2 {
+    font-size: 35px;
+    color:#D9682B;
+    margin-bottom: 50px;
+    font-weight: bolder;
+}
+
+
+.error-message {
+    background: #fee;
+    color: #c33;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #fcc;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #D9682B;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #cccccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #2a5298;
+}
+
+
+.login-btn {
+    background-color: #50D9b0;
+    border-radius: 10px;
+    border: none;
+    padding-top: 15px 0;
+    width: 50%;
+    height: 40px;
+    margin: 50px auto 0; 
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin: 15px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.email {
+    font-size: 20px;
+    color: #D9682B;
+}
+
+.senha {
+    font-size: 20px;
+    color: #D9682B;
+}
+
+
+.login-btn:hover {
+    transform: translateY(-2px);
+}
+@media (max-width: 480px) {
+    .login-container {
+        padding: 10px;
+    }
+    
+    .login-box {
+        padding: 30px 20px;
+    }
+}

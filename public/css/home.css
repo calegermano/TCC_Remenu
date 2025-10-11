@@ -5,20 +5,20 @@ body {
 
 /* ====== CORES ====== */
 .text-green {
-  color: #00c897;
+  color:  #50D9B0;
 }
 
 .text-blue {
-  color: #00bfff;
+  color:  #50D9B0;
 }
 
 .text-orange {
-  color: #ff7a00;
+  color:  #50D9B0;
 }
 
 /* ====== BOTÃO DEGRADÊ ====== */
 .btn-gradient {
-  background: linear-gradient(90deg, #00c897, #00bfff);
+  background: #50D9B0;
   color: #fff !important;
   border: none;
   border-radius: 8px;
@@ -27,47 +27,76 @@ body {
 }
 
 .btn-gradient:hover {
-  background: linear-gradient(90deg, #00b386, #00a3e0);
+  background: #50D9B0;
   transform: scale(1.05);
-}
-
-/* ====== NAVBAR ====== */
-.navbar-nav .nav-item{
-    gap: 100px;
-}
-
-.navbar-brand span {
-  color: #00c897;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-.nav-link {
-  color: #555;
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-.nav-link:hover {
-  color: #00c897;
 }
 
 /* ====== HERO ====== */
 .hero {
-  background-color: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;       
+  justify-content: center;   
+  flex-direction: column;
+  text-align: center;
+  height: 40vh;            
 }
 
-/* ====== IMAGEM ====== */
-.hero-image img {
-  max-height: 400px;
-  object-fit: cover;
-  object-position: center;
+/* Ajustes de texto dentro da hero */
+.hero h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #333;
 }
+
+.hero p {
+  font-size: 1rem;
+  color: #555;
+  max-width: 650px;
+  margin: 20px auto 0;
+}
+
+.hero .btn-gradient {
+  margin-top: 25px;
+  padding: 10px 30px;
+  font-size: 1rem;
+}
+
+/* parallax */
+.parallax {
+  position: relative;
+  width: 100%;
+  height: 481px;
+  background-image: url('/assets/img/home.jpg');
+  background-size: cover;        /* cobre tudo sem repetir */
+  background-repeat: no-repeat;  /* nunca repete */
+  background-position: center center;
+  background-attachment: scroll; /* desativa o fixed */
+  overflow: hidden;              /* evita mostrar fora da área */
+}
+
+
+
+.parallax::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.25);
+}
+
 
 /* ====== CARDS ====== */
 .card {
   border-radius: 16px;
   transition: 0.3s;
+}
+
+.card-body{
+  padding: 40px;
+  text-align: center;
 }
 
 .card:hover {
@@ -107,5 +136,18 @@ body {
 @media (max-width: 768px) {
   h1 {
     font-size: 1.8rem;
+  }
+}
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 992px) {
+  .parallax {
+    height: 300px;
+    background-attachment: scroll; /* desativa efeito fixo em mobile */
+  }
+}
+
+@media (max-width: 576px) {
+  .parallax {
+    height: 220px;
   }
 }

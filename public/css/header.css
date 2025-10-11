@@ -12,8 +12,8 @@
     display: block;
     justify-content: center;
     align-items: center;
-    margin-left: 1.5rem;
-    gap: 50px;
+    margin-left: 3.0rem;
+    gap: 70px;
     transition: color 0.3s ease;
 }
 
@@ -34,29 +34,18 @@
     color: #A2A2A2;
 }
 
-.profile-link i {
-    color: #A2A2A2;
+.profile-link {
+    font-size: 28px;
+    color: #A2A2A2 !important;
     transition: color 0.3s ease;
 }
 
 .profile-link i:hover {
+    color: #50D9B0 !important;
+}
+
+.titulo {
     color: #50D9B0;
-}
-
-.profile-link{
     font-size: 20px;
-     align-items: center; /* alinhamento vertical */
-    margin-right: 1.5rem;
-}
-
-.profile-link {
-    position: absolute; /* posiciona fora do fluxo normal */
-    right: 1.5rem;      /* distância proporcional à logo */
-    top: 50%;           /* centraliza verticalmente */
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    color: #A2A2A2;
-    font-size: 20px;
-    transition: color 0.3s ease;
+    font-weight: bold;
 }
