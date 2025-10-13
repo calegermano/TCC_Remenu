@@ -1,52 +1,38 @@
 body {
   font-family: 'Poppins', sans-serif;
   color: #333;
+  margin: 0;
+  padding: 0;
 }
 
-/* ====== CORES ====== */
-.text-green {
-  color:  #50D9B0;
+/* Cores personalizadas */
+.text-blue, .text-orange {
+  color: #50D9B0;
 }
 
-.text-blue {
-  color:  #50D9B0;
-}
-
-.text-orange {
-  color:  #50D9B0;
-}
-
-/* ====== BOTÃO DEGRADÊ ====== */
+/* Botão personalizado */
 .btn-gradient {
   background: #50D9B0;
   color: #fff !important;
   border: none;
   border-radius: 8px;
   font-weight: 500;
+  padding: 10px 30px;
+  font-size: 1rem;
   transition: all 0.3s ease;
 }
 
 .btn-gradient:hover {
-  background: #50D9B0;
+  background: #45c4a1;
   transform: scale(1.05);
 }
 
-/* ====== HERO ====== */
-.hero {
-  position: relative;
-  display: flex;
-  align-items: center;       
-  justify-content: center;   
-  flex-direction: column;
-  text-align: center;
-  height: 40vh;            
-}
+/* HERO */
 
-/* Ajustes de texto dentro da hero */
 .hero h1 {
   font-size: 2.8rem;
   font-weight: 700;
-  color: #333;
+
 }
 
 .hero p {
@@ -56,23 +42,17 @@ body {
   margin: 20px auto 0;
 }
 
-.hero .btn-gradient {
-  margin-top: 25px;
-  padding: 10px 30px;
-  font-size: 1rem;
-}
-
-/* parallax */
+/* PARALLAX */
 .parallax {
   position: relative;
   width: 100%;
-  height: 481px;
-  background-image: url('/assets/img/home.jpg');
-  background-size: cover;        /* cobre tudo sem repetir */
-  background-repeat: no-repeat;  /* nunca repete */
+  height: 377px;
+  background-image: url('../assets/img/home.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
   background-position: center center;
-  background-attachment: scroll; /* desativa o fixed */
-  overflow: hidden;              /* evita mostrar fora da área */
+  background-attachment: scroll;
+  overflow: hidden;
 }
 
 
@@ -87,67 +67,147 @@ body {
   background: rgba(0, 0, 0, 0.25);
 }
 
+/* Cards */
+.section-cards {
+  background: #F8F8F8;
+  padding: 100px 0;
+}
 
-/* ====== CARDS ====== */
+
 .card {
   border-radius: 16px;
   transition: 0.3s;
 }
 
-.card-body{
-  padding: 40px;
-  text-align: center;
-}
+
 
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-.span{
-    color: #50D9B0;
+.card-body {
+  padding: 30px;
+  text-align: center;
+}
+/* fim*/
+
+
+.como-funciona {
+  padding: 100px 0;
+  background-color: #E5E5E5;
 }
 
-/* ====== ANIMAÇÃO DO MENU HAMBÚRGUER ====== */
-.navbar-collapse {
-  transition: all 0.35s ease;
-  transform-origin: top;
+.etapa {
+  text-align: center;
+  padding: 20px 10px;
+  margin: 0 15px  ;
 }
 
-.navbar-collapse.animating.collapse:not(.show) {
+.etapa-numero {
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  margin: 0 auto 20px auto;
+  background-color: #e86813;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.75rem;
+  border-radius: 50%;
+}
+
+.etapa h5 {
+  font-weight: 600;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.etapa p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* POR QUE ESCOLHER A REMENU */
+.porque-remenu {
+  background-color: #fff;
+}
+
+.porque-remenu h2 {
+  margin-bottom: 50px !important; /* aumenta o espaço abaixo do título */
+}
+
+.text-green {
+  color: #50D9B0;
+}
+
+.beneficio {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.beneficio i {
+  flex-shrink: 0;
+  color: #50D9B0;
+}
+
+.beneficio h5 {
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.beneficio p {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0;
+}
+
+.porque-remenu img {
+  width: 100%;
+  max-width: 390px;       
+  height: 380px;           
+  object-fit: cover;      
+  border-radius: 25px;    
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15); 
   display: block;
-  height: 0;
-  opacity: 0;
-  transform: scaleY(0.9);
+  margin: 0 auto;
+  transition: 0.8s;
 }
 
-.navbar-collapse.collapse.show {
-  opacity: 1;
-  transform: scaleY(1);
+.porque-remenu img:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+} 
+
+.porque-remenu .col-lg-5 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 30px;
 }
 
-.navbar-collapse.animating.collapse.show {
-  opacity: 0;
-  transform: scaleY(0.9);
+/* RESPONSIVO */
+@media (max-width: 992px) {
+  .hero {
+    height: auto;
+    padding: 40px 20px;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .parallax {
+    height: 300px;
+
+  }
 }
 
 
-/* ====== RESPONSIVIDADE ====== */
 @media (max-width: 768px) {
-  h1 {
+  .hero h1 {
     font-size: 1.8rem;
   }
 }
-/* ===== RESPONSIVIDADE ===== */
-@media (max-width: 992px) {
-  .parallax {
-    height: 300px;
-    background-attachment: scroll; /* desativa efeito fixo em mobile */
-  }
-}
-
-@media (max-width: 576px) {
-  .parallax {
-    height: 220px;
-  }
-}
+ 
