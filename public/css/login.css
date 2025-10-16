@@ -16,29 +16,45 @@ body {
 }
 
 .login-container {
-    width: 100%;
-    max-width: 400px;/*tem q ver isso*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+    /*width: 100%;
+    max-width: 400px;*/
     padding: 20px;
 }
 
 .login-box {
     background: white;
-    border-radius: 50px;
-    width: 440px;/*e isso*/
-    height: 580px;
+    border-radius: 30px;
+    width: 400px;
+    min-height: 550px;
     box-shadow: 0 15px 35px rgba(65, 58, 58, 0.1);
     padding: 60px;
     text-align: center;
 }
 
-.logo img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+.logo {
+    text-align: center;
     margin-bottom: 15px;
 }
 
-.logo h2 {
+
+#top-logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+#top-logo {
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+}
+
+
+.login-box h2 {
     font-size: 35px;
     color:#D9682B;
     margin-bottom: 50px;
@@ -66,6 +82,7 @@ body {
 .input-group label {
     display: block;
     margin-bottom: 8px;
+    background-color: white;
     color: #D9682B;
     font-weight: bold;
 }
@@ -81,27 +98,25 @@ body {
 
 .input-group input:focus {
     outline: none;
-    border-color: #2a5298;
+    border-color: #cccccc;
 }
 
 
 .login-btn {
     background-color: #50D9b0;
-    border-radius: 10px;
     border: none;
-    padding-top: 15px 0;
+    border-radius: 10px;
+    padding: 14px 0;
     width: 50%;
-    height: 40px;
-    margin: 50px auto 0; 
+    margin: 30px auto 20px; 
     font-size: 16px;
     font-weight: bold;
+    color: white;
     cursor: pointer;
     transition: transform 0.2s ease;
-    margin: 15px auto 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
 }
 
 .email {
@@ -126,4 +141,29 @@ body {
     .login-box {
         padding: 30px 20px;
     }
+}
+
+.login-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.login-links a {
+    margin-top: 20px;
+    color: #d9682b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.login-links a:hover {
+    color: #b75421;
+}
+
+.login-links span {
+    color: #ccc;
 }
