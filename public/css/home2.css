@@ -1,0 +1,429 @@
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+
+/* Banner principal */
+
+.fundo-imagem {
+  position: relative;
+  background-image: url('../assets/img/banner-home.jpg'); /* sua imagem de fundo */
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 300px; /* altura da área */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+}
+
+.imagem-centro {
+  width: 150px; /* ajuste conforme o tamanho desejado */
+  height: auto;
+  border-radius: 50%; /* opcional: deixa a imagem redonda */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/*----------------------------------------------------------------*/
+
+
+.banner {
+  background-color: #f8f9fa; /* fundo claro */
+  padding: 60px 0;
+  border-bottom: 2px solid #e5e5e5;
+}
+
+/* texto */
+.texto-banner h2 {
+  color: #707885;
+  font-size: 1.7rem;
+  line-height: 1.4;
+  
+}
+
+/* botão */
+.btn-banner {
+  background-color: #D9682B; /* laranja */
+  color: #fff;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.btn-banner:hover {
+  background-color: #c44f14;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* imagem */
+.imagem-arredondada {
+  border-radius: 16px;
+  max-width: 80%;
+  height: auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* responsivo */
+@media (max-width: 767px) {
+  .banner {
+    text-align: center;
+  }
+  .imagem-banner {
+    margin-top: 20px;
+  }
+}
+
+
+/*----------------------------------------------------------------*/
+
+
+/* Estilos Específicos para a seção Receita do Dia */
+
+.receita-dia {
+  /* Fundo da seção, similar ao fundo claro da imagem */
+  background-color: #f7f7f7;
+  overflow: hidden; /* Garante que o container se ajuste bem ao conteúdo flutuante das imagens */
+  border-bottom: 2px solid #e5e5e5;
+}
+
+/* --- Estilos do Texto --- */
+
+.texto {
+  /* Estilo da fonte grande e cinza claro do texto principal */
+  color: #333;
+  /* Largura máxima para garantir que o texto não ocupe todo o espaço antes das imagens */
+  max-width: 450px; 
+}
+
+.receita-titulo {
+  /* Cor e tamanho para "Receita de hoje" */
+  color: #4a4a4a;
+  font-size: 3rem; /* Tamanho maior para destaque */
+  font-weight: 700 !important; /* Mais negrito */
+}
+
+.receita-paragrafo {
+  /* Cor mais suave para o parágrafo */
+  color: #707885;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+/* --- Estilos do Botão --- */
+
+.btn-planejar {
+  /* Cor e estilo do botão verde/azul claro */
+  background-color: #66c7a7; /* Cor base do botão */
+  border-color: #66c7a7;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-planejar:hover {
+  background-color: #58af92; /* Um pouco mais escuro no hover */
+  border-color: #58af92;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* --- Estilos das Imagens Sobrepostas --- */
+
+.imagens {
+  /* Cria um contexto de posicionamento para as imagens absolutas */
+  position: relative;
+  /* Define um tamanho base para o container das imagens. Ajuste se necessário. */
+  width: 400px; 
+  height: 500px;
+  /* Esconde partes que possam ficar fora para evitar scrollbar desnecessário */
+  /* Reajustar o overflow se o posicionamento absoluto das imagens for muito agressivo */
+}
+
+.imagens img {
+  /* Estilos base para todas as imagens */
+  position: absolute; /* Permite sobreposição */
+  border-radius: 10px; 
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra mais destacada */
+  object-fit: cover; /* Garante que as imagens preencham suas dimensões sem distorcer */
+}
+
+.img-principal {
+  /* A imagem maior e superior (Tigela de açaí) */
+  width: 350px;
+  height: 250px;
+  top: 0;
+  right: 0;
+  z-index: 2; /* Mais acima */
+}
+
+.img-secundaria {
+  /* A imagem do meio (Salada) */
+  width: 350px;
+  height: 250px;
+  top: 100px; /* Deslocamento vertical */
+  right: 150px; /* Deslocamento horizontal (para a esquerda) */
+  z-index: 3;
+  /* Rotação leve para o efeito sobreposto */
+  transform: rotate(-5deg); 
+}
+
+.img-secundaria2 {
+  /* A imagem inferior (Torrada com ovo) */
+  width: 350px;
+  height: 250px;
+  top: 250px; /* Deslocamento vertical */
+  right: 50px; /* Deslocamento horizontal */
+  z-index: 1; /* Mais abaixo */
+  /* Rotação leve para o efeito sobreposto */
+  transform: rotate(5deg);
+}
+
+
+/* --- Responsividade (Ajuste para telas menores) --- */
+
+@media (max-width: 991.98px) {
+  /* Em telas menores que 'lg' (992px), o layout muda para empilhado */
+  .receita-dia .container {
+    flex-direction: column;
+    text-align: center; /* Centraliza o texto */
+  }
+
+  .texto {
+    max-width: 100%; /* O texto pode ocupar a largura total */
+  }
+
+  /* Centraliza o container de imagens no layout empilhado */
+  .imagens {
+    width: 300px; /* Reduz a largura total do container */
+    height: 300px; /* Reduz a altura total do container */
+    margin: 40px auto 0 auto; /* Adiciona margem superior e centraliza */
+  }
+
+  /* Ajusta o tamanho e posição das imagens para telas menores */
+  .img-principal {
+    width: 250px;
+    height: 150px;
+    top: 0;
+    right: 0;
+  }
+
+  .img-secundaria {
+    width: 280px;
+    height: 180px;
+    top: 80px;
+    right: 80px;
+    transform: rotate(-5deg); 
+  }
+
+  .img-secundaria2 {
+    width: 200px;
+    height: 150px;
+    top: 150px;
+    right: 20px;
+    transform: rotate(5deg);
+  }
+
+  .receita-titulo {
+      font-size: 2.5rem; /* Reduz um pouco o tamanho do título */
+  }
+}
+
+/*----------------------------------------------------------------*/
+
+
+/* ==================================== */
+/* 4. Receitas em Destaque              */
+/* ==================================== */
+
+.receitas-destaque {
+    /* Fundo claro para a seção */
+    background-color: #f7f7f7; 
+    padding-bottom: 80px !important; 
+     border-bottom: 2px solid #e5e5e5;
+}
+
+/* Título da seção: Cor escura para contraste no fundo claro */
+.receitas-titulo {
+    color: #333333; 
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+/* Botão "Veja mais" (mantido o estilo cinza/claro) */
+.btn-veja-mais {
+    background-color: #ffffff; 
+    color: #6c757d; 
+    font-weight: 600;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 0.375rem 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.btn-veja-mais:hover {
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+/* Estilo do Card (Mantido, funciona bem no fundo claro) */
+.receita-card {
+    border: none;
+    border-radius: 15px; 
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Sombra mais suave no fundo claro */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.receita-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Imagem do Card */
+.card-img-receita {
+    height: 200px; 
+    object-fit: cover;
+    border-top-left-radius: 15px; 
+    border-top-right-radius: 15px;
+}
+
+/* Título da Receita (Laranja) */
+.receita-card-title {
+    color: #50D9B0; 
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 8px;
+}
+
+/* Texto de descrição */
+.receita-card-text {
+    color: #6c757d;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    height: 60px; 
+    overflow: hidden;
+}
+
+/* Rodapé dos Detalhes */
+.card-footer-details {
+    padding-top: 15px;
+    border-top: 1px solid #eeeeee;
+}
+
+.detalhe-item {
+    color: #707885;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+/* Estilo para os ÍCONES */
+.detalhe-item i {
+    font-size: 1.1rem;
+    margin-right: 5px;
+    /* Ajuste de cor para que os ícones se destaquem ligeiramente */
+    color: #777; 
+}
+
+/* Ícone Favorito */
+.favorito-icon {
+    color: #50D9B0; /* Cor verde/aqua da imagem */
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.favorito-icon:hover {
+    color: #50D9B0; 
+}
+
+
+
+
+/* ==================================== */
+/*        5. Seção de Recursos          */
+/* ==================================== */
+
+.recursos {
+    /* Fundo escuro (preto/cinza) */
+    background-color: #F3F3F3; 
+    padding: 80px 0;
+}
+
+/* Título da Seção */
+.recursos-titulo {
+    color: #E66632; /* Laranja da marca */
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-align: left; /* Alinhamento conforme a imagem */
+}
+
+/* Estilo do Card */
+.recurso-card {
+    border: none;
+    border-radius: 12px;
+    background-color: #ffffff; /* Fundo branco */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    /* Garante que o conteúdo (texto/botão) seja alinhado verticalmente */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Título do Card */
+.recurso-card-title {
+    color: #D9682B; /* Laranja da marca */
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+/* Imagem do Card */
+.recurso-card-img {
+    height: 180px; /* Altura fixa para as imagens */
+    object-fit: cover;
+    margin: 0 auto 15px auto; /* Centraliza */
+    width: 90%; /* Deixa a imagem um pouco menor que o card */
+    border-radius: 10px; /* Bordas arredondadas na imagem */
+}
+
+/* Corpo do Card (o padding do card p-3 já está ok) */
+.recurso-card .card-body {
+    padding-top: 0;
+    padding-bottom: 15px;
+    display: flex; /* Permite alinhar o botão ao final */
+    flex-direction: column;
+}
+
+/* Texto do Parágrafo */
+.recurso-card-text {
+    color: #707885;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    flex-grow: 1; /* Faz o parágrafo ocupar o espaço para empurrar o botão */
+    margin-bottom: 20px;
+}
+
+/* Botão Laranja (cor padrão da marca) */
+.btn-recurso {
+    background-color: #D9682B; /* Laranja */
+    color: #fff;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 10px 15px;
+}
+
+.btn-recurso:hover {
+    background-color: #c44f14;
+    color: #fff;
+    transform: translateY(-1px);
+}
