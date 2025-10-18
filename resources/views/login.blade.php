@@ -48,10 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <div class="login-container">
+        <div class="logo">
+            <img src="{{ asset('assets/img/logobranca.png') }}" alt="Logo Remenu" id="top-logo">
+</div>
         <div class="login-box">
-            <div class="logo">
-            <link rel="shortcut icon" href="{{ asset('assets/img/logo.png') }}" type="image/x-icon">
                 <h2>Login</h2>
             </div>
             
@@ -77,7 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <button type="submit" class="login-btn">
                     Entrar
                 </button>
-            </div>
+                <div class="login-links">
+                    <a href="#">Esqueci a senha</a>
+                            <span>|</span>
+                    <a href="#">Criar conta</a>
+                </div>
+            </form>
         </div>
     </div>
 </body>
