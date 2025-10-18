@@ -1,45 +1,119 @@
-footer {
-  background-color: #f9f9f9;
-  padding: 40px 0 20px;
-  font-size: 14px;
-  color: #333;
+/* ==================================== */
+/* 6. Footer (Rodapé) - Ajustes Finais */
+/* ==================================== */
+
+.main-footer {
+    /* Fundo claro, conforme a imagem */
+    background-color: #f8f8f8; 
+    color: #495057; /* Cor do texto padrão (cinza escuro) */
+    font-size: 0.95rem;
+    /* Borda escura na parte superior (simula a separação da seção de baixo) */
+    border-top: 1px solid #333; 
 }
 
-.footer-logo img {
-  width: 40px;
-}
-
+/* Títulos das Colunas (Navegação, Contato) */
 .footer-title {
-  color: #00c27c;
-  font-weight: bold;
-  margin-bottom: 10px;
+    color: #50D9B0; /* Cor de destaque verde/aqua */
+    font-weight: 600;
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
 }
 
-.footer-links a {
-  text-decoration: none;
-  color: #555;
-  margin-right: 15px;
+/* Cor do texto geral */
+.footer-text {
+    color: #495057;
 }
 
-.footer-links a:hover {
-  text-decoration: underline;
+/* ------------------ */
+/* Navegação em 2 Colunas (footer-nav-grid) */
+/* ------------------ */
+
+.footer-nav-grid {
+    /* Usando Flexbox para alinhar as duas listas lado a lado */
+    display: flex;
+    justify-content: center; /* Centraliza as duas colunas dentro do bloco */
+    gap: 40px; /* Espaço entre a Coluna 1 e a Coluna 2 */
+    
+    /* Limita a largura para garantir que o layout de 2 colunas funcione */
+    max-width: 350px; 
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* Navegação centralizada com ícones */
-.footer-nav .nav-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 500;
-  font-size: 15px;
-  color: #6c757d;
-  transition: color 0.3s;
+/* Colunas Individuais (as ULs) */
+.footer-nav-col {
+    padding: 0;
+    margin: 0;
+    text-align: left; /* Alinha o texto dentro de cada coluna à esquerda */
+    /* Remove o estilo de lista padrão do HTML */
+    list-style: none; 
 }
 
-.footer-nav .nav-item:hover {
-  color: #00c27c;
+.footer-nav-col li {
+    margin-bottom: 10px; /* Espaço vertical entre os itens */
 }
 
-hr {
-  border-top: 1px solid #ddd;
+/* Links de Navegação */
+.footer-link {
+    color: #495057; 
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    /* Faz o ícone e o texto ficarem na mesma linha e alinhados */
+    display: flex;
+    align-items: center; 
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: #E66632; /* Cor do hover (laranja da marca) */
+}
+
+/* ESTILO DOS ÍCONES */
+.footer-link i {
+    margin-right: 5px;
+    font-size: 0.95rem; 
+    color: #495057; 
+    font-weight: 500; /* Assegura que o ícone não seja muito grosso */
+}
+
+
+/* ------------------ */
+/* Linha Separadora */
+/* ------------------ */
+
+.footer-divider {
+    border: none;
+    /* Linha fina e cinza claro, conforme a imagem */
+    border-top: 1px solid #dee2e6; 
+    opacity: 1; 
+}
+
+/* ------------------ */
+/* Rodapé Inferior (Copyright e Links Legais) */
+/* ------------------ */
+
+.footer-bottom {
+    /* Garante a centralização dos elementos inferiores */
+    text-align: center;
+}
+
+.footer-bottom .footer-text {
+    color: #495057;
+    font-size: 0.85rem;
+}
+
+/* Links Legais (Privacidade, Termos, FAQ, Suporte) */
+.footer-links {
+    /* Garante espaçamento em telas menores */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem; /* Espaçamento entre os links */
+}
+
+.footer-links .footer-link {
+    color: #495057; 
+    font-size: 0.85rem;
+    font-weight: 500;
 }
