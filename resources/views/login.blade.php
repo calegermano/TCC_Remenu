@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Se já estiver logado, redirecionar para o painel
 if (isset($_SESSION['admin_id'])) {
     header("Location: admin/dashboard.php");
     exit;
@@ -52,23 +51,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="login-container">
         <div class="logo">
             <img src="{{ asset('assets/img/logobranca.png') }}" alt="Logo Remenu" id="top-logo">
-</div>
+        </div>
+
         <div class="login-box">
-                <h2>Login</h2>
-            </div>
-            
+
+            <h2>Login</h2>
+
             <?php if ($erro): ?>
                 <div class="error-message">
                     <i class="bi bi-exclamation-triangle"></i>
                     <?php echo htmlspecialchars($erro); ?>
                 </div>
             <?php endif; ?>
-            
+
             <form method="POST" action="">
                 <div class="input-group">
-                    <label for="email">E-mail:</label>
-                    <input type="text" id="email" name="email" required 
-                           value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['usuario']) : ''; ?>">
+                    <label for="usuario">E-mail:</label>
+                    <input type="text" id="usuario" name="usuario" required 
+                        value="<?php echo isset($_POST['usuario']) ? htmlspecialchars($_POST['usuario']) : ''; ?>">
                 </div>
                 
                 <div class="input-group">
@@ -79,13 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <button type="submit" class="login-btn">
                     Entrar
                 </button>
+
                 <div class="login-links">
                     <a href="#">Esqueci a senha</a>
-                            <span>|</span>
+                    <span>|</span>
                     <a href="#">Criar conta</a>
                 </div>
             </form>
         </div>
+
     </div>
+
 </body>
 </html>
