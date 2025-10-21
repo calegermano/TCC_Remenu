@@ -28,7 +28,7 @@ body {
 .cconta-box {
     background: white;
     border-radius: 30px;
-    width: 720px;
+    width: 750px;
     min-height: 550px;
     box-shadow: 0 15px 35px rgba(65, 58, 58, 0.1);
     padding: 60px;
@@ -185,17 +185,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    display: inline-flex;
     gap: 15px;
     font-size: 14px;
     margin-top: 15px;
 }
 
 .cconta-links a {
-    margin-top: 20px;
     color: #d9682b;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
+    display: inline-flex;
 }
 
 .cconta-links a:hover {
@@ -203,5 +204,5 @@ body {
 }
 
 .cconta-links span {
-    color: #ccc;
+    color: #A2A2A2;
 }

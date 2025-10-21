@@ -23,6 +23,9 @@ Route::get('/conta', function () {
     return view('cconta');
 });
 
+Route::get('/senha', function () {
+    return view('senha');
+});
 Route::get('/login', [AuthController::class, 'showLoginForm']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
