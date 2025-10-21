@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="cconta-box">
 
-            <h2>Cadastrar-se</h2>
+            <h2>Recuperar Senha</h2>
 
             <?php if ($erro): ?>
                 <div class="error-message">
@@ -96,10 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
 
-                <button type="submit" class="cconta-btn">Cadastrar</button>
+                <button type="submit" class="cconta-btn">Entrar</button>
 
                 <div class="cconta-links">
-                    <a href="#">Esqueci a senha</a>
+                    <a href="#">Login</a>
                     <span>|</span>
                     <a href="#">Já tenho uma conta</a>
                 </div>
