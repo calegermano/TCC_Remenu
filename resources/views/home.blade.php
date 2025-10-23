@@ -10,9 +10,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
 
+
   <link rel="stylesheet" href="{{ asset('css/header.css')}}" />
 
   <link rel="stylesheet" href="{{ asset('css/home.css')}}" />
+
+  <link rel="stylesheet" href="{{ asset('css/footer.css')}}" />
 
   
 </head>
@@ -31,12 +34,11 @@
 
       <div class="collapse navbar-collapse justify-content-end" id="menuNav">
         <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="#">Quem somos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#quem-somos">Quem somos</a></li>
           <li class="nav-item"><a class="nav-link" href="#porque-remenu">Por que escolher</a></li>
           <li class="nav-item"><a class="nav-link active" href="#ferramentas">Ferramentas</a></li>
           <li class="nav-item"><a class="nav-link" href="#como-funciona">Como funciona</a></li>
-          
-          
+
         </ul>
       </div>
 
@@ -64,6 +66,61 @@
   <!-- PARALLAX -->
   <section class="parallax"></section>
 
+  <section class="quem-somos py-5" id="quem-somos">
+    <div class="container text-center">
+      <h2 class="titulo-principal">Quem somos?</h2>
+      <p class="descricao">
+        Somos uma plataforma de receitas dedicada a combater o desperdício alimentar e promover uma alimentação saudável.
+      </p>
+
+  <div class="container mt-5">
+    <div class="row align-items-center">
+      <div class="col-md-6 texto-esquerda">
+        <h3 class="subtitulo">Nossa História</h3>
+        <p class="texto">
+          Aproveite ao máximo todos os ingredientes que você compra. Nossa metodologia já ajudou usuários a reduzir 30% do desperdício.
+        </p>
+        <p class="texto-esquerda">
+          <em>Decidimos criar uma solução local, feita por guarulhenses para guarulhenses, que ajuda a transformar ingredientes em receitas deliciosas, reduzindo desperdício e promovendo uma alimentação mais consciente.</em>
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <img src="{{ asset('assets/img/quemsomos.jpg') }}" alt="salada colorida" class="img-fluid imagem-historia rounded-4 shadow">
+      </div>
+    </div>
+  </div>
+
+
+    <!-- Cards com efeito hover -->
+    <div class="row mt-5 g-4 justify-content-center">
+      <div class="col-md-3">
+        <div class="card-accordion">
+          <div class="card-header">Nossa Missão</div>
+          <div class="card-body">
+            Transformar a forma como as pessoas se relacionam com a comida, tornando a cozinha mais sustentável, acessível e prazerosa para todos em Guarulhos.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-accordion">
+          <div class="card-header">Sustentabilidade</div>
+          <div class="card-body">
+            Acreditamos que pequenas mudanças geram grandes impactos. Cada receita aproveitada é um passo em direção a um futuro mais sustentável.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-accordion">
+          <div class="card-header">Comunidade</div>
+            <div class="card-body">
+              Somos mais que uma plataforma — somos uma comunidade. Valorizamos cada usuário, cada receita compartilhada e cada história de transformação.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="porque-remenu py-5" id="porque-remenu">
     <div class="container">
@@ -106,6 +163,8 @@
       </div>
     </div>
   </section>
+
+  
   <!-- CARDS -->
   <section class="section-cards" id="ferramentas" >
     <div class="container text-center">
@@ -159,7 +218,7 @@
     </div>
   </section>
 
-  <section class="como-funciona py-5" id="como-funciona"style="background-color: #E5E5E5"  >
+  <section class="como-funciona py-5" id="como-funciona"  >
     <div class="container text-center">
         <h2 class="fw-bold">Como Funciona?</h2>
             <p class="text-muted mb-5">É simples e rápido!</p>
@@ -206,7 +265,64 @@
     </div>
   </section>
 
-@include('footer')
+  <footer class="main-footer">
+    <div class="container py-4">
+
+        <div class="row pt-3 pb-4">
+            
+            <div class="col-md-4 mb-4 mb-md-0 d-flex align-items-start">
+                <div class="footer-info text-start">
+                    <div class="footer-logo mb-3">
+                        <img src="{{asset('assets/img/logo.png')}}" alt="logo" width="40" height="40" class="me-2 footer-logo-img">
+                    </div>
+                    <p class="mb-0 footer-text">Plataforma de receitas saudáveis<br>com foco em reduzir desperdício alimentar</p>
+                </div>
+            </div>
+
+          <div class="col-md-5 mb-4 mb-md-0">
+              <h5 class="footer-title text-center">Navegação</h5>
+              
+              <div class="footer-nav-grid mx-auto">
+                  <ul class="list-unstyled footer-nav-col">
+                      <li><a href="home" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
+                      <li><a href="#" class="footer-link"><i class="fas fa-utensils"></i> Receitas</a></li>
+                  </ul>
+                  <ul class="list-unstyled footer-nav-col">
+                      <li><a href="#" class="footer-link"><i class="fas fa-calendar-alt"></i> Planejamento</a></li>
+                      <li><a href="#" class="footer-link"><i class="far fa-heart"></i> Favoritos</a></li>
+                  </ul><ul class="list-unstyled footer-nav-col">
+                      <li><a href="#" class="footer-link"><i class="fas fa-snowflake"></i> Geladeira</a></li>
+                  </ul>
+              </div>
+          </div>
+
+            <div class="col-md-3 text-end">
+                <h5 class="footer-title text-center text-md-end">Contato & Suporte</h5>
+                <ul class="list-unstyled text-center text-md-end footer-text">
+                    <li class="mb-1">contato@remenu.com.br</li>
+                    <li>(11) 9999-9999</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr class="footer-divider my-2">
+
+        <div class="row footer-bottom py-3">
+            <div class="col-12 text-center mb-2">
+                <p class="mb-0 footer-text">© 2025 REMENU. Todos os direitos reservados.</p>
+            </div>
+            
+            <div class="col-12 text-center">
+                <div class="footer-links d-flex justify-content-center flex-wrap">
+                    <a href="#" class="footer-link me-3 me-lg-4">Privacidade</a>
+                    <a href="#" class="footer-link me-3 me-lg-4">Termos de Uso</a>
+                    <a href="#" class="footer-link me-3 me-lg-4">FAQ</a>
+                    <a href="#" class="footer-link">Suporte</a>
+                </div>
+            </div>
+        </div>
+    </div>
+  </footer>
   <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
