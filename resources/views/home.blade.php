@@ -12,8 +12,6 @@
 
   <link rel="stylesheet" href="{{ asset('css/header.css')}}" />
 
-  <link rel="stylesheet" href="{{ asset('css/footer.css')}}"/>  
-
   <link rel="stylesheet" href="{{ asset('css/home.css')}}" />
 
   
@@ -33,11 +31,12 @@
 
       <div class="collapse navbar-collapse justify-content-end" id="menuNav">
         <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link active" href="#">Início</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Receitas</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Planejamento</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Favoritos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Minha Geladeira</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Quem somos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#porque-remenu">Por que escolher</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#ferramentas">Ferramentas</a></li>
+          <li class="nav-item"><a class="nav-link" href="#como-funciona">Como funciona</a></li>
+          
+          
         </ul>
       </div>
 
@@ -65,64 +64,102 @@
   <!-- PARALLAX -->
   <section class="parallax"></section>
 
+
+  <section class="porque-remenu py-5" id="porque-remenu">
+    <div class="container">
+      <div class="row align-items-center">
+        <!-- Texto -->
+        <div class="col-lg-7">
+          <h2 class="fw-bold mb-4">Por que escolher a <span class="text-green">REMENU</span>?</h2>
+          <div class="beneficio mb-4">
+            <i class="bi bi-check2-circle text-green fs-4 me-2"></i>
+            <div>
+              <h5 class="fw-semibold">Reduz Desperdício Alimentar</h5>
+              <p class="text-muted mb-0">
+              Aproveite ao máximo todos os ingredientes que você compra. Nossa metodologia já ajudou usuários a reduzir 30% do desperdício.
+              </p>
+            </div>
+          </div>
+          <div class="beneficio mb-4">
+            <i class="bi bi-check2-circle text-green fs-4 me-2"></i>
+            <div>
+              <h5 class="fw-semibold">Economiza Tempo e Dinheiro</h5>
+              <p class="text-muted mb-0">
+                Pare de ficar pensando “o que vou fazer com isso?”. Planeje suas refeições e otimize suas compras.
+              </p>
+            </div>
+          </div>
+          <div class="beneficio">
+            <i class="bi bi-check2-circle text-green fs-4 me-2"></i>
+            <div>
+              <h5 class="fw-semibold">Receitas Saudáveis e Saborosas</h5>
+              <p class="text-muted mb-0">
+                Todas as receitas são testadas e avaliadas pela comunidade. Foco em alimentação saudável e nutritiva.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Imagem -->
+        <div class="col-lg-5 mt-4 mt-lg-0 text-center">
+          <img src="assets/img/home.jpg" alt="Prato saudável" class="img-fluid rounded-4 shadow">
+        </div>
+      </div>
+    </div>
+  </section>
   <!-- CARDS -->
-    <section class="section-cards">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-3">
-                Tudo que você precisa em um só lugar
-            </h2>
-            <p class="mb-5 text-muted">
-                Ferramentas inteligentes para transformar sua cozinha em um espaço sem desperdício
-            </p>
-
-            <div class="row g-4 justify-content-center">
-            <!-- Card 1 -->
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <span style="font-size: 2rem; color: #26C485;"><i class="bi bi-search"></i></span>
-                        <h5 class="card-title mt-3" style="color: #26C485;">Buscar receitas</h5>
-                        <p class="card-text">Digite até 3 ingredientes que você tem em casa e descubra receitas perfeitas.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <span style="font-size: 2rem; color: #D9682B;"><i class="bi bi-heart"></i></span>
-                        <h5 class="card-title mt-3" style="color: #D9682B;">Meus Favoritos</h5>
-                        <p class="card-text">Salve suas receitas preferidas e acesse-as rapidamente.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <span style="font-size: 2rem; color: #26C485;"><i class="bi bi-calendar"></i></span>
-                        <h5 class="card-title mt-3" style="color: #26C485;">Planejamento</h5>
-                        <p class="card-text">Organize suas refeições da semana inteira e evite desperdícios!</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <span style="font-size: 2rem; color:  #D9682B;"><i class="bi bi-box"></i></span>
-                        <h5 class="card-title mt-3" style="color:  #D9682B;">Minha Geladeira</h5>
-                        <p class="card-text">Controle os ingredientes que você tem e receba alertas antes que estraguem.</p>
-                    </div>
-                </div>
+  <section class="section-cards" id="ferramentas" >
+    <div class="container text-center">
+      <h2 class="fw-bold mb-3">
+          Tudo que você precisa em um só lugar
+      </h2>
+      <p class="mb-5 text-muted">
+          Ferramentas inteligentes para transformar sua cozinha em um espaço sem desperdício
+      </p>
+      <div class="row g-4 justify-content-center">
+      <!-- Card 1 -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <span style="font-size: 2rem; color: #26C485;"><i class="bi bi-search"></i></span>
+            <h5 class="card-title mt-3" style="color: #26C485;">Buscar receitas</h5>
+            <p class="card-text">Digite até 3 ingredientes que você tem em casa e descubra receitas perfeitas.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <span style="font-size: 2rem; color: #D9682B;"><i class="bi bi-heart"></i></span>
+              <h5 class="card-title mt-3" style="color: #D9682B;">Meus Favoritos</h5>
+              <p class="card-text">Salve suas receitas preferidas e acesse-as rapidamente.</p>
             </div>
         </div>
-    </section>
+      </div>
+      <!-- Card 3 -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <span style="font-size: 2rem; color: #26C485;"><i class="bi bi-calendar"></i></span>
+            <h5 class="card-title mt-3" style="color: #26C485;">Planejamento</h5>
+            <p class="card-text">Organize suas refeições da semana inteira e evite desperdícios!</p>
+          </div>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <span style="font-size: 2rem; color:  #D9682B;"><i class="bi bi-box"></i></span>
+            <h5 class="card-title mt-3" style="color:  #D9682B;">Minha Geladeira</h5>
+            <p class="card-text">Controle os ingredientes que você tem e receba alertas antes que estraguem.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <section class="como-funciona py-5" style="background-color: #E5E5E5">
+  <section class="como-funciona py-5" id="como-funciona"style="background-color: #E5E5E5"  >
     <div class="container text-center">
         <h2 class="fw-bold">Como Funciona?</h2>
             <p class="text-muted mb-5">É simples e rápido!</p>
@@ -167,124 +204,9 @@
                 </div>
             </div>
     </div>
-    </section>
+  </section>
 
-    <section class="porque-remenu py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <!-- Texto -->
-                <div class="col-lg-7">
-                <h2 class="fw-bold mb-4">Por que escolher a <span class="text-green">REMENU</span>?</h2>
-
-                <div class="beneficio mb-4">
-                    <i class="bi bi-check2-circle text-green fs-4 me-2"></i>
-                <div>
-                <h5 class="fw-semibold">Reduz Desperdício Alimentar</h5>
-                <p class="text-muted mb-0">
-                Aproveite ao máximo todos os ingredientes que você compra. Nossa metodologia já ajudou usuários a reduzir 30% do desperdício.
-                </p>
-            </div>
-        </div>
-
-        <div class="beneficio mb-4">
-          <i class="bi bi-check2-circle text-green fs-4 me-2"></i>
-          <div>
-            <h5 class="fw-semibold">Economiza Tempo e Dinheiro</h5>
-            <p class="text-muted mb-0">
-              Pare de ficar pensando “o que vou fazer com isso?”. Planeje suas refeições e otimize suas compras.
-            </p>
-          </div>
-        </div>
-
-        <div class="beneficio">
-          <i class="bi bi-check2-circle text-green fs-4 me-2"></i>
-          <div>
-            <h5 class="fw-semibold">Receitas Saudáveis e Saborosas</h5>
-            <p class="text-muted mb-0">
-              Todas as receitas são testadas e avaliadas pela comunidade. Foco em alimentação saudável e nutritiva.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Imagem -->
-      <div class="col-lg-5 mt-4 mt-lg-0 text-center">
-        <img src="assets/img/home.jpg" alt="Prato saudável" class="img-fluid rounded-4 shadow">
-      </div>
-    </div>
-  </div>
-</section>
-
-    
-  <footer>
-    <div class="container">
-
-      <div class="row text-start a">
-        <!-- Logo e Descrição -->
-        <div class="col-md-4 mb-4">
-          <div class="footer-logo mb-2">
-            <img src="{{asset('assets/img/logo.png')}}" alt="logo" width="40" height="40" class="me-2">
-          </div>
-          <p>Plataforma de receitas saudáveis<br>com foco em reduzir desperdício alimentar</p>
-        </div>
-
-        <!-- Navegação (centralizada e responsiva) -->
-        <div class="col-md-3 mb-3 text-center">
-          <h5 class="footer-title">Navegação</h5>
-          <div class="footer-nav d-flex flex-wrap justify-content-center gap-3">
-            <a href="#" class="nav-item text-decoration-none text-secondary">
-              <i class="fas fa-home"></i> Home
-            </a>
-            <a href="#" class="nav-item text-decoration-none text-secondary">
-              <i class="fas fa-calendar-alt"></i> Planejamento
-            </a>
-            <a href="#" class="nav-item text-decoration-none text-secondary">
-              <i class="fas fa-snowflake"></i> Geladeira
-            </a>
-            <a href="#" class="nav-item text-decoration-none text-secondary">
-              <i class="fas fa-utensils"></i> Receitas
-            </a>
-            <a href="#" class="nav-item text-decoration-none text-secondary">
-              <i class="fas fa-heart"></i> Favoritos
-            </a>
-            
-          </div>
-        </div>
-
-        <!-- Contato e Suporte -->
-        <div class="col-md-4 mb-4">
-          <h5 class="footer-title">Contato & Suporte</h5>
-          <ul class="list-unstyled">
-            <li>
-                <i class="fas fa-envelope"></i> contato@remenu.com.br
-            </li>
-            <li>
-                <i class="fas fa-phone"></i> (11) 9999-9999
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <hr>
-
-      <!-- Rodapé inferior -->
-      <div class="row align-items-center py-3">
-      <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
-    <p class="mb-0">© 2025 REMENU. Todos os direitos reservados.</p>
-  </div>
-  <div class="col-md-6 text-center text-md-end">
-    <div class="footer-links">
-      <a href="#" class="me-3">Privacidade</a>
-      <a href="#" class="me-3">Termos de Uso</a>
-      <a href="#" class="me-3">FAQ</a>
-      <a href="#">Suporte</a>
-    </div>
-    </div>
-    </div>
-    </div>
-</footer>
-
-
+@include('footer')
   <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
