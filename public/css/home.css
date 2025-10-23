@@ -27,6 +27,8 @@ body {
   transform: scale(1.05);
 }
 
+
+
 /* HERO */
 
 .hero h1 {
@@ -67,6 +69,101 @@ body {
   background: rgba(0, 0, 0, 0.25);
 }
 
+.quem-somos {
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+.titulo-principal {
+  color: #d46a19;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.descricao {
+  font-size: 1.15rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.texto-esquerda {
+  text-align: left;
+}
+
+.subtitulo {
+  color: #d46a19;
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.texto {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.imagem-historia {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 15px;
+  transition: 0.5s;
+}
+
+.imagem-historia:hoover{
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+}
+
+
+
+/* ====== Cards tipo accordion ====== */
+.card-accordion {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: all 0.8s ease;
+  cursor: pointer;
+  height: 80px;
+  position: relative;
+}
+
+.card-accordion .card-header {
+  padding: 20px;
+  font-weight: 600;
+  color: #33b474;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.card-accordion .card-body {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  color: #555;
+  text-align: center;
+  transition: all 0.8s ease;
+  font-size: 0.95rem;
+}
+
+/* Efeito hover (abre tipo accordion) */
+.card-accordion:hover {
+  height: 220px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.card-accordion:hover .card-body {
+  max-height: 200px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
 /* Cards */
 .section-cards {
   background: #F8F8F8;
@@ -95,7 +192,7 @@ body {
 
 .como-funciona {
   padding: 100px 0;
-  background-color: #E5E5E5;
+  
 }
 
 .etapa {
