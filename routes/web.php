@@ -4,6 +4,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashBoardController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\FatSecretController;
+
+Route::get('/recipes', fn() => view('recipes'));
+Route::get('/api/recipes/search', [FatSecretController::class, 'search']);
+
 Route::get('/', function () {
     return view('home');
 });
@@ -26,6 +31,10 @@ Route::get('/conta', function () {
 
 Route::get('/senha', function () {
     return view('senha');
+});
+
+Route::get('/receitas', function () {
+    return view('receitas');
 });
 Route::get('/dashboard', [DashBoardController::class, 'index'])->middleware('auth');
 
