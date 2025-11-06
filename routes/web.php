@@ -36,7 +36,7 @@ Route::get('/senha', function () {
 Route::get('/receitas', function () {
     return view('receitas');
 });
-Route::get('/dashboard', [DashBoardController::class, 'index'])->middleware('auth');
+Route::get('/dashboard', [DashBoardController::class, 'index'])->middleware('auth', 'isAdmin');
 
 Route::get('/login', [AuthController::class, 'showLoginForm']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -44,7 +44,5 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return "Página do administrador";
-    });
+    Route::get('/admin/dashboard', [DashBoardController::class, 'index']);
 });
