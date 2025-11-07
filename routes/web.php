@@ -36,6 +36,7 @@ Route::get('/senha', function () {
 Route::get('/receitas', function () {
     return view('receitas');
 });
+// Rota /dashboard protegida com 'auth' e 'isAdmin'
 Route::get('/dashboard', [DashBoardController::class, 'index'])->middleware('auth', 'isAdmin');
 
 Route::get('/login', [AuthController::class, 'showLoginForm']);
@@ -43,6 +44,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
+// Grupo de rotas /admin/dashboard também protegido
 Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/admin/dashboard', [DashBoardController::class, 'index']);
 });

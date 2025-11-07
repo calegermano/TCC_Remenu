@@ -9,7 +9,7 @@ class TipoUsuario extends Model
 {
     use HasFactory;
 
-    protected $table = 'tipo_usuario';
+    protected $table = 'tipos_usuario';
 
     const ADMIN = 1;
     const COMUM =2;
