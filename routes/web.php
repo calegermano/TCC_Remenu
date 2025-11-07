@@ -4,10 +4,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashBoardController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\FatSecretController;
+use App\Http\Controllers\RecipeController;
 
-Route::get('/recipes', fn() => view('recipes'));
-Route::get('/api/recipes/search', [FatSecretController::class, 'search']);
+Route::get('/receitas', [RecipeController::class, 'index'])->name('recipes.index');
+
+
+
 
 Route::get('/', function () {
     return view('home');
@@ -33,9 +35,7 @@ Route::get('/senha', function () {
     return view('senha');
 });
 
-Route::get('/receitas', function () {
-    return view('receitas');
-});
+
 Route::get('/dashboard', [DashBoardController::class, 'index'])->middleware('auth');
 
 Route::get('/login', [AuthController::class, 'showLoginForm']);
