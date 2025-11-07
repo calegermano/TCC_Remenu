@@ -44,4 +44,9 @@ class Usuario extends Authenticatable
     {
         return $this->belongsTo(TipoUsuario::class, 'tipo_id');
     }
+
+    public function isAdmin()
+    {
+        return $this->tipo->nome === 'admin';
+    }
 }
