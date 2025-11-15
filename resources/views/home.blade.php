@@ -42,9 +42,11 @@
         </ul>
       </div>
 
-      <a href="#" class="profile-link d-none d-lg-block" aria-label="Perfil">
-        <i class="bi bi-person-fill"></i>
+      <a href="{{ asset('/login')}}" class="btn-login d-flex align-items-center" role="button">
+        <i class="bi bi-person-fill me-2"></i>
+        <span class="d-none d-md-inline">Entrar / Cadastre-se</span>
       </a>
+
     </div>
   </nav>
 

@@ -44,6 +44,33 @@ body {
   margin: 20px auto 0;
 }
 
+/* Botão padrão */
+.btn-login {
+  background-color: #F8F8F8;         /* cor de fundo */
+  color: #898989;                 /* cor do texto */
+  border: 2px solid #50D9B0;         /* borda branca */
+  border-radius: 50px;            /* bordas arredondadas */
+  padding: 6px 16px;              /* espaçamento interno */
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;      /* suaviza o hover */
+}
+
+/* Ícone alinhado com texto */
+.btn-login i {
+  font-size: 1.1rem;
+}
+
+/* Efeito ao passar o mouse */
+.btn-login:hover {
+  background-color: transparent;  /* fica transparente */
+  color: #50D9B0;                    /* texto branco */
+  border-color: #50D9B0;             /* mantém a borda branca */
+  transform: translateY(-2px);    /* leve “subida” */
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+}
+
+
 /* PARALLAX */
 .parallax {
   position: relative;

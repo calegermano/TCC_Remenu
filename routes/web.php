@@ -8,7 +8,7 @@ use App\Http\Controllers\RecipeController;
 
 Route::get('/receitas', [RecipeController::class, 'index'])->name('recipes.index');
 
-
+Route::get('/receitas/{id}', [RecipeController::class, 'show']);
 
 
 Route::get('/', function () {
