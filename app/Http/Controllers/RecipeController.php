@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\FatSecretService;
 use Illuminate\Http\Request;
+use App\Services\FatSecretService;
+
 
 class RecipeController extends Controller
 {
@@ -16,25 +17,60 @@ class RecipeController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request->get('search', '');
+        $rawSearch = $request->input('search');
 
-        // Aqui garantimos que os nomes batem com os do form
+
+
         $filters = [
-            'calories_from' => $request->get('calories_from'),
-            'calories_to' => $request->get('calories_to'),
-            'prep_time_from' => $request->get('prep_time_from'),
-            'prep_time_to' => $request->get('prep_time_to'),
-            'recipe_types' => $request->get('recipe_types', []),
+            'recipe_types' => $request->input('recipe_types', []),
+            'calories_from' => $request->input('calories_from'),
+            'calories_to' => $request->input('calories_to'),
+            'prep_time_from' => $request->input('prep_time_from'),
+            'prep_time_to' => $request->input('prep_time_to'),
         ];
 
-        $page = (int) $request->get('page', 0);
+        $hasFilters =
+            !empty($filters['recipe_types']) ||
+            !empty($filters['calories_from']) ||
+            !empty($filters['calories_to']) ||
+            !empty($filters['prep_time_from']) ||
+            !empty($filters['prep_time_to']);
+
+        if (($rawSearch === null || trim($rawSearch) === '') && !$hasFilters) {
+            $search = 'a';   // usado apenas internamente
+        } else {
+            $search = $rawSearch; // usa o que o usuário digitou
+        }
+
+        $page = $request->input('page', 0);
 
         $recipesData = $this->fatSecret->getRecipes($search, $filters, $page);
         $recipes = $recipesData['recipe'] ?? [];
-        $totalResults = (int) ($recipesData['total_results'] ?? 0);
-        $maxResults = 50;
-        $totalPages = ceil($totalResults / $maxResults);
+        $totalResults = $recipesData['total_results'] ?? 0;
 
-        return view('recipes.index', compact('recipes', 'search', 'filters', 'page', 'totalPages'));
+        $availableFilters = [
+            'Main Dish' => 'Prato Principal',
+            'Breakfast' => 'Café da Manhã',
+            'Salad' => 'Salada',
+            'Soup' => 'Sopa',
+            'Dessert' => 'Sobremesa',
+            'Beverage' => 'Bebidas',
+        ];
+
+        return view('recipes.index', [
+            'recipes' => $recipes,
+            'totalResults' => $totalResults,
+            'search' => $rawSearch, // volta o valor real do usuário (sem "a")
+            'filters' => $filters,
+            'availableFilters' => $availableFilters,
+        ]);
     }
+
+    public function show($id)
+    {
+        $recipe = $this->fatSecret->getRecipeDetails($id);
+
+        return response()->json($recipe);
+    }
+
 }

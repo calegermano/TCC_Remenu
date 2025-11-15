@@ -81,9 +81,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </button>
 
                 <div class="login-links">
-                    <a href="#">Esqueci a senha</a>
+                    <a href="{{ asset('/senha')}}">Esqueci a senha</a>
                     <span>|</span>
-                    <a href="#">Criar conta</a>
+                    <a href="{{ asset('/conta')}}">Criar conta</a>
                 </div>
             </form>
         </div>

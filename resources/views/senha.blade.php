@@ -96,12 +96,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
 
-                <button type="submit" class="cconta-btn">Entrar</button>
+                <button type="submit" class="cconta-btn" >Entrar</button>
 
                 <div class="cconta-links">
-                    <a href="#">Login</a>
+                    <a href="{{ asset('/login')}}">Login</a>
                     <span>|</span>
-                    <a href="#">Já tenho uma conta</a>
+                    <a href="{{ asset('/conta')}}">Cadastre-se</a>
                 </div>
             </form>
         </div>
