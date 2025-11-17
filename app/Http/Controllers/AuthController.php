@@ -42,9 +42,13 @@ class AuthController extends Controller
     {
         $request->validate([
             'nome' =>  'required',
-            'email' => 'required|email',
-            'senha' => 'required',
+            'email' => 'required|email|unique:usuarios,email',
+            'senha' => 'required|confirmed',
         ]);
+
+        // Definindo o tipo de usuário como COMUM por padrão
+        $tipoUsuario = $request->input('tipo_id', TipoUsuario::COMUM);
+        $tipoId = ($tipoUsuario === 'admin') ? TipoUsuario::ADMIN : TipoUsuaario::COMUM;
 
         $usuario = Usuario::create([
             'nome' => $request->nome,
@@ -55,7 +59,11 @@ class AuthController extends Controller
 
         Auth::login($usuario);
 
-        return redirect('/home');
+        if ($tipoId === TipoUsuario::ADMIN) {
+            return redirect('/admin/dashboard');
+        } else {
+            return redirect('/home');
+        }
     }
 
     public function logout()

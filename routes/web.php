@@ -41,7 +41,7 @@ Route::get('/dashboard', [DashBoardController::class, 'index'])->middleware('aut
 // Rota /dashboard protegida com 'auth' e 'isAdmin'
 Route::get('/dashboard', [DashBoardController::class, 'index'])->middleware('auth', 'isAdmin');
 
-Route::get('/login', [AuthController::class, 'showLoginForm']);
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/logout', [AuthController::class, 'logout']);
