@@ -19,7 +19,7 @@
 <body>
 
     <!-- nav bar -->
-    <nav class="navbar navbar-expand-lg bg-light border-bottom">
+    <nav class="navbar navbar-expand-lg bg-light border-bottom sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-item-center fw-semibold" href="resources/views/home.blade.php">
             <img src="{{asset('assets/img/logo.png')}}" alt="logo" width="40" height="40" class="me-2">
@@ -34,7 +34,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="menuNav">
                 <ul class ="navbar-nav mb-2 mb-">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Início</a>
+                        <a class="nav-link active" href="home">Início</a>
                     </li>
 
                     <li class="nav-item">
