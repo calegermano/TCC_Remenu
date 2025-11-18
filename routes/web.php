@@ -35,6 +35,10 @@ Route::get('/senha', function () {
     return view('senha');
 });
 
+Route::get('/geladeira', function () {
+    return view('geladeira');
+});
+
 Route::get('/dashboard', [DashBoardController::class, 'index'])->middleware('auth');
 
 
