@@ -22,7 +22,7 @@
 <body>
 
   <!-- navbar -->
-  <nav class="navbar navbar-expand-lg bg-light border-bottom">
+  <nav class="navbar navbar-expand-lg bg-light border-bottom sticky-top" >
     <div class="container">
       <a class="navbar-brand d-flex align-items-center fw-semibold" href="#">
         <img src="assets/img/logo.png" alt="Logo Remenu" width="40" height="40" class="me-2" />
@@ -51,7 +51,7 @@
   </nav>
 
   <!-- HERO -->
-  <section class="hero text-center py-5">
+  <section class="hero text-center py-5  fade-section">
     <div class="container">
       <h1 class="fw-bold">
         Transforme seus <span class="text-blue">ingredientes</span><br/>
@@ -61,15 +61,15 @@
         A primeira plataforma focada em reduzir desperdício alimentar.<br />
         Descubra receitas saudáveis baseadas nos ingredientes que você já tem em casa!
       </p>
-      <button class="btn-gradient mt-4 px-4 py-2 shadow">Veja mais</button>
+      <button class="btn-gradient mt-4 px-4 py-2 shadow "><a href="{{ asset('/login')}}" >Veja mais</a></button>
     </div>
   </section>
 
   <!-- PARALLAX -->
   <section class="parallax"></section>
 
-  <section class="quem-somos py-5" id="quem-somos">
-    <div class="container text-center">
+  <section class="quem-somos py-5 fade-section" id="quem-somos" >
+    <div class="container text-center fade-section">
       <h2 class="titulo-principal">Quem somos?</h2>
       <p class="descricao">
         Somos uma plataforma de receitas dedicada a combater o desperdício alimentar e promover uma alimentação saudável.
@@ -124,7 +124,7 @@
     </div>
   </section>
 
-  <section class="porque-remenu py-5" id="porque-remenu">
+  <section class="porque-remenu py-5 fade-section" id="porque-remenu">
     <div class="container">
       <div class="row align-items-center">
         <!-- Texto -->
@@ -168,7 +168,7 @@
 
   
   <!-- CARDS -->
-  <section class="section-cards" id="ferramentas" >
+  <section class="section-cards fade-section" id="ferramentas" >
     <div class="container text-center">
       <h2 class="fw-bold mb-3">
           Tudo que você precisa em um só lugar
@@ -220,7 +220,7 @@
     </div>
   </section>
 
-  <section class="como-funciona py-5" id="como-funciona"  >
+  <section class="como-funciona py-5 fade-section" id="como-funciona"  >
     <div class="container text-center">
         <h2 class="fw-bold">Como Funciona?</h2>
             <p class="text-muted mb-5">É simples e rápido!</p>
@@ -267,7 +267,7 @@
     </div>
   </section>
 
-  <footer class="main-footer">
+  <footer class="main-footer fade-section">
     <div class="container py-4">
 
         <div class="row pt-3 pb-4">
@@ -346,5 +346,25 @@
     }
   });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll(".fade-section");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        // Se quiser que o fade aconteça só 1 vez, descomente abaixo:
+        // observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  sections.forEach(section => observer.observe(section));
+});
+</script>
+
+
 </body>
 </html>

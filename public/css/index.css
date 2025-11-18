@@ -1,123 +1,257 @@
-body { 
-    background-color: #f9f9f9; 
+/* ------------------------------ */
+/*  ESTILO GERAL DA PÁGINA       */
+/* ------------------------------ */
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #fafafa;
+    color: #444;
+    margin: 0;
 }
 
-.card img {
-    height: 200px;
-    object-fit: cover; 
+/* Banner no topo */
+.receitas-banner {
+    width: 100%;
+    height: 300px;
+    background: url('../assets/img/receitas.jpg') no-repeat center center; 
+    background-size: cover;
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 0 0 10px 10px;
+    margin-bottom: 50px;
+
+    
 }
 
-.container { 
-    padding-top: 40px; 
-}
-
-.filters {
-    background: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-}
-
-.filters input, .filters select, .filters button {
-    margin: 5px;
-}
-
-.recipes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-.recipe-card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+/* ------------------------------ */
+/*   TÍTULO E SUBTÍTULO           */
+/* ------------------------------ */
+.receitas-title {
     text-align: center;
+    margin-top: 60px;
+    margin-bottom: 20px;
+ 
+}
+
+.receitas-title h1 {
+    font-size: 40px;
+    font-weight: 600;
+    color: #47d7b4; /* cor igual a da imagem */
+    margin-bottom: 10px;
+}
+
+.receitas-title p {
+    font-size: 18px;
+    color: #6c7280;
+    text-align: center;
+    max-width: 400px;   /* controla o tamanho para forçar a quebra */
+    margin: 0 auto;     /* centraliza */
+    line-height: 1.5;
+    margin-bottom: 60px;
+}
+    
+
+/* ------------------------------ */
+/*   BARRA DE BUSCA E FILTROS     */
+/* ------------------------------ */
+
+.search-bar {
+    display: flex;
+    gap: 12px;
+    background: #e6e6e6;
+    padding: 12px 18px;
+    border-radius: 14px;
+    margin: 30px auto;
+    width: 85%;
+    max-width: 1100px;
+    align-items: center;
+}
+
+/* Itens da barra */
+.search-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 2px solid #dcdcdc;
+    padding: 10px 14px;
+    border-radius: 12px;
+    flex: 1;
+    font-size: 15px;
+    color: #555;
+}
+
+/* Inputs */
+.search-item input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 15px;
+}
+
+/* Botões */
+.btn-item {
+    cursor: pointer;
+    transition: .2s;
+    justify-content: center;
+}
+
+.btn-item:hover {
+    background: #f5f5f5;
+}
+
+/* ----------------------------- */
+/* DROPDOWNS (TIPOS + FILTROS)   */
+/* ----------------------------- */
+.dropdown-box {
+    display: none;
+    background: #fff;
+    border: 2px solid #dcdcdc;
+    border-radius: 14px;
+    padding: 18px;
+    width: 85%;
+    max-width: 1100px;
+    margin: 12px auto;
+}
+
+/* Labels */
+.dropdown-box label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Inputs lado a lado */
+.two-inputs {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.two-inputs input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+}
+
+/* SELECT tipos */
+.dropdown-box select {
+    width: 100%;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+/* Botão aplicar */
+.apply-filters {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #32c6a6;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+}
+
+.apply-filters:hover {
+    background: #29b397;
+}
+
+/* ----------------------------- */
+/* RESPONSIVIDADE                */
+/* ----------------------------- */
+@media (max-width: 768px) {
+    .search-bar {
+        flex-direction: column;
+    }
+
+    .btn-item {
+        width: 100%;
+    }
+
+    .dropdown-box {
+        width: 90%;
+    }
+
+    .two-inputs {
+        flex-direction: column;
+    }
+}
+
+    
+
+/* ------------------------------ */
+/*      GRID DE RECEITAS          */
+/* ------------------------------ */
+.recipes-grid {
+    margin-top: 20px;
+    gap: 25px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+}
+
+/* ------------------------------ */
+/*        CARD DE RECEITA         */
+/* ------------------------------ */
+.recipe-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0px 4px 18px rgba(0, 0, 0, 0.06);
+    padding-bottom: 15px;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
 }
 
 .recipe-card img {
-    border-radius: 8px;
     width: 100%;
     height: 180px;
     object-fit: cover;
 }
 
-.pagination {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    margin-top: 25px;
-}
-
-.pagination a {
-    padding: 8px 12px;
-    background: #eee;
-    border-radius: 5px;
-    text-decoration: none;
+.recipe-card h5 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 15px;
     color: #333;
 }
 
-.pagination a.active {
-    background: #007bff;
-    color: white;
+.recipe-card p {
+    margin: -10px 15px 10px 15px;
+    color: #777;
 }
 
-details {
-    margin: 10px 0;
-}
-
-summary {
-    cursor: pointer;
-    font-weight: bold;
-}
-
+/* ------------------------------ */
+/*           MODAL                */
+/* ------------------------------ */
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-card {
-  width: 90%;
-  max-width: 600px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  position: relative;
-  animation: fadeIn .3s ease;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.modal-card img {
-  width: 100%;
-  border-radius: 12px;
-  margin-bottom: 15px;
+    background: #ffffff;
+    width: 480px;
+    max-height: 90vh;
+    padding: 25px;
+    border-radius: 18px;
+    overflow-y: auto;
 }
 
 .close-modal {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border: none;
-  background: #ff4444;
-  color: white;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    float: right;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}

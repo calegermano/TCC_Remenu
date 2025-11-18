@@ -62,13 +62,59 @@
     </nav>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <div class="banner">
-        <div class="banner" alt="Banner">
+    <section class="hero-banner">
         <img src="geladeira.png">
+    </section>
         </div>
-        <div class="tema">
+        <section class="titulo">
             <h1>Minha Geladeira</h1>
             <p>Gerencie seus ingredientes e evite desperdícios.</p>
+        </section>
+        <section class="conteudo">
+            <!--Card Adicionar Ingrediente -->
+            <div class="card add">
+                <h3>+ Adicionar Ingrediente </h3>
+                <label>Nome do Ingrediente</label>
+                <input type="text">
+                <label>Quantidade (Opcional)</label>
+                <input type="text">
+                <label>Categoria</label>
+                <select>
+                    <option>Outros</option>
+                    <option>Vegetais</option>
+                    <option>Proteínas</option>
+                    <option>Laticínios</option>
+                </select>
+                <button>Adicionar</button>
+            </div>
+
+            <!--Card Meus Ingredientes-->
+            <div class="card meus-ingredientes">
+                <h3>Meus Ingredientes</h3>
+                <div class="categoria">
+                    <h4>Vegetais</h4>
+                    <div class="item">
+                    </div>
+                </div>
+
+                <div class="categoria">
+                    <h4>Laticínios</h4>
+                    <div class="item">
+                    </div>
+                </div>
+            </div>
+
+        <!-- Ingredientes Básicos -->
+         <div class="card basicos">
+            <h3>Ingredientes Básicos</h3>
+            <input type="text" placeholder="Busque ingredientes">
+
+
+
+
+
+
+
 
 
 </body>
