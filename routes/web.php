@@ -39,6 +39,14 @@ Route::get('/geladeira', function () {
     return view('geladeira');
 });
 
+Route::get('/favoritos', function () {
+    return view('favoritos');
+});
+
+Route::get('/planejamento', function () {
+    return view('planejamento');
+});
+
 Route::get('/dashboard', [DashBoardController::class, 'index'])->middleware('auth');
 
 

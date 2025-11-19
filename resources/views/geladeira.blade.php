@@ -34,24 +34,24 @@
             <div class="collapse navbar-collapse justify-content-end" id="menuNav">
                 <ul class ="navbar-nav mb-2 mb-">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Início</a>
+                        <a class="nav-link active" href="home2">Início</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Receitas</a>
+                        <a class="nav-link active" href="receita">Receitas</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Planejamento</a>
+                        <a class="nav-link active" href="planejamento">Planejamento</a>
                     </li>
 
                      <li class="nav-item">
-                        <a class="nav-link active"  href="#">Favoritos</a>
+                        <a class="nav-link active"  href="favoritos">Favoritos</a>
                     </li>
 
 
                      <li class="nav-item">
-                        <a class="nav-link active" href="#">Minha Geladeira</a>
+                        <a class="nav-link active" href="geladeira">Minha Geladeira</a>
                     </li>
                 </ul>
             </div>
@@ -63,7 +63,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <section class="hero-banner">
-        <img src="geladeira.png">
+        <img src='../assets/img/geladeira.jpg'>
     </section>
         </div>
         <section class="titulo">
@@ -90,16 +90,18 @@
 
             <!--Card Meus Ingredientes-->
             <div class="card meus-ingredientes">
-                <h3>Meus Ingredientes</h3>
+                <h3><i class="bi bi-box-seam"></i> Meus Ingredientes</h3>
                 <div class="categoria">
                     <h4>Vegetais</h4>
-                    <div class="item">
                     </div>
+                    
+                </div>
+                <div class="categoria">
+                    <h4>Proteínas</h4>
                 </div>
 
                 <div class="categoria">
                     <h4>Laticínios</h4>
-                    <div class="item">
                     </div>
                 </div>
             </div>
@@ -108,14 +110,11 @@
          <div class="card basicos">
             <h3>Ingredientes Básicos</h3>
             <input type="text" placeholder="Busque ingredientes">
-
-
-
-
-
-
-
-
+            <div class="lista-basicos">
+             <button class="btn-add-basico">Adicionar </button>
+            </div>
+        </section>
+    </div>
 
 </body>
 </html>

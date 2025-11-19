@@ -34,24 +34,24 @@
             <div class="collapse navbar-collapse justify-content-end" id="menuNav">
                 <ul class ="navbar-nav mb-2 mb-">
                     <li class="nav-item">
-                        <a class="nav-link active" href="home">Início</a>
+                        <a class="nav-link active" href="home2">Início</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Receitas</a>
+                        <a class="nav-link active" href="receitas">Receitas</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Planejamento</a>
+                        <a class="nav-link active" href="planejamento">Planejamento</a>
                     </li>
 
                      <li class="nav-item">
-                        <a class="nav-link active"  href="#">Favoritos</a>
+                        <a class="nav-link active"  href="favoritos">Favoritos</a>
                     </li>
 
 
                      <li class="nav-item">
-                        <a class="nav-link active" href="#">Minha Geladeira</a>
+                        <a class="nav-link active" href="geladeira">Minha Geladeira</a>
                     </li>
                 </ul>
             </div>
