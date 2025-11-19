@@ -82,3 +82,56 @@ page-container{
       color: #666;
       font-size: 14px;
 }
+
+/* ============================
+   ESTILOS GERAIS
+============================ */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #fafafa;
+}
+
+.hero-banner img {
+    width: 100%;
+    max-height: 230px;
+    object-fit: cover;
+}
+
+.titulo{margin:20px 0}
+.titulo h1{font-weight:600;color:#2c3e50}
+.titulo p{color:#555;margin-top:-5px}
+
+
+.card{background:#fff;padding:20px;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.06)}
+.card h3{color:var(--accent);font-weight:600}
+
+
+.add input, .add select{border-radius:10px;border:1px solid #ddd;padding:10px}
+.add input:focus{outline:none;box-shadow:0 0 0 0.12rem rgba(231,111,81,0.12);border-color:var(--accent)}
+.add button{background:var(--accent);color:#fff;border:none;padding:10px;border-radius:10px}
+
+
+.basicos .lista-basicos{display:flex;flex-wrap:wrap;gap:8px}
+.basico-item{background:#fff;border:1px solid #ddd;padding:8px 12px;border-radius:10px;cursor:pointer}
+.basico-item:hover{background:#e9f7f5;border-color:var(--green)}
+.btn-add-basico{background:var(--green);color:#fff;border:none;padding:10px;border-radius:10px}
+
+
+.meus-ingredientes .categoria{margin-bottom:18px}
+.meus-ingredientes .categoria h4{color:var(--green);font-weight:600}
+
+
+.ingrediente-item{background:#f8f8f8;border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;border-left:4px solid var(--green);margin-bottom:10px}
+.ingrediente-item strong{font-weight:600}
+.ingrediente-item p{margin:3px 0}
+.ingrediente-actions button{border-radius:8px;padding:6px 8px;border:none;margin-left:6px}
+.ingrediente-actions .btn-edit{background:#f4a261;color:#fff}
+.ingrediente-actions .btn-delete{background:#e63946;color:#fff}
+
+
+.autocomplete-box{position:absolute;z-index:30;left:0;right:0;background:#fff;border:1px solid #ddd;border-top:none;border-radius:0 0 10px 10px;max-height:220px;overflow:auto}
+.autocomplete-item{padding:10px;cursor:pointer}
+.autocomplete-item:hover{background:#f1f5f8}
+
+
+@media(max-width:768px){.ingrediente-item{flex-direction:column;align-items:flex-start}.ingrediente-actions{width:100%;display:flex;justify-content:flex-end;margin-top:8px}}

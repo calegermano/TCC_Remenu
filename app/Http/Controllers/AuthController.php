@@ -38,7 +38,7 @@ class AuthController extends Controller
             if ($user->isAdmin()) {
                 return redirect()->intended('/admin/dashboard');
             } else {
-                return redirect()->intended('/home');
+                return redirect()->intended('/home2');
             }
         }
 
@@ -70,7 +70,7 @@ class AuthController extends Controller
         if ($usuario->isAdmin()) {
             return redirect()->intended('/admin/dashboard');
         } else {
-            return redirect()->intended('/home');
+            return redirect()->intended('/home2');
         }
     }
 

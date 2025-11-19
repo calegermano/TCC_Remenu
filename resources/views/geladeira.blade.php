@@ -38,7 +38,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="receita">Receitas</a>
+                        <a class="nav-link active" href="receitas">Receitas</a>
                     </li>
 
                     <li class="nav-item">
@@ -61,60 +61,231 @@
         </div>            
     </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <section class="hero-banner">
-        <img src='../assets/img/geladeira.jpg'>
-    </section>
-        </div>
-        <section class="titulo">
-            <h1>Minha Geladeira</h1>
-            <p>Gerencie seus ingredientes e evite desperdícios.</p>
-        </section>
-        <section class="conteudo">
-            <!--Card Adicionar Ingrediente -->
-            <div class="card add">
-                <h3>+ Adicionar Ingrediente </h3>
-                <label>Nome do Ingrediente</label>
-                <input type="text">
-                <label>Quantidade (Opcional)</label>
-                <input type="text">
-                <label>Categoria</label>
-                <select>
-                    <option>Outros</option>
-                    <option>Vegetais</option>
-                    <option>Proteínas</option>
-                    <option>Laticínios</option>
-                </select>
-                <button>Adicionar</button>
-            </div>
+    <!-- BANNER -->
+<section class="hero-banner">
+<img src="{{ asset('assets/img/geladeira.jpg') }}" alt="Geladeira">
+</section>
 
-            <!--Card Meus Ingredientes-->
-            <div class="card meus-ingredientes">
-                <h3><i class="bi bi-box-seam"></i> Meus Ingredientes</h3>
-                <div class="categoria">
-                    <h4>Vegetais</h4>
-                    </div>
-                    
-                </div>
-                <div class="categoria">
-                    <h4>Proteínas</h4>
-                </div>
 
-                <div class="categoria">
-                    <h4>Laticínios</h4>
-                    </div>
-                </div>
-            </div>
+<!-- TÍTULO -->
+<section class="titulo">
+<div class="container text-center py-4">
+<h1>Minha Geladeira</h1>
+<p>Gerencie seus ingredientes e evite desperdícios.</p>
+</div>
+</section>
 
-        <!-- Ingredientes Básicos -->
-         <div class="card basicos">
-            <h3>Ingredientes Básicos</h3>
-            <input type="text" placeholder="Busque ingredientes">
-            <div class="lista-basicos">
-             <button class="btn-add-basico">Adicionar </button>
-            </div>
-        </section>
-    </div>
+
+<!-- CONTEÚDO PRINCIPAL -->
+<section class="conteudo container">
+<div class="row g-4">
+
+
+<!-- ADICIONAR INGREDIENTE -->
+<div class="col-md-4">
+<div class="card add">
+<h3 class="mb-3"><i class="bi bi-plus-circle"></i> Adicionar Ingrediente</h3>
+
+
+<label for="buscar-ingrediente">Nome do Ingrediente</label>
+<div class="position-relative mb-2">
+<input type="text" id="buscar-ingrediente" class="form-control" placeholder="Busque um ingrediente... (autocomplete)">
+<div id="autocomplete" class="autocomplete-box"></div>
+</div>
+
+
+<label for="quantidade">Quantidade (Opcional)</label>
+<input type="number" id="quantidade" class="form-control mb-2" placeholder="Ex: 2">
+
+
+<label for="validade">Validade</label>
+<input type="date" id="validade" class="form-control mb-2">
+
+
+<button id="adicionar" class="btn btn-primary w-100 mt-2">Adicionar</button>
+</div>
+
+
+<!-- INGREDIENTES BÁSICOS -->
+<div class="card basicos mt-3">
+<h3 class="mb-3">Ingredientes Básicos</h3>
+<input type="text" id="buscarBasicos" class="form-control" placeholder="Buscar ingredientes...">
+<div class="lista-basicos mt-3" id="lista-basicos">
+<!-- botões populados pelo JS -->
+</div>
+<button class="btn btn-add-basico w-100 mt-3">Adicionar selecionado</button>
+</div>
+
+
+</div>
+
+
+<!-- MEUS INGREDIENTES (agrupados por categoria) -->
+<div class="col-md-5">
+<div class="card meus-ingredientes">
+<h3 class="mb-3"><i class="bi bi-box-seam"></i> Meus Ingredientes</h3>
+
+
+<div id="listaIngredientes">
+<!-- Renderização das categorias e itens pelo JS -->
+</div>
+</div>
+</div>
+
+
+<!-- ESPAÇO EXTRA / INFORMAÇÕES -->
+<div class="col-md-3">
+<div class="card">
+<h3 class="mb-3">Dicas</h3>
+<p>Mantenha sua geladeira organizada. Toque em um ingrediente para editar quantidade/validade.</p>
+</div>
+</div>
+
+
+</div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("buscar-ingrediente");
+    const autocompleteBox = document.getElementById("autocomplete");
+    const listaCategorias = document.getElementById("lista-geladeira");
+
+    // ----------------------------
+    // Autocomplete de ingredientes
+    // ----------------------------
+    searchInput.addEventListener("input", async () => {
+        const query = searchInput.value.trim();
+        if (query.length < 1) {
+            autocompleteBox.innerHTML = "";
+            return;
+        }
+
+        const res = await fetch(`/api/ingredientes/search?query=${query}`, {
+            credentials: "include"
+        });
+
+        const ingredientes = await res.json();
+        autocompleteBox.innerHTML = "";
+
+        ingredientes.forEach(ing => {
+            const item = document.createElement("div");
+            item.classList.add("autocomplete-item");
+            item.textContent = ing.nome;
+            item.dataset.id = ing.id;
+
+            item.addEventListener("click", () => {
+                searchInput.value = ing.nome;
+                searchInput.dataset.id = ing.id;
+                autocompleteBox.innerHTML = "";
+            });
+
+            autocompleteBox.appendChild(item);
+        });
+    });
+
+    // ---------------------
+    // Carregar a geladeira
+    // ---------------------
+    async function carregarGeladeira() {
+        const res = await fetch("/api/geladeira", { credentials: "include" });
+        const dados = await res.json();
+
+        listaCategorias.innerHTML = "";
+
+        dados.forEach(item => {
+            const div = document.createElement("div");
+            div.classList.add("ingrediente-item");
+            div.innerHTML = `
+                <strong>${item.ingrediente.nome}</strong>
+                <p>Quantidade: <span>${item.quantidade}</span></p>
+                <p>Validade: <span>${item.validade ?? "—"}</span></p>
+
+                <button class="btn-editar" data-id="${item.id}">Editar</button>
+                <button class="btn-excluir" data-id="${item.id}">Excluir</button>
+            `;
+            listaCategorias.appendChild(div);
+        });
+
+        adicionarEventos();
+    }
+
+    carregarGeladeira();
+
+    // -------------------------
+    // Adicionar ingrediente
+    // -------------------------
+    document.getElementById("adicionar").addEventListener("click", async () => {
+        const ingredienteId = searchInput.dataset.id;
+        const quantidade = document.getElementById("quantidade").value;
+        const validade = document.getElementById("validade").value;
+
+        if (!ingredienteId) {
+            alert("Escolha um ingrediente da lista!");
+            return;
+        }
+
+        const res = await fetch("/api/geladeira", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+                ingrediente_id: ingredienteId,
+                quantidade,
+                validade
+            })
+        });
+
+        if (res.ok) {
+            searchInput.value = "";
+            searchInput.dataset.id = "";
+            document.getElementById("quantidade").value = "";
+            document.getElementById("validade").value = "";
+            carregarGeladeira();
+        }
+    });
+
+    // -------------------------
+    // Editar ou excluir
+    // -------------------------
+    function adicionarEventos() {
+        // Excluir
+        document.querySelectorAll(".btn-excluir").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const id = btn.dataset.id;
+                await fetch(`/api/geladeira/${id}`, {
+                    method: "DELETE",
+                    credentials: "include"
+                });
+                carregarGeladeira();
+            });
+        });
+
+        // Editar
+        document.querySelectorAll(".btn-editar").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const id = btn.dataset.id;
+                const novaQuantidade = prompt("Nova quantidade:");
+                const novaValidade = prompt("Nova validade (YYYY-MM-DD):");
+
+                await fetch(`/api/geladeira/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({
+                        quantidade: novaQuantidade,
+                        validade: novaValidade
+                    })
+                });
+
+                carregarGeladeira();
+            });
+        });
+    }
+});
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

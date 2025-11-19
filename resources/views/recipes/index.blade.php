@@ -49,11 +49,11 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Planejamento</a>
+                        <a class="nav-link active" href="planejamento">Planejamento</a>
                     </li>
 
                      <li class="nav-item">
-                        <a class="nav-link active"  href="#">Favoritos</a>
+                        <a class="nav-link active"  href="favoritos">Favoritos</a>
                     </li>
 
 
@@ -185,113 +185,133 @@
     </div>
 
 
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
-      let page = 0;
-      let loading = false;
-      const recipeContainer = document.getElementById('recipes-container');
-      const searchForm = document.getElementById('filter-form');
-      const loadingIndicator = document.getElementById('loading');
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let page = 0;
+        let loading = false;
+        const recipeContainer = document.getElementById('recipes-container');
+        const searchForm = document.getElementById('filter-form');
+        const loadingIndicator = document.getElementById('loading');
 
-      async function loadMoreRecipes() {
-          if (loading) return;
-          loading = true;
-          page++;
+        async function loadMoreRecipes() {
+            if (loading) return;
+            loading = true;
+            page++;
 
-          loadingIndicator.style.display = 'block'; // mostra o spinner
+            loadingIndicator.style.display = 'block';
 
-          const formData = new FormData(searchForm);
-          formData.append('page', page);
-          const queryString = new URLSearchParams(formData).toString();
+            const formData = new FormData(searchForm);
+            formData.append('page', page);
+            const queryString = new URLSearchParams(formData).toString();
 
-          try {
-              const response = await fetch(`/receitas?${queryString}`, {
-                  headers: { 'X-Requested-With': 'XMLHttpRequest' }
-              });
+            try {
+                const response = await fetch(`/receitas?${queryString}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
 
-              if (!response.ok) throw new Error('Erro ao carregar receitas');
-              const html = await response.text();
+                if (!response.ok) throw new Error('Erro ao carregar receitas');
+                const html = await response.text();
 
-              // Cria elemento temporário para pegar os novos cards
-              const tempDiv = document.createElement('div');
-              tempDiv.innerHTML = html;
+                if (!html.trim()) {
+                    window.removeEventListener('scroll', handleScroll);
+                    loadingIndicator.innerHTML = '<p>Não há mais receitas.</p>';
+                    return;
+                }
 
-              const newRecipes = tempDiv.querySelectorAll('.recipe-card');
-              if (newRecipes.length === 0) {
-                  window.removeEventListener('scroll', handleScroll);
-                  loadingIndicator.innerHTML = '<p>Não há mais receitas.</p>';
-                  return;
-              }
+                recipeContainer.insertAdjacentHTML('beforeend', html);
 
-              newRecipes.forEach(card => recipeContainer.appendChild(card));
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newCards = doc.querySelectorAll('.recipe-card');
 
-          } catch (error) {
-              console.error(error);
-          } finally {
-              loadingIndicator.style.display = 'none';
-              loading = false;
-          }
-      }
+                if (newCards.length === 0) {
+                    window.removeEventListener('scroll', handleScroll);
+                    loadingIndicator.innerHTML = '<p>Não há mais receitas.</p>';
+                }
 
-      function handleScroll() {
-          const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
-          if (nearBottom) loadMoreRecipes();
-      }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                loadingIndicator.style.display = 'none';
+                loading = false;
+            }
+        }
 
-      window.addEventListener('scroll', handleScroll);
-  });
-  </script>
+        function handleScroll() {
+            const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
+            if (nearBottom) loadMoreRecipes();
+        }
 
-  <script>
-  // Evento delegando clique para qualquer .recipe-card, inclusive os que carregam depois
-  document.addEventListener('click', function(e) {
-      const card = e.target.closest('.recipe-card');
-      if (!card) return;
+        window.addEventListener('scroll', handleScroll);
+    });
+    </script>
 
-      const id = card.dataset.id;
+    <script>
+        document.addEventListener('click', function(e) {
+        const card = e.target.closest('.recipe-card');
+        if (!card) return;
 
-      fetch(`/receita/${id}`)
-          .then(res => res.json())
-          .then(data => {
-              document.getElementById('modalName').textContent = data.recipe_name;
-              document.getElementById('modalImage').src = data.recipe_image || '/img/placeholder.png';
-              document.getElementById('modalCalories').textContent = data.recipe_nutrition?.calories ?? 'N/A';
-              document.getElementById('modalPrep').textContent =
-                  (data.preparation_time_min ?? 0) + (data.cooking_time_min ?? 0) + " min";
+        const id = card.dataset.id;
+        if (!id) return;
 
-              // Ingredientes
-              let ingList = document.getElementById('modalIngredients');
-              ingList.innerHTML = '';
-              if (data.ingredients?.ingredient) {
-                  data.ingredients.ingredient.forEach(i => {
-                      let li = document.createElement('li');
-                      li.textContent = i.ingredient_description;
-                      ingList.appendChild(li);
-                  });
-              }
+        const modal = document.getElementById('recipeModal');
 
-              // Modo de preparo
-              document.getElementById('modalDirections').textContent =
-                  data.directions?.direction?.map(d => d.direction_description).join(" ") ?? "—";
+        modal.style.display = 'flex';
+        document.getElementById('modalName').textContent = 'Carregando...';
+        document.getElementById('modalImage').src = '{{ asset("img/placeholder.png") }}';
 
-              // Nutrição extra
-              let nutrition = data.recipe_nutrition;
-              if (nutrition) {
-                  document.getElementById('modalNutrition').textContent =
-                      `Proteínas: ${nutrition.protein ?? 'N/A'}g — Carboidratos: ${nutrition.carbohydrate ?? 'N/A'}g — Gorduras: ${nutrition.fat ?? 'N/A'}g`;
-              } else {
-                  document.getElementById('modalNutrition').textContent = "N/A";
-              }
+        fetch(`/receitas/${encodeURIComponent(id)}`)
+            .then(res => res.json())
+            .then(data => {
 
-              document.getElementById('recipeModal').style.display = 'flex';
-          });
-  });
+                // pega a receita certa
+                const r = data.recipe;
 
-  // Fechar modal
-  document.querySelector('.close-modal').addEventListener('click', () => {
-      document.getElementById('recipeModal').style.display = 'none';
-  });
-  </script>
+                if (!r) {
+                    document.getElementById('modalName').textContent = 'Erro ao carregar';
+                    return;
+                }
+
+                // NOME + IMAGEM
+                document.getElementById('modalName').textContent = r.recipe_name ?? '—';
+                document.getElementById('modalImage').src = r.recipe_image ?? '{{ asset("assets/img/semImagem.jpeg") }}';
+
+                // Calorias
+                document.getElementById('modalCalories').textContent =
+                    r.recipe_nutrition?.calories ?? 'N/A';
+
+                // Tempo total
+                const prep = parseInt(r.preparation_time_min ?? 0);
+                const cook = parseInt(r.cooking_time_min ?? 0);
+                const total = (prep || 0) + (cook || 0);
+                document.getElementById('modalPrep').textContent = total > 0 ? total + ' min' : 'N/A';
+
+                // Ingredientes
+                const ingList = document.getElementById('modalIngredients');
+                ingList.innerHTML = '';
+
+                const ingredients = r.recipe_ingredients?.ingredient ?? [];
+                if (Array.isArray(ingredients)) {
+                    ingredients.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        ingList.appendChild(li);
+                    });
+                }
+
+                // MODO DE PREPARO — FatSecret NAO TEM → usa description
+                document.getElementById('modalDirections').textContent =
+                    r.recipe_description ?? '—';
+
+                // Nutrição
+                const nut = r.recipe_nutrition ?? {};
+                document.getElementById('modalNutrition').textContent =
+                    `Proteínas: ${nut.protein ?? 'N/A'}g — Carboidratos: ${nut.carbohydrate ?? 'N/A'}g — Gorduras: ${nut.fat ?? 'N/A'}g`;
+            })
+    });
+
+    </script>
+
 
   <footer>
     <footer class="main-footer">
