@@ -2,20 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class TipoUsuario extends Model
 {
     use HasFactory;
 
-    protected $table = 'tipos_usuario';
+    protected $table = 'tipo_usuarios';
 
     const ADMIN = 1;
-    const COMUM =2;
+    const COMUM = 2;
 
-    protected $filaable =[
+    protected $fillable = [
         'nome',
+        'descricao'
     ];
 
     public function usuarios()
