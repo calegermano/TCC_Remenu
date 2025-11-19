@@ -57,10 +57,14 @@ class RecipeController extends Controller
             'Beverage' => 'Bebidas',
         ];
 
+        if ($request->ajax()) {
+            return view('partials.recipe_cards', compact('recipes'))->render();
+        }
+
         return view('recipes.index', [
             'recipes' => $recipes,
             'totalResults' => $totalResults,
-            'search' => $rawSearch, // volta o valor real do usuário (sem "a")
+            'search' => $rawSearch,
             'filters' => $filters,
             'availableFilters' => $availableFilters,
         ]);
@@ -70,7 +74,8 @@ class RecipeController extends Controller
     {
         $recipe = $this->fatSecret->getRecipeDetails($id);
 
-        return response()->json($recipe);
+        return response()->json(['recipe' => $recipe]);
+
     }
 
 }

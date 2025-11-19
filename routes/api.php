@@ -16,6 +16,7 @@ Route::get('/receitas', fn() => view('receitas'));
 Route::get('/api/receitas/search', [FatSecretController::class, 'search']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/ingredientes/search', [IngredienteController::class, 'search']);
     Route::get('/geladeira', [GeladeiraController::class, 'index']);
     Route::post('/geladeira', [GeladeiraController::class, 'store']);
     Route::put('/geladeira/{id}', [GeladeiraController::class, 'update']);

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class GeladeiraController extends Controller
 {
+    
     // LISTAR INGREDIENTES DO USUÁRIO AGRUPADOS POR CATEGORIA
     public function index()
     {
@@ -38,13 +39,11 @@ class GeladeiraController extends Controller
     // AUTOCOMPLETE PARA PESQUISAS DE INGREDIENTES
     public function search(Request $request)
     {
-        $termo = $request->input('q');
+        $query = $request->query('query', '');
 
-        $resultados = Ingrediente::where('nome', 'like', "%{$termo}%")
+        return Ingrediente::where('nome', 'LIKE', "%$query%")
             ->limit(10)
             ->get();
-
-        return response()->json($resultados);
     }
 
     // ADICIONAR INGREDIENTE À GELADEIRA
