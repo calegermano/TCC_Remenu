@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="cconta-links">
                     <a href="{{ asset('/login')}}">Login</a>
                     <span>|</span>
-                    <a href="{{ asset('/conta')}}">Cadastre-se</a>
+                    <a href="{{ asset('/register')}}">Cadastre-se</a>
                 </div>
             </form>
         </div>

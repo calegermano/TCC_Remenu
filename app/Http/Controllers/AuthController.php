@@ -6,14 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Hash;
-use App\Models\TipoUsuario;
 
 class AuthController extends Controller
 {
-    
     public function showLoginForm()
     {
         return view('login');
+    }
+
+    public function showRegisterForm()
+    {
+        return view('cconta');
     }
 
     public function login(Request $request)
@@ -28,10 +31,14 @@ class AuthController extends Controller
         if ($user && Hash::check($request->senha, $user->senha)) {
             Auth::login($user);
 
-            if ($user->tipo->nome === 'admin') {
-                return redirect('/admin/dashboard');
+            // DEBUG
+            \Log::info('LOGIN - Usuário: ' . $user->email . ', Tipo ID: ' . $user->tipo_id . ', isAdmin: ' . ($user->isAdmin() ? 'SIM' : 'NÃO'));
+
+            // Redirecionamento baseado no tipo de usuário
+            if ($user->isAdmin()) {
+                return redirect()->intended('/admin/dashboard');
             } else {
-                return redirect('/home');
+                return redirect()->intended('/home');
             }
         }
 
@@ -46,29 +53,30 @@ class AuthController extends Controller
             'senha' => 'required|confirmed',
         ]);
 
-        // Definindo o tipo de usuário como COMUM por padrão
-        $tipoUsuario = $request->input('tipo_id', TipoUsuario::COMUM);
-        $tipoId = ($tipoUsuario === 'admin') ? TipoUsuario::ADMIN : TipoUsuaario::COMUM;
-
+        // SEMPRE definir como usuário COMUM (tipo_id = 2)
         $usuario = Usuario::create([
             'nome' => $request->nome,
             'email' => $request->email,
-            'senha' => bcrypt($request->senha),
-            'tipo_id' => TipoUsuario::COMUM,
+            'senha' => Hash::make($request->senha),
+            'tipo_id' => 2, // SEMPRE COMUM
         ]);
 
         Auth::login($usuario);
 
-        if ($tipoId === TipoUsuario::ADMIN) {
-            return redirect('/admin/dashboard');
+        // DEBUG
+        \Log::info('REGISTRO - Novo usuário: ' . $usuario->email . ', Tipo ID: ' . $usuario->tipo_id . ', isAdmin: ' . ($usuario->isAdmin() ? 'SIM' : 'NÃO'));
+
+        // Redirecionamento após o registro
+        if ($usuario->isAdmin()) {
+            return redirect()->intended('/admin/dashboard');
         } else {
-            return redirect('/home');
+            return redirect()->intended('/home');
         }
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect('login');
+        return redirect('/login');
     }
 }

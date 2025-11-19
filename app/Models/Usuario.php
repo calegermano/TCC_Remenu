@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Usuario extends Authenticatable
 {
-
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'usuarios';
 
@@ -19,6 +18,7 @@ class Usuario extends Authenticatable
         'email',
         'senha',
         'tipo_id',
+        'email_verified_at',
     ];
 
     public function getAuthPassword()
@@ -31,7 +31,6 @@ class Usuario extends Authenticatable
         'remember_token',
     ];
 
-   
     protected function casts(): array
     {
         return [
@@ -47,6 +46,12 @@ class Usuario extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->tipo->nome === 'admin';
+        // Verificação simples e direta
+        return $this->tipo_id === 1;
+    }
+
+    public function isComum()
+    {
+        return $this->tipo_id === 2;
     }
 }

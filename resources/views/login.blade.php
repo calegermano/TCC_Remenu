@@ -28,15 +28,13 @@
                 </div>
             @endif
 
-            {{-- removi o código puro de php, pois o Laravel AuthController faz esse trabalho --}}
-            
             <form method="POST" action="{{ route('login') }}">
-                @csrf  {{-- Token CSRF para segurança --}}
+                @csrf
                 
                 <div class="input-group">
                     <label for="email">E-mail:</label>
                     <input type="text" id="email" name="email" required 
-                        value="{{ old('email') }}"> {{-- Usando old('email') para manter o valor em caso de erro --}}
+                        value="{{ old('email') }}">
                 </div>
                 
                 <div class="input-group">
@@ -49,9 +47,9 @@
                 </button>
 
                 <div class="login-links">
-                    <a href="{{ asset('/senha')}}">Esqueci a senha</a>
+                    <a href="{{ route('senha') }}">Esqueci a senha</a>
                     <span>|</span>
-                    <a href="{{ asset('/conta')}}">Criar conta</a>
+                    <a href="{{ route('register.form') }}">Criar conta</a>
                 </div>
             </form>
         </div>

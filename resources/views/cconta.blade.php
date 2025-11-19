@@ -1,50 +1,3 @@
-<?php
-session_start();
-
-if (isset($_SESSION['admin_id'])) {
-    header("Location: admin/dashboard.php");
-    exit;
-}
-
-$erro = '';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    require_once 'config/database.php';
-    
-    $usuario = trim($_POST['usuario']);
-    $email = trim($_POST['email']);
-    $senha = trim($_POST['senha']);
-    $confirmar = trim($_POST['confirmar']);
-    
-    if (empty($nome) || empty($email) || empty($senha) || empty($confirmar)) {
-        $erro = 'Por favor, preencha todos os campos.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $erro = 'E-mail inválido.';
-    } elseif ($senha !== $confirmar) {
-        $erro = 'As senhas não coincidem.';
-    } else {
-        $query = $conn->prepare("SELECT id FROM admins WHERE email = ?");
-        $query->bind_param("s", $email);
-        $query->execute();
-        $query->store_result();
-
-        if ($query->num_rows > 0) {
-            $erro = 'Este e-mail já está cadastrado.';
-        } else {
-            $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-            $insert = $conn->prepare("INSERT INTO admins (nome, email, senha) VALUES (?, ?, ?)");
-            $insert->bind_param("sss", $nome, $email, $senha_hash);
-
-            if ($insert->execute()) {
-                $sucesso = 'Conta criada com sucesso!';
-            } else {
-                $erro = 'Erro ao criar conta. Tente novamente.';
-            }
-        }
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -66,23 +19,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <h2>Cadastre-se</h2>
 
-            <?php if ($erro): ?>
+            @if ($errors->any())
                 <div class="error-message">
                     <i class="bi bi-exclamation-triangle"></i>
-                    <?php echo htmlspecialchars($erro); ?>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
-            <?php endif; ?>
+            @endif
 
-<form method="POST" action="">
+            <form method="POST" action="{{ route('register') }}">
+                @csrf
                 <div class="form-grid">
                     <div class="input-group">
                         <label for="nome">Nome completo:</label>
-                        <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($_POST['nome'] ?? '') ?>" required>
+                        <input type="text" id="nome" name="nome" value="{{ old('nome') }}" required>
                     </div>
 
                     <div class="input-group">
                         <label for="email">E-mail:</label>
-                        <input type="email" id="email" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" required>
                     </div>
 
                     <div class="input-group">
@@ -92,16 +50,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     <div class="input-group">
                         <label for="confirmar">Confirmar senha:</label>
-                        <input type="password" id="confirmar" name="confirmar" required>
+                        <input type="password" id="confirmar" name="senha_confirmation" required>
                     </div>
                 </div>
 
                 <button type="submit" class="cconta-btn">Cadastrar</button>
 
                 <div class="cconta-links">
-                    <a href="{{ asset('/senha')}}">Esqueci a senha</a>
+                    <a href="{{ route('senha') }}">Esqueci a senha</a>
                     <span>|</span>
-                    <a href="{{ asset('/login')}}">Já tenho uma conta</a>
+                    <a href="{{ route('login.form') }}">Já tenho uma conta</a>
                 </div>
             </form>
         </div>
