@@ -62,18 +62,14 @@
     </nav>
 
     <!-- BANNER -->
-<section class="hero-banner">
-<img src="{{ asset('assets/img/geladeira.jpg') }}" alt="Geladeira">
-</section>
+  <section class="geladeira-banner"></section>
 
 
 <!-- TÍTULO -->
-<section class="titulo">
-<div class="container text-center py-4">
+<section class="geladeira-title">
 <h1>Minha Geladeira</h1>
 <p>Gerencie seus ingredientes e evite desperdícios.</p>
 </div>
-</section>
 
 
 <!-- CONTEÚDO PRINCIPAL -->

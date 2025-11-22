@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Receitas da Remenu</title>
   
- 
   <link rel="stylesheet" href="{{ asset('css/index.css') }}">
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -17,13 +16,8 @@
   <link rel="stylesheet" href="{{ asset('css/header.css') }}">
   <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
 </head>
-</head>
 
 <body>
-
-
-<body>
-
 
     <!-- nav bar -->
     <nav class="navbar navbar-expand-lg bg-light border-bottom sticky-top">
@@ -76,8 +70,6 @@
     <p>Descubra receitas deliciosas e saudáveis para todas as ocasiões</p>
   </div>
 
-
-
   
 <form id="filter-form" method="GET" action="/receitas">
 
@@ -109,37 +101,36 @@
         <label>Tipos de receita</label>
         <select name="recipe_types[]" multiple size="6">
             <option value="" {{ empty($filters['recipe_types']) ? 'selected' : '' }}>Sem filtro</option>
-            <option value="Main Dish">Prato Principal</option>
-            <option value="Breakfast">Café da Manhã</option>
-            <option value="Salad">Salada</option>
-            <option value="Soup">Sopa</option>
-            <option value="Dessert">Sobremesa</option>
-            <option value="Beverage">Bebidas</option>
+            <option value="Main Dish" {{ in_array('Main Dish', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Prato Principal</option>
+            <option value="Breakfast" {{ in_array('Breakfast', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Café da Manhã</option>
+            <option value="Salad" {{ in_array('Salad', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Salada</option>
+            <option value="Soup" {{ in_array('Soup', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Sopa</option>
+            <option value="Dessert" {{ in_array('Dessert', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Sobremesa</option>
+            <option value="Beverage" {{ in_array('Beverage', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Bebidas</option>
         </select>
 
-        <button class="apply-filters">Aplicar</button>
+        <button type="submit" class="apply-filters">Aplicar</button>
+
     </div>
 
     <!-- DROPDOWN FILTROS AVANÇADOS -->
     <div id="filtersBox" class="dropdown-box">
         <label>Calorias:</label>
         <div class="two-inputs">
-            <input type="number" name="calories_from" placeholder="Mín">
-            <input type="number" name="calories_to" placeholder="Máx">
+            <input type="number" name="calories_from" placeholder="Mín" value="{{ $filters['calories_from'] ?? '' }}">
+            <input type="number" name="calories_to" placeholder="Máx" value="{{ $filters['calories_to'] ?? '' }}">
         </div>
 
         <label>Tempo de preparo (min):</label>
         <div class="two-inputs">
-            <input type="number" name="prep_time_from" placeholder="Mín">
-            <input type="number" name="prep_time_to" placeholder="Máx">
+            <input type="number" name="prep_time_from" placeholder="Mín" value="{{ $filters['prep_time_from'] ?? '' }}">
+            <input type="number" name="prep_time_to" placeholder="Máx" value="{{ $filters['prep_time_to'] ?? '' }}">
         </div>
 
         <button class="apply-filters">Aplicar filtros</button>
     </div>
 
 </form>
-
-
 
     <div id="recipes-container" class="recipes-grid">
       @forelse ($recipes as $recipe)
@@ -163,8 +154,6 @@
       <p>Carregando mais receitas...</p>
     </div>
 
-  </div>
-
     <div id="recipeModal" class="modal-overlay" style="display: none;">
       <div class="modal-card">
           <button class="close-modal">X</button>
@@ -187,7 +176,7 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let page = 0;
+        let page = 1;
         let loading = false;
         const recipeContainer = document.getElementById('recipes-container');
         const searchForm = document.getElementById('filter-form');
@@ -200,7 +189,21 @@
 
             loadingIndicator.style.display = 'block';
 
-            const formData = new FormData(searchForm);
+            const formData = new FormData();
+
+            // copiar TODOS os valores do formulário manualmente
+            document.querySelectorAll('#filter-form [name]').forEach(el => {
+                if (el.type === 'select-multiple') {
+                    [...el.options].forEach(opt => {
+                        if (opt.selected && opt.value !== "") {
+                            formData.append(el.name, opt.value);
+                        }
+                    });
+                } else if (el.value !== "") {
+                    formData.append(el.name, el.value);
+                }
+            });
+
             formData.append('page', page);
             const queryString = new URLSearchParams(formData).toString();
 
@@ -310,6 +313,11 @@
             })
     });
 
+    // Add event listener for closing the modal
+    document.querySelector('.close-modal').addEventListener('click', () => {
+        document.getElementById('recipeModal').style.display = 'none';
+    });
+
     </script>
 
 
@@ -374,24 +382,20 @@
   </footer>
 
 <script>
-const typesBtn = document.getElementById("typesBtn");
-const filtersBtn = document.getElementById("filtersBtn");
-const typesBox = document.getElementById("typesBox");
-const filtersBox = document.getElementById("filtersBox");
+    const typesBtn = document.getElementById("typesBtn");
+    const filtersBtn = document.getElementById("filtersBtn");
+    const typesBox = document.getElementById("typesBox");
+    const filtersBox = document.getElementById("filtersBox");
 
-typesBtn.addEventListener("click", () => {
-    typesBox.style.display = typesBox.style.display === "block" ? "none" : "block";
-    filtersBox.style.display = "none";
-});
+    typesBtn.addEventListener("click", () => {
+        typesBox.style.display = typesBox.style.display === "block" ? "none" : "block";
+        filtersBox.style.display = "none";
+    });
 
-filtersBtn.addEventListener("click", () => {
-    filtersBox.style.display = filtersBox.style.display === "block" ? "none" : "block";
-    typesBox.style.display = "none";
-});
+    filtersBtn.addEventListener("click", () => {
+        filtersBox.style.display = filtersBox.style.display === "block" ? "none" : "block";
+        typesBox.style.display = "none";
+    });
 </script>
-
-
-
-
 </body>
 </html>

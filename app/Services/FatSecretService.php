@@ -89,8 +89,9 @@ class FatSecretService
             $params['recipe_types'] = implode(',', $types);
         }
 
-        $params['search_expression'] = $search;
-
+        if (!empty($search) && $search !== 'a') {
+            $params['search_expression'] = $search;
+        }
         $response = $this->callApi($params);
 
         return $response['recipes'] ?? ['recipe' => [], 'total_results' => 0];
