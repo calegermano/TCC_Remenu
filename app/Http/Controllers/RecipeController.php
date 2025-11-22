@@ -69,10 +69,17 @@ class RecipeController extends Controller
             'availableFilters' => $availableFilters,
         ]);
     }
-
+    
     public function show($id)
     {
         $recipe = $this->fatSecret->getRecipeDetails($id);
+
+        if (!$recipe) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Receita não encontrada ou erro na API'
+            ], 404);
+        }
 
         return response()->json(['recipe' => $recipe]);
 

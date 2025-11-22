@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 
 class FatSecretService
 {
@@ -99,15 +101,23 @@ class FatSecretService
 
     public function getRecipeDetails($id)
     {
+        // 2. ALTERE ESTE MÉTODO INTEIRO
         $params = [
-            'method' => 'recipe.get.v3',
+            'method' => 'recipe.get', // <--- MUDOU DE 'recipe.get.v3' PARA 'recipe.get'
             'format' => 'json',
             'recipe_id' => $id,
         ];
 
         $response = $this->callApi($params);
 
-        return $response['recipe'] ?? [];
+        // LOG PARA DEPURAR: Isso vai salvar a resposta real da FatSecret no arquivo storage/logs/laravel.log
+        Log::info('FatSecret Detalhes:', ['id' => $id, 'response' => $response]);
+
+        if (isset($response['error'])) {
+            return null;
+        }
+
+        return $response['recipe'] ?? null;
     }
 
 }
