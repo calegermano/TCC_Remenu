@@ -250,76 +250,161 @@
     </script>
 
     <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // 1. Lógica para ABRIR o Modal ao clicar no Card
         document.addEventListener('click', function(e) {
-        const card = e.target.closest('.recipe-card');
-        if (!card) return;
+            const card = e.target.closest('.recipe-card');
+            if (!card) return;
 
-        const id = card.dataset.id;
-        if (!id) return;
+            const id = card.dataset.id;
+            if (!id) return;
 
-        const modal = document.getElementById('recipeModal');
+            const modal = document.getElementById('recipeModal');
+            
+            // Exibir modal com estado de carregamento
+            modal.style.display = 'flex';
+            document.getElementById('modalName').textContent = 'Carregando...';
+            document.getElementById('modalImage').src = '{{ asset("img/placeholder.png") }}';
+            
+            // Limpar campos anteriores para não mostrar dados velhos
+            document.getElementById('modalCalories').textContent = '';
+            document.getElementById('modalPrep').textContent = '';
+            document.getElementById('modalIngredients').innerHTML = '';
+            document.getElementById('modalDirections').innerHTML = '';
+            document.getElementById('modalNutrition').textContent = '';
 
-        modal.style.display = 'flex';
-        document.getElementById('modalName').textContent = 'Carregando...';
-        document.getElementById('modalImage').src = '{{ asset("img/placeholder.png") }}';
+            // ... (código anterior de abrir o modal) ...
 
-        fetch(`/receitas/${encodeURIComponent(id)}`)
-            .then(res => res.json())
-            .then(data => {
+            console.log("Buscando ID:", id); // <--- DEBUG 1
 
-                // pega a receita certa
-                const r = data.recipe;
+            fetch(`/receitas/${encodeURIComponent(id)}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Erro na resposta do servidor');
+                    return res.json();
+                })
+                .then(data => {
+                    const r = data.recipe;
 
-                if (!r) {
-                    document.getElementById('modalName').textContent = 'Erro ao carregar';
-                    return;
+                    if (!r || data.error) {
+                        document.getElementById('modalName').textContent = 'Erro ao carregar';
+                        return;
+                    }
+
+                    // --- AJUSTE PARA PEGAR NUTRIÇÃO CORRETAMENTE ---
+                    let nutrition = {};
+                    
+                    // A FatSecret coloca a nutrição dentro de serving_sizes -> serving
+                    if (r.serving_sizes && r.serving_sizes.serving) {
+                        const s = r.serving_sizes.serving;
+                        // Se houver múltiplos tamanhos de porção, pega o primeiro (array), senão pega o objeto direto
+                        nutrition = Array.isArray(s) ? s[0] : s;
+                    }
+
+                    // 1. NOME
+                    document.getElementById('modalName').textContent = r.recipe_name ?? '—';
+
+                    // 2. IMAGEM
+                    let imgSrc = '{{ asset("assets/img/semImagem.jpeg") }}';
+                    if (r.recipe_image) {
+                        imgSrc = r.recipe_image;
+                    } else if (r.recipe_images && r.recipe_images.recipe_image) {
+                        let imgs = r.recipe_images.recipe_image;
+                        imgSrc = Array.isArray(imgs) ? imgs[0] : imgs;
+                    }
+                    document.getElementById('modalImage').src = imgSrc;
+
+                    // 3. CALORIAS (Corrigido)
+                    // Agora pegamos da variável 'nutrition' que definimos acima
+                    document.getElementById('modalCalories').textContent = nutrition.calories ?? 'N/A';
+
+                    // 4. TEMPO
+                    const prep = parseInt(r.preparation_time_min ?? 0);
+                    const cook = parseInt(r.cooking_time_min ?? 0);
+                    const total = prep + cook;
+                    document.getElementById('modalPrep').textContent = total > 0 ? total + ' min' : 'N/A';
+
+                    // 5. INGREDIENTES
+                    const ingList = document.getElementById('modalIngredients');
+                    ingList.innerHTML = '';
+
+                    let ingredientsRaw = [];
+                    if (r.ingredients && r.ingredients.ingredient) {
+                        ingredientsRaw = r.ingredients.ingredient;
+                    }
+
+                    if (!Array.isArray(ingredientsRaw) && ingredientsRaw) {
+                        ingredientsRaw = [ingredientsRaw];
+                    }
+
+                    if (ingredientsRaw.length > 0) {
+                        ingredientsRaw.forEach(item => {
+                            const li = document.createElement('li');
+                            const text = item.ingredient_description ?? item.food_name ?? item;
+                            const measurement = item.measurement_description ?? '';
+                            li.textContent = measurement ? `${measurement} ${text}` : text;
+                            ingList.appendChild(li);
+                        });
+                    } else {
+                        ingList.innerHTML = '<li>Sem ingredientes listados.</li>';
+                    }
+
+                    // 6. MODO DE PREPARO
+                    const directionsContainer = document.getElementById('modalDirections');
+                    directionsContainer.innerHTML = ''; 
+
+                    let directionsRaw = [];
+                    if (r.directions && r.directions.direction) {
+                        directionsRaw = r.directions.direction;
+                    }
+
+                    if (!Array.isArray(directionsRaw) && directionsRaw) {
+                        directionsRaw = [directionsRaw];
+                    }
+
+                    if (directionsRaw.length > 0) {
+                        directionsRaw.sort((a, b) => (a.direction_number - b.direction_number));
+                        directionsRaw.forEach(step => {
+                            const p = document.createElement('p');
+                            p.style.marginBottom = "10px";
+                            p.textContent = `${step.direction_number ? step.direction_number + '.' : '•'} ${step.direction_description}`;
+                            directionsContainer.appendChild(p);
+                        });
+                    } else {
+                        directionsContainer.textContent = r.recipe_description ?? 'Modo de preparo não disponível.';
+                    }
+
+                    // 7. NUTRIÇÃO (Corrigido)
+                    // Usando a variável 'nutrition' extraída do serving_sizes
+                    document.getElementById('modalNutrition').textContent =
+                        `Proteínas: ${nutrition.protein ?? '0'}g — Carboidratos: ${nutrition.carbohydrate ?? '0'}g — Gorduras: ${nutrition.fat ?? '0'}g`;
+                })
+                .catch(err => {
+                    console.error('Erro no fetch:', err);
+                    document.getElementById('modalName').textContent = 'Erro ao carregar dados';
+                });
+        });
+
+        // 2. Lógica para FECHAR o Modal (Botão X)
+        const closeBtn = document.querySelector('.close-modal');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                document.getElementById('recipeModal').style.display = 'none';
+            });
+        }
+
+        // Fechar ao clicar fora do modal (opcional, mas bom para UX)
+        const modalOverlay = document.getElementById('recipeModal');
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    modalOverlay.style.display = 'none';
                 }
+            });
+        }
 
-                // NOME + IMAGEM
-                document.getElementById('modalName').textContent = r.recipe_name ?? '—';
-                document.getElementById('modalImage').src = r.recipe_image ?? '{{ asset("assets/img/semImagem.jpeg") }}';
-
-                // Calorias
-                document.getElementById('modalCalories').textContent =
-                    r.recipe_nutrition?.calories ?? 'N/A';
-
-                // Tempo total
-                const prep = parseInt(r.preparation_time_min ?? 0);
-                const cook = parseInt(r.cooking_time_min ?? 0);
-                const total = (prep || 0) + (cook || 0);
-                document.getElementById('modalPrep').textContent = total > 0 ? total + ' min' : 'N/A';
-
-                // Ingredientes
-                const ingList = document.getElementById('modalIngredients');
-                ingList.innerHTML = '';
-
-                const ingredients = r.recipe_ingredients?.ingredient ?? [];
-                if (Array.isArray(ingredients)) {
-                    ingredients.forEach(item => {
-                        const li = document.createElement('li');
-                        li.textContent = item;
-                        ingList.appendChild(li);
-                    });
-                }
-
-                // MODO DE PREPARO — FatSecret NAO TEM → usa description
-                document.getElementById('modalDirections').textContent =
-                    r.recipe_description ?? '—';
-
-                // Nutrição
-                const nut = r.recipe_nutrition ?? {};
-                document.getElementById('modalNutrition').textContent =
-                    `Proteínas: ${nut.protein ?? 'N/A'}g — Carboidratos: ${nut.carbohydrate ?? 'N/A'}g — Gorduras: ${nut.fat ?? 'N/A'}g`;
-            })
-    });
-
-    // Add event listener for closing the modal
-    document.querySelector('.close-modal').addEventListener('click', () => {
-        document.getElementById('recipeModal').style.display = 'none';
-    });
-
-    </script>
-
+    }); // Fim do DOMContentLoaded
+</script>
 
   <footer>
     <footer class="main-footer">
@@ -398,4 +483,4 @@
     });
 </script>
 </body>
-</html>
+</html> 

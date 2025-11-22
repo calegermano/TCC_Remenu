@@ -72,4 +72,4 @@
         <img src="assets/img/card1.jpg" alt="Imagem de receitas">
     </div>
 
-    <h1 class="titulo">Minhas receitas favoritas</h1>
+    <h1 class="titulo">planejamento de refeições
