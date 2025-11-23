@@ -36,14 +36,14 @@
               
               <div class="footer-nav-grid mx-auto">
                   <ul class="list-unstyled footer-nav-col">
-                      <li><a href="#" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
-                      <li><a href="#" class="footer-link"><i class="fas fa-utensils"></i> Receitas</a></li>
+                      <li><a href="{{ route('home') }}" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
+                      <li><a href="{{ route('recipes.index') }}" class="footer-link"><i class="fas fa-utensils"></i> Receitas</a></li>
                   </ul>
                   <ul class="list-unstyled footer-nav-col">
-                      <li><a href="#" class="footer-link"><i class="fas fa-calendar-alt"></i> Planejamento</a></li>
-                      <li><a href="#" class="footer-link"><i class="far fa-heart"></i> Favoritos</a></li>
+                      <li><a href="{{ route('planejamento') }}" class="footer-link"><i class="fas fa-calendar-alt"></i> Planejamento</a></li>
+                      <li><a href="{{ route('favoritos') }}" class="footer-link"><i class="far fa-heart"></i> Favoritos</a></li>
                   </ul><ul class="list-unstyled footer-nav-col">
-                      <li><a href="#" class="footer-link"><i class="fas fa-snowflake"></i> Geladeira</a></li>
+                      <li><a href="{{ route('geladeira') }}" class="footer-link"><i class="fas fa-snowflake"></i> Geladeira</a></li>
                   </ul>
               </div>
           </div>

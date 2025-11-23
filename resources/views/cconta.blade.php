@@ -30,17 +30,23 @@
                 </div>
             @endif
 
+            @if (session('warning'))
+                <div class="alert alert-warning">
+                    {{ session('warning') }}
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('register') }}">
                 @csrf
                 <div class="form-grid">
                     <div class="input-group">
                         <label for="nome">Nome completo:</label>
-                        <input type="text" id="nome" name="nome" value="{{ old('nome') }}" required>
+                        <input type="text" id="nome" name="nome" value="{{ old('nome', $formData['nome'] ?? '') }}" required>
                     </div>
 
                     <div class="input-group">
                         <label for="email">E-mail:</label>
-                        <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+                        <input type="email" id="email" name="email" value="{{ old('email', $formData['email'] ?? '') }}" required>
                     </div>
 
                     <div class="input-group">

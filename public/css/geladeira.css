@@ -1,4 +1,4 @@
-/* header */
+/* NAVBAR*/
 * {
     box-sizing: border-box;
     margin: 0;
@@ -52,38 +52,92 @@
 }
 /*----------------*/
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 0;
-    }
-    .header {
-      width: 100%;
-      height: 250px;
-      background-image: url('../assets/img/geladeira.jpg');
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
 
-    
-    .container {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 20px;
-    }
-    h1 {
-      color: #4cd964;
-      text-align: center;
-    }
-    p.subtitle {
-      text-align: center;
-      color: #666;
-      margin-bottom: 30px;
-    }
+/* banner */
+.geladeira-banner {
+    width: 100%;
+    height: 250px;
+    background-image: url('../assets/img/geladeira.jpg'); 
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    color: white;
+ }
+
+.geladeira-title {
+    text-align: center;
+    padding: 35px 0 20px 0;
+}
+
+.geladeira-title h1 {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.geladeira-title p {
+    color: #777;
+    margin-top: 5px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.12);
+    border: none;
+}
+
+/* titulo cards */
+.card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* inputs */
+.form-control {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    height: 42px;
+}
+
+.autocomplete-box {
+    position: absolute;
+    background: white;
+    width: 100%;
+    border-radius: 10px;
+    top: 43px;
+    left: 0;
+    box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
+    z-index: 50;
+}
+
+.autocomplete-item {
+    padding: 10px 12px;
+    cursor: pointer;
+}
+
+.autocomplete-item:hover {
+    background: #f2f2f2;
+}
+
+.btn {
+    border-radius: 10px;
+    height: 42px;
+    font-weight: 500;
+}
+
+.ingrediente-item {
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+}
+
+.lista-basicos button {
+    margin: 5px;
+}
