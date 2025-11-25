@@ -85,24 +85,3 @@
       color: #666;
       font-size: 14px;
     }
-    .recipe-actions {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    }
-    .recipe-actions form {
-    display: inline-block;
-    }
-    .modal-actions {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 10px 0;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    }
-    .btn-sm {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-    }
