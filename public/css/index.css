@@ -203,6 +203,7 @@ body {
     padding-bottom: 15px;
     transition: transform 0.2s ease;
     cursor: pointer;
+    position: relative;
 }
 
 .recipe-card:hover {
@@ -226,6 +227,7 @@ body {
     margin: -10px 15px 10px 15px;
     color: #777;
 }
+
 
 /* ------------------------------ */
 /*           MODAL                */
@@ -263,4 +265,35 @@ body {
     border-radius: 8px;
     margin-bottom: 15px;
     display: block;
+}
+
+.btn-favorite {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10; /* Fica acima da imagem e do clique do card */
+    transition: all 0.2s;
+}
+
+.btn-favorite:hover {
+    transform: scale(1.1);
+    background: white;
+}
+
+.btn-favorite i {
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.btn-favorite.active i {
+    color: #e74c3c; /* Vermelho quando favoritado */
 }
