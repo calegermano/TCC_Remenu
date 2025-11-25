@@ -16,7 +16,7 @@
     <style>
 
         body {
-            background-color: #f9f9f9;
+            background-color: #fff;
             font-family: 'Poppins', sans-serif;
         }
 
@@ -31,19 +31,21 @@
         .geladeira-title h1 {
             color: #50D9B0;
             text-align: center;
-            margin-top: 30px;
+            margin-top: 35px;
+            font-weight: bolder;
         }
 
         .geladeira-title p {
             text-align: center;
             color: #555;
             margin-bottom: 30px;
+            padding-bottom: 20px
         }
 
         .card {
             border-radius: 14px;
             padding: 20px;
-            background: #fff;
+            background: #f0f0f0;
         }
 
         /* Caixa de autocomplete */
@@ -69,7 +71,7 @@
         /* Itens da geladeira */
         .ingrediente-item {
             padding: 12px;
-            border: 1px solid #ececec;
+            border: 1px solid #f2f2f2;
             border-radius: 10px;
             margin-bottom: 10px;
         }
@@ -110,14 +112,14 @@
 
 /* botão "adicionar" */
 #adicionar {
-    background-color: #50D9B0 !important;
-    border-color: #50D9B0 !important;
+    background-color: #D9682B !important;
+    border-color: #D9682B !important;
     color: white !important;
 }
 
 #adicionar:hover {
-    background-color: #3cbf96 !important;
-    border-color: #3cbf96 !important;
+    background-color: #ac5323ff !important;
+    border-color: #ac5323ff !important;
 }
 
 /* título "ingredientes básicos" */
@@ -127,15 +129,36 @@
 }
 
 .btn-add-basico {
-    background-color: #50D9B0 !important;
-    border-color: #50D9B0 !important;
+    background-color: #D9682B !important;
+    border-color: #D9682B !important;
     color: white !important;
 }
 
 .btn-add-basico:hover {
-    background-color: #3cbf96 !important;
-    border-color: #3cbf96 !important;
+    background-color: #ac5323ff !important;
+    border-color: #ac5323ff !important;
 }
+
+.form-control {
+    background-color: #d9d9d9;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+}
+
+.form-control:focus {
+    background-color: #d9d9d9;
+    border-color: #d9d9d9;
+}
+
+label {
+    color: #666666;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+
+
+
     </style>
 </head>
 
@@ -190,7 +213,7 @@
                         <div id="autocomplete" class="autocomplete-box"></div>
                     </div>
 
-                    <label for="quantidade">Quantidade</label>
+                    <label for="quantidade">Quantidade (opcional)</label>
                     <input type="number" id="quantidade" class="form-control mb-2" placeholder="Ex: 2">
 
                     <label for="validade">Validade</label>
@@ -231,6 +254,7 @@
 
         </div>
     </section>
+    
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
