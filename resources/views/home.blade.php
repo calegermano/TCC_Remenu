@@ -183,7 +183,7 @@
           <div class="card-body">
             <span style="font-size: 2rem; color: #26C485;"><i class="bi bi-search"></i></span>
             <h5 class="card-title mt-3" style="color: #26C485;">Buscar receitas</h5>
-            <p class="card-text">Digite até 3 ingredientes que você tem em casa e descubra receitas perfeitas.</p>
+            <p class="card-text">Digite ingredientes que você tem em casa e descubra receitas perfeitas.</p>
           </div>
         </div>
       </div>
@@ -232,7 +232,7 @@
                         <div class="etapa-numero">1</div>
                         <h5 class="fw-semibold mt-3">Digite seus ingredientes</h5>
                         <p class="text-muted">
-                        Informe até 3 ingredientes que você tem disponível em casa. <br>
+                        Informe ingredientes que você tem disponível em casa. <br>
                         Pode ser qualquer coisa: tomate, frango, arroz...
                         </p>
                     </div>
