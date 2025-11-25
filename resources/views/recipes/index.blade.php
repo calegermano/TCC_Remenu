@@ -135,7 +135,23 @@
     <div id="recipes-container" class="recipes-grid">
       @forelse ($recipes as $recipe)
         <div class="recipe-card" data-id="{{ $recipe['recipe_id'] }}">
-          <img 
+        @auth
+        
+            @php
+                $isFav =\App\Models\Favorito::where('usuario_id', auth()->id())
+                            ->where('recipe_id', $recipe['recipe_id'])
+                            ->exists();
+            @endphp
+            <button class="btn-favorite {{ $isFav ? 'active' : '' }}"
+                    data-id="{{ $recipe['recipe_id'] }}"
+                    data-name="{{ $recipe['recipe_name'] ?? 'Receita' }}"
+                    data-image="{{ $recipe['recipe_image'] ?? '' }}"
+                    data-calories="{{ $recipe['recipe_nutrition']['calories'] ?? '' }}"
+                    onclick="toggleFavorito(event, this)">
+                <i class="bi {{ $isFav ? 'bi-heart-fill' : 'bi-heart'}}"></i>
+            </button>
+        @endauth
+        <img 
             src="{{ $recipe['recipe_image'] ?? asset('img/placeholder.png') }}" 
             alt="{{ $recipe['recipe_name'] ?? 'Receita sem nome' }}"
             onerror="this.onerror=null; this.src='{{ asset('assets/img/semImagem.jpeg') }}';"
@@ -465,22 +481,70 @@
         </div>
     </div>
   </footer>
+  <script>
+    // Precisamos do Token CSRF do Laravel para POST via fetch
+    const csrfToken = "{{ csrf_token() }}";
 
-<script>
-    const typesBtn = document.getElementById("typesBtn");
-    const filtersBtn = document.getElementById("filtersBtn");
-    const typesBox = document.getElementById("typesBox");
-    const filtersBox = document.getElementById("filtersBox");
+    function toggleFavorite(event, btn) {
+        // Impede que o clique abra o Modal de detalhes
+        event.stopPropagation();
 
-    typesBtn.addEventListener("click", () => {
-        typesBox.style.display = typesBox.style.display === "block" ? "none" : "block";
-        filtersBox.style.display = "none";
-    });
+        const data = {
+            recipe_id: btn.dataset.id,
+            name: btn.dataset.name,
+            image: btn.dataset.image,
+            calories: btn.dataset.calories
+        };
 
-    filtersBtn.addEventListener("click", () => {
-        filtersBox.style.display = filtersBox.style.display === "block" ? "none" : "block";
-        typesBox.style.display = "none";
-    });
+        // Animação visual imediata (UX)
+        const icon = btn.querySelector('i');
+        const isActive = btn.classList.contains('active');
+        
+        if (isActive) {
+            btn.classList.remove('active');
+            icon.classList.remove('bi-heart-fill');
+            icon.classList.add('bi-heart');
+        } else {
+            btn.classList.add('active');
+            icon.classList.remove('bi-heart');
+            icon.classList.add('bi-heart-fill');
+        }
+
+        // Envia para o backend
+        fetch('/favoritos/toggle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(res => {
+            console.log(res.status);
+        })
+        .catch(err => {
+            console.error(err);
+            // Reverte se der erro
+            alert('Erro ao favoritar. Tente novamente.');
+        });
+    }
 </script>
+    <script>
+        const typesBtn = document.getElementById("typesBtn");
+        const filtersBtn = document.getElementById("filtersBtn");
+        const typesBox = document.getElementById("typesBox");
+        const filtersBox = document.getElementById("filtersBox");
+
+        typesBtn.addEventListener("click", () => {
+            typesBox.style.display = typesBox.style.display === "block" ? "none" : "block";
+            filtersBox.style.display = "none";
+        });
+
+        filtersBtn.addEventListener("click", () => {
+            filtersBox.style.display = filtersBox.style.display === "block" ? "none" : "block";
+            typesBox.style.display = "none";
+        });
+    </script>
 </body>
 </html> 
