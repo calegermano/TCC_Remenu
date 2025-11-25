@@ -69,7 +69,10 @@
     </nav>
 
     <div class="hero">
-        <img src="assets/img/card1.jpg" alt="Imagem de receitas">
+       
     </div>
 
-    <h1 class="titulo">planejamento de refeições
+    <div class="conteudo-texto">
+        <h1 class="titulo">Planejamento de Refeições</h1>
+        <p class="subtexto">Organize suas refeições da semana e economize tempo e dinheiro</p>
+    </div>

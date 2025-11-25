@@ -63,12 +63,15 @@
     </nav>
     <!-- fim nav bar -->
 
-    <div class="hero">
-        <img src="assets/img/card1.jpg" alt="Imagem de receitas">
+    <section class="favoritos-banner"></section>
+        
+
+<div class="conteudo">
+    <!-- A div vira a dona da classe -->
+    <div class="titulo text-center my-2"> 
+        <h1>Minhas receitas favoritas</h1>
     </div>
-
-    <h1 class="titulo">Minhas receitas favoritas</h1>
-
+</div>
 
 
     <!-- Footer -->
