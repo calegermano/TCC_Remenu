@@ -35,24 +35,24 @@
             <div class="collapse navbar-collapse justify-content-end" id="menuNav">
                 <ul class ="navbar-nav mb-2 mb-">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('home2') }}">Início</a>
+                        <a class="nav-link active" href="home2">Início</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('recipes.index') }}">Receitas</a>
+                        <a class="nav-link active" href="receitas">Receitas</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('planejamento') }}">Planejamento</a>
+                        <a class="nav-link active" href="planejamento">Planejamento</a>
                     </li>
 
                      <li class="nav-item">
-                        <a class="nav-link active"  href="{{ route('favoritos') }}">Favoritos</a>
+                        <a class="nav-link active"  href="favoritos">Favoritos</a>
                     </li>
 
 
                      <li class="nav-item">
-                        <a class="nav-link active" href="{{ route(geladeira) }}">Minha Geladeira</a>
+                        <a class="nav-link active" href="geladeira">Minha Geladeira</a>
                     </li>
                 </ul>
             </div>
@@ -176,101 +176,77 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-    let page = 1;
-    let loading = false;
-    const recipeContainer = document.getElementById('recipes-container');
-    const searchForm = document.getElementById('filter-form');
-    const loadingIndicator = document.getElementById('loading');
+        let page = 1;
+        let loading = false;
+        const recipeContainer = document.getElementById('recipes-container');
+        const searchForm = document.getElementById('filter-form');
+        const loadingIndicator = document.getElementById('loading');
 
-    async function loadMoreRecipes() {
-        if (loading) return;
-        loading = true;
-        page++;
+        async function loadMoreRecipes() {
+            if (loading) return;
+            loading = true;
+            page++;
 
-        loadingIndicator.style.display = 'block';
+            loadingIndicator.style.display = 'block';
 
-        const formData = new FormData();
+            const formData = new FormData();
 
-        // copiar TODOS os valores do formulário manualmente
-        document.querySelectorAll('#filter-form [name]').forEach(el => {
-            if (el.type === 'select-multiple') {
-                [...el.options].forEach(opt => {
-                    if (opt.selected && opt.value !== "") {
-                        formData.append(el.name, opt.value);
-                    }
-                });
-            } else if (el.value !== "") {
-                formData.append(el.name, el.value);
-            }
-        });
-
-        formData.append('page', page);
-        const queryString = new URLSearchParams(formData).toString();
-
-        try {
-            const response = await fetch(`/receitas?${queryString}`, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
-            });
-
-            if (!response.ok) throw new Error('Erro ao carregar receitas');
-            const html = await response.text();
-
-            if (!html.trim()) {
-                window.removeEventListener('scroll', handleScroll);
-                loadingIndicator.innerHTML = '<p>Não há mais receitas.</p>';
-                return;
-            }
-
-            recipeContainer.insertAdjacentHTML('beforeend', html);
-
-            // ========== NOVO CÓDIGO ADICIONADO ==========
-            // Re-atachar eventos de clique aos novos cards carregados
-            const newCards = recipeContainer.querySelectorAll('.recipe-card:not([data-initialized])');
-            newCards.forEach(card => {
-                card.setAttribute('data-initialized', 'true');
-                
-                // Adicionar eventos de clique para os botões de ação nos novos cards
-                const actionButtons = card.querySelectorAll('.recipe-actions form');
-                actionButtons.forEach(form => {
-                    form.addEventListener('submit', function(e) {
-                        // O middleware irá interceptar se não estiver logado
-                        // Se estiver logado, o formulário será enviado normalmente
+            // copiar TODOS os valores do formulário manualmente
+            document.querySelectorAll('#filter-form [name]').forEach(el => {
+                if (el.type === 'select-multiple') {
+                    [...el.options].forEach(opt => {
+                        if (opt.selected && opt.value !== "") {
+                            formData.append(el.name, opt.value);
+                        }
                     });
-                });
+                } else if (el.value !== "") {
+                    formData.append(el.name, el.value);
+                }
             });
-            // ========== FIM DO NOVO CÓDIGO ==========
 
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const newCardsFromParser = doc.querySelectorAll('.recipe-card');
+            formData.append('page', page);
+            const queryString = new URLSearchParams(formData).toString();
 
-            if (newCardsFromParser.length === 0) {
-                window.removeEventListener('scroll', handleScroll);
-                loadingIndicator.innerHTML = '<p>Não há mais receitas.</p>';
+            try {
+                const response = await fetch(`/receitas?${queryString}`, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                if (!response.ok) throw new Error('Erro ao carregar receitas');
+                const html = await response.text();
+
+                if (!html.trim()) {
+                    window.removeEventListener('scroll', handleScroll);
+                    loadingIndicator.innerHTML = '<p>Não há mais receitas.</p>';
+                    return;
+                }
+
+                recipeContainer.insertAdjacentHTML('beforeend', html);
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newCards = doc.querySelectorAll('.recipe-card');
+
+                if (newCards.length === 0) {
+                    window.removeEventListener('scroll', handleScroll);
+                    loadingIndicator.innerHTML = '<p>Não há mais receitas.</p>';
+                }
+
+            } catch (error) {
+                console.error(error);
+            } finally {
+                loadingIndicator.style.display = 'none';
+                loading = false;
             }
-
-        } catch (error) {
-            console.error(error);
-        } finally {
-            loadingIndicator.style.display = 'none';
-            loading = false;
         }
-    }
 
-    function handleScroll() {
-        const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
-        if (nearBottom) loadMoreRecipes();
-    }
+        function handleScroll() {
+            const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
+            if (nearBottom) loadMoreRecipes();
+        }
 
-    window.addEventListener('scroll', handleScroll);
-
-    // ========== NOVO CÓDIGO ADICIONADO ==========
-    // Inicializar os cards já carregados na página
-    document.querySelectorAll('.recipe-card').forEach(card => {
-        card.setAttribute('data-initialized', 'true');
+        window.addEventListener('scroll', handleScroll);
     });
-    // ========== FIM DO NOVO CÓDIGO ==========
-});
     </script>
 
     <script>
