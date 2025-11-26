@@ -70,76 +70,111 @@
     <!-- A div vira a dona da classe -->
     <div class="titulo text-center my-2"> 
         <h1>Minhas receitas favoritas</h1>
+        <div class="titulo text-center my-4">
+            <p>Suas receitas salvas para acesso rápido.</p>
+        </div>
     </div>
 </div>
 
-@section('content')
 <div class="container py-5">
-    <div class="receitas-title">
-        <h1>Meus Favoritos</h1>
-        <p>Suas receitas salvas para acesso rápido.</p>
+        
+
+        @if($favoritos->isEmpty())
+            <div class="text-center mt-5">
+                <i class="bi bi-heartbreak" style="font-size: 3rem; color: #ccc;"></i>
+                <p class="mt-3 text-muted">Você ainda não favoritou nenhuma receita.</p>
+                <a href="/receitas" class="btn btn-primary mt-2">Explorar Receitas</a>
+            </div>
+        @else
+            <div class="recipes-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                @foreach($favoritos as $fav)
+                    <!-- IMPORTANTE: O data-id aqui usa o ID da FatSecret que salvamos no banco -->
+                    <div class="recipe-card" data-id="{{ $fav->recipe_id }}" style="border: 1px solid #eee; border-radius: 8px; overflow: hidden; cursor: pointer;">
+                        
+                        <!-- Botão de favorito (Já vem ativado pois estamos na tela de favoritos) -->
+                        <button class="btn-favorite active" 
+                                data-id="{{ $fav->recipe_id }}"
+                                data-name="{{ $fav->name }}"
+                                data-image="{{ $fav->image }}"
+                                data-calories="{{ $fav->calories }}"
+                                onclick="toggleFavorite(event, this)">
+                            <i class="bi bi-heart-fill"></i>
+                        </button>
+
+                        <img 
+                            src="{{ $fav->image && $fav->image != '' ? $fav->image : asset('assets/img/semImagem.jpeg') }}" 
+                            alt="{{ $fav->name }}"
+                            style="width: 100%; height: 200px; object-fit: cover;"
+                            onerror="this.onerror=null; this.src='{{ asset('assets/img/semImagem.jpeg') }}';"
+                        >
+                        <div class="p-3">
+                            <h5 class="mt-2">{{ $fav->name }}</h5>
+                            <p class="text-muted">{{ $fav->calories ? $fav->calories . ' kcal' : 'N/A' }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
     </div>
 
-    @if($favoritos->isEmpty())
-        <div class="text-center mt-5">
-            <i class="bi bi-heartbreak" style="font-size: 3rem; color: #ccc;"></i>
-            <p class="mt-3 text-muted">Você ainda não favoritou nenhuma receita.</p>
-            <a href="/receitas" class="btn btn-primary mt-2">Explorar Receitas</a>
-        </div>
-    @else
-        <div class="recipes-grid">
-            @foreach($favoritos as $fav)
-                <!-- Note que usamos $fav->recipe_id e $fav->name vindos do banco -->
-                <div class="recipe-card" data-id="{{ $fav->recipe_id }}">
-                    
-                    <!-- Botão para remover dos favoritos nesta tela -->
-                    <button class="btn-favorite active" 
-                            data-id="{{ $fav->recipe_id }}"
-                            onclick="toggleFavorite(event, this)">
-                        <i class="bi bi-heart-fill"></i>
-                    </button>
+    <!-- ========================================== -->
+    <!-- AQUI ESTAVA O PROBLEMA: FALTAVA O HTML DO MODAL -->
+    <!-- ========================================== -->
+    <div id="recipeModal" class="modal-overlay" style="display: none;">
+      <div class="modal-card">
+          <button class="close-modal">X</button>
+          <img id="modalImage" src="" alt="">
+          <h2 id="modalName"></h2>
+          <p><strong>Calorias:</strong> <span id="modalCalories"></span></p>
+          <p><strong>Tempo de preparo:</strong> <span id="modalPrep"></span></p>
 
-                    <img 
-                        src="{{ $fav->image && $fav->image != '' ? $fav->image : asset('assets/img/semImagem.jpeg') }}" 
-                        alt="{{ $fav->name }}"
-                        onerror="this.onerror=null; this.src='{{ asset('assets/img/semImagem.jpeg') }}';"
-                    >
-                    <h5 class="mt-2">{{ $fav->name }}</h5>
-                    <p>{{ $fav->calories ? $fav->calories . ' kcal' : 'N/A' }}</p>
-                </div>
-            @endforeach
-        </div>
-    @endif
-</div>
+          <h4>Ingredientes</h4>
+          <ul id="modalIngredients"></ul>
+
+          <h4>Modo de preparo</h4>
+          <div id="modalDirections"></div>
+
+          <hr>
+          <h4>Informação Nutricional</h4>
+          <p id="modalNutrition"></p>
+      </div>
+    </div>
+    <!-- FIM DO HTML DO MODAL -->
+
+
+    <!-- SCRIPTS -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         
-        // 1. Lógica para ABRIR o Modal ao clicar no Card
+        // 1. Lógica para ABRIR o Modal
         document.addEventListener('click', function(e) {
             const card = e.target.closest('.recipe-card');
-            if (!card) return;
+            if (!card) return; // Se não clicou no card, ignora
+
+            // Se clicou no botão de favorito, a função toggleFavorite já tratou o stopPropagation,
+            // então não precisamos nos preocupar aqui.
 
             const id = card.dataset.id;
             if (!id) return;
 
             const modal = document.getElementById('recipeModal');
             
-            // Exibir modal com estado de carregamento
+            // Abre o modal
             modal.style.display = 'flex';
             document.getElementById('modalName').textContent = 'Carregando...';
             document.getElementById('modalImage').src = '{{ asset("img/placeholder.png") }}';
             
-            // Limpar campos anteriores para não mostrar dados velhos
+            // Limpa dados antigos
             document.getElementById('modalCalories').textContent = '';
             document.getElementById('modalPrep').textContent = '';
             document.getElementById('modalIngredients').innerHTML = '';
             document.getElementById('modalDirections').innerHTML = '';
             document.getElementById('modalNutrition').textContent = '';
 
-            // ... (código anterior de abrir o modal) ...
+            console.log("Buscando detalhes na API para o ID:", id);
 
-            console.log("Buscando ID:", id); // <--- DEBUG 1
-
+            // Fetch para pegar os detalhes completos (Ingredientes/Preparo)
+            // Note que usamos a mesma rota das receitas, pois ela puxa da FatSecret
             fetch(`/receitas/${encodeURIComponent(id)}`)
                 .then(res => {
                     if (!res.ok) throw new Error('Erro na resposta do servidor');
@@ -149,55 +184,41 @@
                     const r = data.recipe;
 
                     if (!r || data.error) {
-                        document.getElementById('modalName').textContent = 'Erro ao carregar';
+                        document.getElementById('modalName').textContent = 'Erro ao carregar detalhes';
                         return;
                     }
 
-                    // --- AJUSTE PARA PEGAR NUTRIÇÃO CORRETAMENTE ---
+                    // --- Preenchimento dos dados (Igual à tela de receitas) ---
                     let nutrition = {};
-                    
-                    // A FatSecret coloca a nutrição dentro de serving_sizes -> serving
                     if (r.serving_sizes && r.serving_sizes.serving) {
                         const s = r.serving_sizes.serving;
-                        // Se houver múltiplos tamanhos de porção, pega o primeiro (array), senão pega o objeto direto
                         nutrition = Array.isArray(s) ? s[0] : s;
                     }
 
-                    // 1. NOME
                     document.getElementById('modalName').textContent = r.recipe_name ?? '—';
 
-                    // 2. IMAGEM
                     let imgSrc = '{{ asset("assets/img/semImagem.jpeg") }}';
-                    if (r.recipe_image) {
-                        imgSrc = r.recipe_image;
-                    } else if (r.recipe_images && r.recipe_images.recipe_image) {
+                    if (r.recipe_image) imgSrc = r.recipe_image;
+                    else if (r.recipe_images && r.recipe_images.recipe_image) {
                         let imgs = r.recipe_images.recipe_image;
                         imgSrc = Array.isArray(imgs) ? imgs[0] : imgs;
                     }
                     document.getElementById('modalImage').src = imgSrc;
 
-                    // 3. CALORIAS (Corrigido)
-                    // Agora pegamos da variável 'nutrition' que definimos acima
                     document.getElementById('modalCalories').textContent = nutrition.calories ?? 'N/A';
 
-                    // 4. TEMPO
                     const prep = parseInt(r.preparation_time_min ?? 0);
                     const cook = parseInt(r.cooking_time_min ?? 0);
                     const total = prep + cook;
                     document.getElementById('modalPrep').textContent = total > 0 ? total + ' min' : 'N/A';
 
-                    // 5. INGREDIENTES
+                    // Ingredientes
                     const ingList = document.getElementById('modalIngredients');
                     ingList.innerHTML = '';
-
                     let ingredientsRaw = [];
-                    if (r.ingredients && r.ingredients.ingredient) {
-                        ingredientsRaw = r.ingredients.ingredient;
-                    }
-
-                    if (!Array.isArray(ingredientsRaw) && ingredientsRaw) {
-                        ingredientsRaw = [ingredientsRaw];
-                    }
+                    if (r.ingredients && r.ingredients.ingredient) ingredientsRaw = r.ingredients.ingredient;
+                    
+                    if (!Array.isArray(ingredientsRaw) && ingredientsRaw) ingredientsRaw = [ingredientsRaw];
 
                     if (ingredientsRaw.length > 0) {
                         ingredientsRaw.forEach(item => {
@@ -211,24 +232,19 @@
                         ingList.innerHTML = '<li>Sem ingredientes listados.</li>';
                     }
 
-                    // 6. MODO DE PREPARO
+                    // Modo de Preparo
                     const directionsContainer = document.getElementById('modalDirections');
                     directionsContainer.innerHTML = ''; 
-
                     let directionsRaw = [];
-                    if (r.directions && r.directions.direction) {
-                        directionsRaw = r.directions.direction;
-                    }
-
-                    if (!Array.isArray(directionsRaw) && directionsRaw) {
-                        directionsRaw = [directionsRaw];
-                    }
+                    if (r.directions && r.directions.direction) directionsRaw = r.directions.direction;
+                    
+                    if (!Array.isArray(directionsRaw) && directionsRaw) directionsRaw = [directionsRaw];
 
                     if (directionsRaw.length > 0) {
                         directionsRaw.sort((a, b) => (a.direction_number - b.direction_number));
                         directionsRaw.forEach(step => {
                             const p = document.createElement('p');
-                            p.style.marginBottom = "10px";
+                            p.style.marginBottom = "8px";
                             p.textContent = `${step.direction_number ? step.direction_number + '.' : '•'} ${step.direction_description}`;
                             directionsContainer.appendChild(p);
                         });
@@ -236,8 +252,6 @@
                         directionsContainer.textContent = r.recipe_description ?? 'Modo de preparo não disponível.';
                     }
 
-                    // 7. NUTRIÇÃO (Corrigido)
-                    // Usando a variável 'nutrition' extraída do serving_sizes
                     document.getElementById('modalNutrition').textContent =
                         `Proteínas: ${nutrition.protein ?? '0'}g — Carboidratos: ${nutrition.carbohydrate ?? '0'}g — Gorduras: ${nutrition.fat ?? '0'}g`;
                 })
@@ -247,15 +261,16 @@
                 });
         });
 
-        // 2. Lógica para FECHAR o Modal (Botão X)
+        // Fechar Modal (X)
         const closeBtn = document.querySelector('.close-modal');
         if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Garante que não propague
                 document.getElementById('recipeModal').style.display = 'none';
             });
         }
 
-        // Fechar ao clicar fora do modal (opcional, mas bom para UX)
+        // Fechar Modal (Fundo)
         const modalOverlay = document.getElementById('recipeModal');
         if (modalOverlay) {
             modalOverlay.addEventListener('click', (e) => {
@@ -264,16 +279,34 @@
                 }
             });
         }
+    });
+    </script>
 
-    }); // Fim do DOMContentLoaded
-</script>
-<script>
-    // Precisamos do Token CSRF do Laravel para POST via fetch
+    <!-- Script de Favoritar -->
+    <script>
     const csrfToken = "{{ csrf_token() }}";
 
     function toggleFavorite(event, btn) {
-        // Impede que o clique abra o Modal de detalhes
-        event.stopPropagation();
+        event.stopPropagation(); // Impede abrir o modal
+        event.preventDefault();
+
+        const icon = btn.querySelector('i');
+        const isActive = btn.classList.contains('active');
+        
+        // Se estivermos na página de favoritos, ao desfavoritar, podemos querer remover o card visualmente
+        // Mas por enquanto, vamos apenas mudar o ícone para não confundir o usuário
+        if (isActive) {
+            btn.classList.remove('active');
+            icon.classList.remove('bi-heart-fill');
+            icon.classList.add('bi-heart');
+            
+            // Opcional: Se quiser remover o card da tela imediatamente:
+            // btn.closest('.recipe-card').style.display = 'none';
+        } else {
+            btn.classList.add('active');
+            icon.classList.remove('bi-heart');
+            icon.classList.add('bi-heart-fill');
+        }
 
         const data = {
             recipe_id: btn.dataset.id,
@@ -282,21 +315,6 @@
             calories: btn.dataset.calories
         };
 
-        // Animação visual imediata (UX)
-        const icon = btn.querySelector('i');
-        const isActive = btn.classList.contains('active');
-        
-        if (isActive) {
-            btn.classList.remove('active');
-            icon.classList.remove('bi-heart-fill');
-            icon.classList.add('bi-heart');
-        } else {
-            btn.classList.add('active');
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill');
-        }
-
-        // Envia para o backend
         fetch('/favoritos/toggle', {
             method: 'POST',
             headers: {
@@ -305,17 +323,12 @@
             },
             body: JSON.stringify(data)
         })
-        .then(response => response.json())
-        .then(res => {
-            console.log(res.status);
-        })
-        .catch(err => {
-            console.error(err);
-            // Reverte se der erro
-            alert('Erro ao favoritar. Tente novamente.');
-        });
+        .then(res => res.json())
+        .then(res => console.log(res.status))
+        .catch(err => alert('Erro ao atualizar favorito.'));
     }
-</script>
+    </script>
+
 
     <!-- Footer -->
     <footer class="main-footer">
