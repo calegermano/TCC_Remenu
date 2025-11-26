@@ -36,7 +36,7 @@
               
               <div class="footer-nav-grid mx-auto">
                   <ul class="list-unstyled footer-nav-col">
-                      <li><a href="{{ route('home') }}" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
+                      <li><a href="{{ route('home2') }}" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
                       <li><a href="{{ route('recipes.index') }}" class="footer-link"><i class="fas fa-utensils"></i> Receitas</a></li>
                   </ul>
                   <ul class="list-unstyled footer-nav-col">
@@ -46,6 +46,7 @@
                       <li><a href="{{ route('geladeira') }}" class="footer-link"><i class="fas fa-snowflake"></i> Geladeira</a></li>
                   </ul>
               </div>
+              
           </div>
 
             <div class="col-md-3 text-end">

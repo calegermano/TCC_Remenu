@@ -33,24 +33,24 @@
             <div class="collapse navbar-collapse justify-content-end" id="menuNav">
                 <ul class ="navbar-nav mb-2 mb-">
                     <li class="nav-item">
-                        <a class="nav-link active" href="home2">Início</a>
+                        <a class="nav-link active" href="{{ route('home2') }}">Início</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="receitas">Receitas</a>
+                        <a class="nav-link active" href="{{ route('recipes.index') }}">Receitas</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="planejamento">Planejamento</a>
+                        <a class="nav-link active" href="{{ route('planejamento') }}">Planejamento</a>
                     </li>
 
                      <li class="nav-item">
-                        <a class="nav-link active"  href="favoritos">Favoritos</a>
+                        <a class="nav-link active"  href="{{ route('favoritos') }}">Favoritos</a>
                     </li>
 
 
                      <li class="nav-item">
-                        <a class="nav-link active" href="geladeira">Minha Geladeira</a>
+                        <a class="nav-link active" href="{{ route('geladeira') }}">Minha Geladeira</a>
                     </li>
                 </ul>
             </div>
@@ -73,7 +73,7 @@
       <h2 class="fw-bold">
         Transforme ingredientes que você já tem em casa em receitas deliciosas e saudáveis.
       </h2>
-      <a href="receitas" class="btn btn-banner mt-3">
+      <a href="{{ route('recipes.index') }}" class="btn btn-banner mt-3">
         Explore as receitas →
       </a>
     </div>
@@ -92,7 +92,7 @@
     <div class="texto me-lg-5 mb-4 mb-lg-0">
       <h3 class="receita-titulo fw-bold mb-3">Receita de hoje</h3>
       <p class="receita-paragrafo mb-4">Para programar sua receita do dia utilize o planejamento da Remenu!</p>
-      <a href="planejamento" class="btn btn-planejar mt-3">Planeje suas refeições →</a>
+      <a href="{{ route('planejamento') }}" class="btn btn-planejar mt-3">Planeje suas refeições →</a>
     </div>
 
     <div class="imagens">
@@ -109,7 +109,7 @@
     <div class="d-flex justify-content-between align-items-center mb-5">
       <h3 class="receitas-titulo fw-bold mx-auto">Receitas em destaque</h3>
       
-      <a href="receitas" class="btn btn-veja-mais btn-sm">Veja mais</a>
+      <a href="{{ route('recipes.index') }}" class="btn btn-veja-mais btn-sm">Veja mais</a>
     </div>
 
     <div class="row g-4">
@@ -198,7 +198,7 @@
             <p class="card-text recurso-card-text">
                 Salve suas receitas preferidas em um só lugar! Acesse rapidamente aquelas que mais gosta e nunca mais perca uma receita especial.
             </p>
-            <a href="favorito" class="btn btn-recurso mt-auto">Ver favoritos</a>
+            <a href="{{ route('favoritos') }}" class="btn btn-recurso mt-auto">Ver favoritos</a>
           </div>
         </div>
       </div>
@@ -213,7 +213,7 @@
             <p class="card-text recurso-card-text">
                 Organize suas refeições da semana de forma inteligente! Evite desperdício, economize tempo e tenha sempre um prato saudável pronto.
             </p>
-            <a href="planejamento" class="btn btn-recurso mt-auto">Ver planejamento</a>
+            <a href="{{ route('planejamento') }}" class="btn btn-recurso mt-auto">Ver planejamento</a>
           </div>
         </div>
       </div>
@@ -228,7 +228,7 @@
             <p class="card-text recurso-card-text">
                 Controle os ingredientes que você tem em casa! Receba sugestões de receitas baseadas nos seus ingredientes e nunca deixe nada estragar.
             </p>
-            <a href="geladeira" class="btn btn-recurso mt-auto">Ver geladeira</a>
+            <a href="{{ route('geladeira') }}" class="btn btn-recurso mt-auto">Ver geladeira</a>
           </div>
         </div>
       </div>
@@ -255,16 +255,17 @@
               
               <div class="footer-nav-grid mx-auto">
                   <ul class="list-unstyled footer-nav-col">
-                      <li><a href="#" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
-                      <li><a href="#" class="footer-link"><i class="fas fa-utensils"></i> Receitas</a></li>
+                      <li><a href="{{ route('home2') }}" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
+                      <li><a href="{{ route('recipes.index') }}" class="footer-link"><i class="fas fa-utensils"></i> Receitas</a></li>
                   </ul>
                   <ul class="list-unstyled footer-nav-col">
-                      <li><a href="#" class="footer-link"><i class="fas fa-calendar-alt"></i> Planejamento</a></li>
-                      <li><a href="#" class="footer-link"><i class="far fa-heart"></i> Favoritos</a></li>
+                      <li><a href="{{ route('planejamento') }}" class="footer-link"><i class="fas fa-calendar-alt"></i> Planejamento</a></li>
+                      <li><a href="{{ route('favoritos') }}" class="footer-link"><i class="far fa-heart"></i> Favoritos</a></li>
                   </ul><ul class="list-unstyled footer-nav-col">
-                      <li><a href="#" class="footer-link"><i class="fas fa-snowflake"></i> Geladeira</a></li>
+                      <li><a href="{{ route('geladeira') }}" class="footer-link"><i class="fas fa-snowflake"></i> Geladeira</a></li>
                   </ul>
               </div>
+
           </div>
 
             <div class="col-md-3 text-end">
