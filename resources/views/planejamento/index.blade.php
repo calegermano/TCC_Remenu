@@ -17,8 +17,6 @@
   
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
-  </style>
 </head>
 
 <body>
@@ -63,15 +61,42 @@
                 </ul>
             </div>
 
-            <a href="#" class="profile-link d-none d-lg-block" aria-label="Perfil"> <i class="bi bi-person-fill"></i>
-            </a>
+                        <!-- Início do Dropdown de Perfil -->
+            <div class="dropdown d-none d-lg-block">
+                <a href="#" class="profile-link dropdown-toggle text-decoration-none" 
+                id="profileDropdown" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+                    <i class="bi bi-person-fill" style="font-size: 1.5rem; color: #333;"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <!-- NOME DO USUÁRIO AQUI -->
+                    <li>
+                        <span class="dropdown-item-text fw-bold text-center" style="color: #D9682B;">
+                            <!-- Tente 'name' primeiro. Se não aparecer nada, mude para 'nome' -->
+                            Olá, {{ Auth::user()->name ?? Auth::user()->nome ?? 'Visitante' }}
+                        </span>
+                    </li>
+                    
+                    <li><hr class="dropdown-divider"></li>
+
+                    <!-- Botão de Sair -->
+                    <li>
+                        <a class="dropdown-item text-danger" href="{{ route('logout') }}">
+                            <i class="bi bi-box-arrow-right"></i> Sair
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>            
     </nav>
     
     <div class="hero"></div>
 
     <div class="conteudo-texto" style="text-align: center; margin: 4rem 0;">
-        <h1 class="titulo">Planejamento de Refeições</h1>
+        <h1 class="subtitulo">Planejamento de Refeições</h1>
         <p class="subtexto">Organize suas refeições da semana e economize tempo e dinheiro</p>
     </div>
 

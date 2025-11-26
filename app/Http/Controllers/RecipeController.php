@@ -85,4 +85,33 @@ class RecipeController extends Controller
 
     }
 
+public function home()
+    {
+        
+        $termos = ['chicken', 'salad', 'pasta', 'soup', 'rice', 'beef', 'healthy', 'fish'];
+        $termo = $termos[array_rand($termos)];
+
+        
+        $dados = $this->fatSecret->getRecipes($termo, [], 0);
+        
+        $receitasRaw = $dados['recipe'] ?? [];
+
+        
+        if (isset($receitasRaw['recipe_id'])) {
+            $receitasRaw = [$receitasRaw];
+        }
+
+        
+        $todasReceitas = collect($receitasRaw)->filter(function ($receita) {
+            return !empty($receita['recipe_image']); 
+        });
+
+        
+        $destaques = $todasReceitas->count() > 3 
+                     ? $todasReceitas->random(3) 
+                     : $todasReceitas;
+
+        return view('home2', compact('destaques'));
+    }
+
 }

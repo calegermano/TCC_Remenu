@@ -21,6 +21,6 @@ class Geladeira extends Model
 
     public function ingrediente()
     {
-        return $this->belongsTo(Ingrediente::class);
+        return $this->belongsTo(Ingredientes::class);
     }
 }

@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="css/home2.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+
 </head>
 <body>
       <nav class="navbar navbar-expand-lg bg-light border-bottom sticky-top">
@@ -55,8 +57,35 @@
                 </ul>
             </div>
 
-            <a href="#" class="profile-link d-none d-lg-block" aria-label="Perfil"> <i class="bi bi-person-fill"></i>
-            </a>
+                        <!-- Início do Dropdown de Perfil -->
+            <div class="dropdown d-none d-lg-block">
+                <a href="#" class="profile-link dropdown-toggle text-decoration-none" 
+                id="profileDropdown" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+                    <i class="bi bi-person-fill" style="font-size: 1.5rem; color: #333;"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <!-- NOME DO USUÁRIO AQUI -->
+                    <li>
+                        <span class="dropdown-item-text fw-bold text-center" style="color: #D9682B;">
+                            <!-- Tente 'name' primeiro. Se não aparecer nada, mude para 'nome' -->
+                            Olá, {{ Auth::user()->name ?? Auth::user()->nome ?? 'Visitante' }}
+                        </span>
+                    </li>
+                    
+                    <li><hr class="dropdown-divider"></li>
+
+                    <!-- Botão de Sair -->
+                    <li>
+                        <a class="dropdown-item text-danger" href="{{ route('logout') }}">
+                            <i class="bi bi-box-arrow-right"></i> Sair
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>            
     </nav>
 
@@ -108,75 +137,41 @@
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-5">
       <h3 class="receitas-titulo fw-bold mx-auto">Receitas em destaque</h3>
-      
       <a href="{{ route('recipes.index') }}" class="btn btn-veja-mais btn-sm">Veja mais</a>
     </div>
 
-    <div class="row g-4">
+    <!-- Usamos o Grid do Bootstrap para organizar os 3 cards -->
+    <div class="row justify-content-center g-4">
       
-      <div class="col-12 col-md-4">
-        <div class="card h-100 receita-card">
-          <img src="../assets/img/detox.jpg" class="card-img-top card-img-receita" alt="Smoothie Verde Detox">
-          <div class="card-body text-center">
-            <h5 class="card-title receita-card-title">Smoothie Verde Detox</h5>
-            <p class="card-text receita-card-text">Bebida refrescante e nutritiva para começar o dia com energia.</p>
+      @forelse($destaques as $receita)
+        <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center">
             
-            <div class="d-flex justify-content-around card-footer-details mt-3">
-              <span class="detalhe-item">
-                <i class="fas fa-clock"></i> 10 min
-              </span>
-              <span class="detalhe-item">
-                <i class="fas fa-users"></i> 4 pessoas
-              </span>
-              <span class="detalhe-item favorito-icon">
-                <i class="far fa-heart"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="col-12 col-md-4">
-        <div class="card h-100 receita-card">
-          <img src="../assets/img/sopa.jpg" class="card-img-top card-img-receita" alt="Sopa de Legumes">
-          <div class="card-body text-center">
-            <h5 class="card-title receita-card-title">Sopa de Legumes</h5>
-            <p class="card-text receita-card-text">Uma sopa saborosa e nutritiva feita com vegetais que já estão murchando.</p>
-            <div class="d-flex justify-content-around card-footer-details mt-3">
-              <span class="detalhe-item">
-                <i class="fas fa-clock"></i> 10 min
-              </span>
-              <span class="detalhe-item">
-                <i class="fas fa-users"></i> 4 pessoas
-              </span>
-              <span class="detalhe-item favorito-icon">
-                <i class="far fa-heart"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+            <!-- CARD COM O ESTILO ORIGINAL DA PÁGINA DE RECEITAS -->
+            <!-- Adicionei 'w-100' para ele ocupar a largura da coluna do bootstrap -->
+            <div class="recipe-card w-100" data-id="{{ $receita['recipe_id'] }}">
+                
+                <!-- A imagem já tem o estilo no index.css -->
+                <img 
+                    src="{{ $receita['recipe_image'] ?? asset('assets/img/semImagem.jpeg') }}" 
+                    alt="{{ $receita['recipe_name'] }}"
+                    onerror="this.src='{{ asset('assets/img/semImagem.jpeg') }}';"
+                >
+                
+                <h5 class="mt-2">{{ $receita['recipe_name'] }}</h5>
+                
+                <!-- Se quiser mostrar calorias igual na outra página -->
+                <p>{{ $receita['recipe_nutrition']['calories'] ?? 'N/A' }} kcal</p>
 
-      <div class="col-12 col-md-4">
-        <div class="card h-100 receita-card">
-          <img src="../assets/img/frango.jpg" class="card-img-top card-img-receita" alt="Frango com Arroz Integral">
-          <div class="card-body text-center">
-            <h5 class="card-title receita-card-title">Frango com Arroz Integral</h5>
-            <p class="card-text receita-card-text">Prato completo e balanceado, rico em proteínas e carboidratos complexos.</p>
-            <div class="d-flex justify-content-around card-footer-details mt-3">
-              <span class="detalhe-item">
-                <i class="fas fa-clock"></i> 10 min
-              </span>
-              <span class="detalhe-item">
-                <i class="fas fa-users"></i> 4 pessoas
-              </span>
-              <span class="detalhe-item favorito-icon">
-                <i class="far fa-heart"></i>
-              </span>
+                <!-- Link disfarçado para levar aos detalhes -->
+                <a href="{{ route('recipes.index') }}" class="stretched-link"></a>
             </div>
-          </div>
+
         </div>
-      </div>
+      @empty
+        <div class="col-12 text-center">
+            <p>Carregando destaques...</p>
+        </div>
+      @endforelse
 
     </div>
   </div>
