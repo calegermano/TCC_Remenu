@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\FavoritoController;
-use App\Http\Controllers\GeladeiraController; // <--- IMPORTANTE: Adicionado aqui
+use App\Http\Controllers\GeladeiraController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,29 +59,37 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
-    
-    // --- PÁGINA DA GELADEIRA (View) ---
+    // --- PÁGINAS PROTEGIDAS ---
     Route::get('/geladeira', function () {
         return view('geladeira');
     })->name('geladeira');
 
-    // --- API DA GELADEIRA (JSON para o JavaScript) ---
-    // Estas rotas respondem às chamadas fetch('/api/...') do seu script
-    Route::prefix('api')->group(function () {
-        Route::get('/ingredientes/search', [GeladeiraController::class, 'search']); // Autocomplete
-        Route::get('/geladeira', [GeladeiraController::class, 'index']);           // Listar itens
-        Route::post('/geladeira', [GeladeiraController::class, 'store']);          // Adicionar
-        Route::put('/geladeira/{id}', [GeladeiraController::class, 'update']);     // Editar
-        Route::delete('/geladeira/{id}', [GeladeiraController::class, 'destroy']); // Excluir
-    });
-    
-    // --- OUTRAS ROTAS PROTEGIDAS ---
-    Route::get('/favoritos', [FavoritoController::class, 'index'])->name('favorites.index');
-    Route::post('/favoritos/toggle', [FavoritoController::class, 'toggle'])->name('favorites.toggle');
-    
+    Route::get('/favoritos', [FavoritoController::class, 'index'])->name('favoritos');
+
+    Route::get('/planejamento', function () {
+    return view('planejamento');
+    })->name('planejamento');
+
     Route::get('/planejamento', function () {
         return view('planejamento');
     })->name('planejamento');
+
+    // --- API DA GELADEIRA ---
+    Route::prefix('api')->group(function () {
+        Route::get('/ingredientes/search', [GeladeiraController::class, 'search']);
+        Route::get('/geladeira', [GeladeiraController::class, 'index']);
+        Route::post('/geladeira', [GeladeiraController::class, 'store']);
+        Route::put('/geladeira/{id}', [GeladeiraController::class, 'update']);
+        Route::delete('/geladeira/{id}', [GeladeiraController::class, 'destroy']);
+    });
+    
+    // --- AÇÕES DE FAVORITOS ---
+    Route::post('/favoritos/toggle', [FavoritoController::class, 'toggle'])->name('favorites.toggle');
+    
+    // --- AÇÕES DE RECEITAS ---
+    Route::post('/receitas/{id}/favoritar', [RecipeController::class, 'favoritar'])->name('recipes.favorite');
+    Route::post('/receitas/{id}/planejar', [RecipeController::class, 'adicionarPlanejamento'])->name('recipes.plan');
+    Route::post('/receitas/{id}/adicionar-ingredientes', [RecipeController::class, 'adicionarIngredientes'])->name('recipes.add_ingredients');
 });
 
 /*
