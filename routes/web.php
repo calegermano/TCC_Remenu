@@ -5,6 +5,7 @@ use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\FavoritoController;
 use App\Http\Controllers\GeladeiraController;
+use App\Http\Controllers\PlanejamentoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,13 +67,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/favoritos', [FavoritoController::class, 'index'])->name('favoritos');
 
-    Route::get('/planejamento', function () {
-    return view('planejamento');
-    })->name('planejamento');
-
-    Route::get('/planejamento', function () {
-        return view('planejamento');
-    })->name('planejamento');
+    Route::get('/planejamento', [PlanejamentoController::class, 'index'])->name('planejamento');
+    Route::get('/planejamento/fetch', [PlanejamentoController::class, 'getPlans']);
+    Route::post('/planejamento/store', [PlanejamentoController::class, 'store']);
+    Route::delete('/planejamento/{id}', [PlanejamentoController::class, 'destroy']);
 
     // --- API DA GELADEIRA ---
     Route::prefix('api')->group(function () {
@@ -86,10 +84,7 @@ Route::middleware(['auth'])->group(function () {
     // --- AÇÕES DE FAVORITOS ---
     Route::post('/favoritos/toggle', [FavoritoController::class, 'toggle'])->name('favorites.toggle');
     
-    // --- AÇÕES DE RECEITAS ---
-    Route::post('/receitas/{id}/favoritar', [RecipeController::class, 'favoritar'])->name('recipes.favorite');
-    Route::post('/receitas/{id}/planejar', [RecipeController::class, 'adicionarPlanejamento'])->name('recipes.plan');
-    Route::post('/receitas/{id}/adicionar-ingredientes', [RecipeController::class, 'adicionarIngredientes'])->name('recipes.add_ingredients');
+
 });
 
 /*
