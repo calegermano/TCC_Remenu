@@ -17,119 +17,93 @@
   
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <style>
-      /* Layout Principal */
-      .planner-wrapper { max-width: 1200px; margin: 0 auto; padding: 20px; }
-      .month-selector { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-      .month-selector h2 { margin: 0; font-size: 1.5rem; color: #333; }
-      .nav-btn { background: #ff6600; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
 
-      .main-container { display: flex; gap: 20px; align-items: flex-start; }
-      .calendar-grid { flex: 1; display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
-
-      .day-column { min-width: 140px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
-      .day-column.today .day-header { background-color: #ffe0b2; border: 1px solid #ff6600; }
-      .day-header { text-align: center; background: #f8f9fa; padding: 10px; border-radius: 8px; font-weight: bold; }
-
-      .meal-slot {
-          background: white; border: 1px dashed #ccc; border-radius: 8px; padding: 10px;
-          min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-          cursor: pointer; transition: 0.2s; text-align: center; position: relative;
-      }
-      .meal-slot:hover { border-color: #ff6600; background: #fff8e1; }
-
-      .sidebar { width: 300px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0; }
-
-      /* Slot Preenchido */
-      .meal-slot.filled { background-color: #e8f5e9; border: 1px solid #4caf50; border-style: solid; }
-      .meal-slot.filled:hover { background-color: #c8e6c9; }
-      
-      .meal-slot.filled .remove-btn { 
-          position: absolute; top: 2px; right: 5px;
-          color: #d32f2f; font-weight: bold; font-size: 1.2rem; z-index: 10;
-          width: 20px; height: 20px; line-height: 18px;
-      }
-      .meal-slot.filled .remove-btn:hover { background: rgba(255,0,0,0.1); border-radius: 50%; }
-
-      /* Modais */
-      .recipe-selection-modal, .modal-overlay {
-          display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-          background: rgba(0,0,0,0.6); z-index: 9999;
-          align-items: center; justify-content: center;
-      }
-      
-      /* Modal de Seleção */
-      .selection-content {
-          background: white; width: 90%; max-width: 500px; max-height: 80vh;
-          border-radius: 10px; overflow-y: auto; padding: 20px;
-      }
-      .select-item { display: flex; align-items: center; gap: 15px; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; }
-      .select-item:hover { background-color: #f5f5f5; }
-      .select-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
-
-      /* Estilo CSS para o Modal de Detalhes (caso não pegue do index.css) */
-      .modal-card {
-          background: white; padding: 20px; border-radius: 12px;
-          width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative;
-      }
-      .modal-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
-      .close-modal { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
-
-      @media (max-width: 768px) { .main-container { flex-direction: column; } .sidebar { width: 100%; } }
   </style>
 </head>
 
 <body>
 
     <!-- Navbar -->
+<!-- Navbar Corrigida -->
+    <!-- nav bar -->
     <nav class="navbar navbar-expand-lg bg-light border-bottom sticky-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-item-center fw-semibold" href="home2">
+            <a class="navbar-brand d-flex align-item-center fw-semibold" href="resources/views/home.blade.php">
             <img src="{{asset('assets/img/logo.png')}}" alt="logo" width="40" height="40" class="me-2">
             </a>
             <span class="titulo">Remenu</span>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav">
+            <!-- botão -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav" aria-controls="menuNav" aria-expanded="false" aria-label="Alternar navegação">
             <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse justify-content-end" id="menuNav">
-                <ul class ="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="home2">Início</a></li>
-                    <li class="nav-item"><a class="nav-link" href="receitas">Receitas</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="planejamento">Planejamento</a></li>
-                    <li class="nav-item"><a class="nav-link" href="favoritos">Favoritos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="geladeira">Minha Geladeira</a></li>
+            <!--links menu-->
+            <div class="collapse navbar-collapse " id="menuNav">
+                <ul class ="navbar-nav mb-2 mb-">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="home2">Início</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="receitas">Receitas</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="planejamento">Planejamento</a>
+                    </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link active"  href="favoritos">Favoritos</a>
+                    </li>
+
+
+                     <li class="nav-item">
+                        <a class="nav-link active" href="geladeira">Minha Geladeira</a>
+                    </li>
                 </ul>
             </div>
-            <a href="#" class="profile-link d-none d-lg-block"> <i class="bi bi-person-fill"></i></a>
+
+            <a href="#" class="profile-link d-none d-lg-block" aria-label="Perfil"> <i class="bi bi-person-fill"></i>
+            </a>
         </div>            
     </nav>
     
     <div class="hero"></div>
 
-    <div class="conteudo-texto" style="text-align: center; margin: 2rem 0;">
+    <div class="conteudo-texto" style="text-align: center; margin: 4rem 0;">
         <h1 class="titulo">Planejamento de Refeições</h1>
         <p class="subtexto">Organize suas refeições da semana e economize tempo e dinheiro</p>
     </div>
 
     <div class="planner-wrapper">
-        <div class="month-selector">
-            <button id="btn-prev" class="nav-btn">← Anterior</button>
-            <h2 id="current-month">Mês</h2>
-            <button id="btn-next" class="nav-btn">Próxima →</button>
-        </div>
+    <!-- Removi o .month-selector daqui de cima -->
 
         <div class="main-container">
-            <div class="calendar-grid" id="calendar"></div>
+        
+        <!-- NOVA DIV: Agrupa o título e o calendário na esquerda -->
+            <div class="calendar-column">
+            
+                <!-- O seletor agora está aqui dentro -->
+                <div class="month-selector">
+                    <button id="btn-prev" class="nav-btn">← Anterior</button>
+                    <h2 id="current-month">Mês</h2>
+                    <button id="btn-next" class="nav-btn">Próxima →</button>
+                </div>
 
-            <aside class="sidebar">
-                <div class="sidebar-header" style="margin-bottom: 15px; font-weight: bold; font-size: 1.1rem;">
-                    <span>👨‍🍳</span> Resumo semanal
-                </div>
-                <div class="counter-card" style="text-align: center; margin-bottom: 20px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
-                    <div class="counter-number" id="total-meals" style="font-size: 2rem; font-weight: bold; color: #ff6600;">0</div>
-                    <div class="counter-label">Refeições planejadas</div>
-                </div>
+            <!-- O Grid do calendário logo abaixo -->
+                <div class="calendar-grid" id="calendar"></div>
+    </div>
+
+        <!-- A Sidebar continua aqui na direita, separada -->
+        <aside class="sidebar">
+            <div class="sidebar-header" style="margin-bottom: 15px; font-weight: bold; font-size: 1.1rem;">
+                <span>👨‍🍳</span> Resumo semanal
+            </div>
+            <!-- ... resto do conteúdo da sidebar ... -->
+             <div class="counter-card" style="text-align: center; margin-bottom: 20px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                <div class="counter-number" id="total-meals" style="font-size: 2rem; font-weight: bold; color: #ff6600;">0</div>
+                <div class="counter-label">Refeições planejadas</div>
+            </div>
                 <div class="stats-list">
                     <div class="stat-item" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                         <span>Calorias totais:</span>
@@ -146,7 +120,7 @@
                 </div>
             </aside>
         </div>
-    </div> 
+    </div>
 
     <!-- 1. MODAL DE SELEÇÃO (Com opção de repetir) -->
     <div id="selectionModal" class="recipe-selection-modal">
@@ -157,13 +131,16 @@
             </div>
             
             <!-- Checkbox para Repetir -->
-            <div class="form-check mb-3" style="background: #f1f1f1; padding: 10px; border-radius: 5px;">
-                <input class="form-check-input" type="checkbox" id="repeatCheck">
-                <label class="form-check-label" for="repeatCheck">
-                    <strong>Aplicar para toda a semana?</strong> <br>
-                    <small>Preencherá todos os dias (Ex: todos os cafés da manhã)</small>
-                </label>
-            </div>
+    <div class="form-check form-switch d-flex align-items-center p-3 mb-3" style="background: #fff8f0; border-radius: 10px; border: 1px dashed #e67e22; padding-left: 1rem !important;">
+    <!-- m-0 remove a margem negativa que joga o botão pra fora -->
+        <input class="form-check-input m-0" type="checkbox" id="repeatCheck" style="width: 3em; height: 1.5em; cursor: pointer; flex-shrink: 0;">
+    
+    <!-- ms-3 dá o espaço entre o botão e o texto -->
+        <label class="form-check-label ms-3" for="repeatCheck" style="cursor: pointer;">
+            <strong>Repetir na semana toda</strong> <br>
+            <small class="text-muted">Adiciona essa refeição em todos os dias</small>
+        </label>
+    </div>
 
             <div id="favoritesList">
                 @if(isset($favoritos) && $favoritos->count() > 0)
