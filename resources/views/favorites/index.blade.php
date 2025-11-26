@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Receitas da Remenu</title>
-  
-  <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+  <link rel="shortcut icon" href="assets/img/logo.png" type="image/x-icon">
+ 
+  <link rel="stylesheet" href="{{ asset('css/favoritos.css') }}">
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
@@ -16,9 +16,9 @@
   <link rel="stylesheet" href="{{ asset('css/header.css') }}">
   <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
 </head>
+</head>
 
 <body>
-
     <!-- nav bar -->
     <nav class="navbar navbar-expand-lg bg-light border-bottom sticky-top">
         <div class="container">
@@ -61,213 +61,56 @@
             </a>
         </div>            
     </nav>
+    <!-- fim nav bar -->
 
-  <section class="receitas-banner"></section>
+    <section class="favoritos-banner"></section>
+        
 
-  <!-- TÍTULO + SUBTÍTULO -->
-  <div class="receitas-title">
-    <h1>Receitas</h1>
-    <p>Descubra receitas deliciosas e saudáveis para todas as ocasiões</p>
-  </div>
+<div class="conteudo">
+    <!-- A div vira a dona da classe -->
+    <div class="titulo text-center my-2"> 
+        <h1>Minhas receitas favoritas</h1>
+    </div>
+</div>
 
-  
-<form id="filter-form" method="GET" action="/receitas">
-
-    <!-- BARRA PRINCIPAL -->
-    <div class="search-bar">
-
-        <!-- Buscar -->
-        <div class="search-item">
-            <i class="bi bi-search"></i>
-            <input type="text" name="search" placeholder="Buscar receitas..."
-                   value="{{ $search ?? '' }}">
-        </div>
-
-        <!-- Tipos de receita -->
-        <button type="button" id="typesBtn" class="search-item btn-item">
-            <i class="bi bi-funnel"></i>
-            Filtrar por tipos de receita
-        </button>
-
-        <!-- Filtros avançados -->
-        <button type="button" id="filtersBtn" class="search-item btn-item">
-            <i class="bi bi-funnel"></i>
-            Filtros
-        </button>
+@section('content')
+<div class="container py-5">
+    <div class="receitas-title">
+        <h1>Meus Favoritos</h1>
+        <p>Suas receitas salvas para acesso rápido.</p>
     </div>
 
-    <!-- DROPDOWN TIPOS -->
-    <div id="typesBox" class="dropdown-box">
-        <label>Tipos de receita</label>
-        <select name="recipe_types[]" multiple size="6">
-            <option value="" {{ empty($filters['recipe_types']) ? 'selected' : '' }}>Sem filtro</option>
-            <option value="Main Dish" {{ in_array('Main Dish', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Prato Principal</option>
-            <option value="Breakfast" {{ in_array('Breakfast', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Café da Manhã</option>
-            <option value="Salad" {{ in_array('Salad', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Salada</option>
-            <option value="Soup" {{ in_array('Soup', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Sopa</option>
-            <option value="Dessert" {{ in_array('Dessert', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Sobremesa</option>
-            <option value="Beverage" {{ in_array('Beverage', $filters['recipe_types'] ?? []) ? 'selected' : '' }}>Bebidas</option>
-        </select>
-
-        <button type="submit" class="apply-filters">Aplicar</button>
-
-    </div>
-
-    <!-- DROPDOWN FILTROS AVANÇADOS -->
-    <div id="filtersBox" class="dropdown-box">
-        <label>Calorias:</label>
-        <div class="two-inputs">
-            <input type="number" name="calories_from" placeholder="Mín" value="{{ $filters['calories_from'] ?? '' }}">
-            <input type="number" name="calories_to" placeholder="Máx" value="{{ $filters['calories_to'] ?? '' }}">
+    @if($favoritos->isEmpty())
+        <div class="text-center mt-5">
+            <i class="bi bi-heartbreak" style="font-size: 3rem; color: #ccc;"></i>
+            <p class="mt-3 text-muted">Você ainda não favoritou nenhuma receita.</p>
+            <a href="/receitas" class="btn btn-primary mt-2">Explorar Receitas</a>
         </div>
-
-        <label>Tempo de preparo (min):</label>
-        <div class="two-inputs">
-            <input type="number" name="prep_time_from" placeholder="Mín" value="{{ $filters['prep_time_from'] ?? '' }}">
-            <input type="number" name="prep_time_to" placeholder="Máx" value="{{ $filters['prep_time_to'] ?? '' }}">
-        </div>
-
-        <button class="apply-filters">Aplicar filtros</button>
-    </div>
-
-</form>
-
-    <div id="recipes-container" class="recipes-grid">
-      @forelse ($recipes as $recipe)
-        <div class="recipe-card" data-id="{{ $recipe['recipe_id'] }}">
-
-            @auth
-                @php
-                    // Lógica ajustada para o seu 'Usuario'
-                    // Verifica se na lista de favoritos do usuário logado existe esse ID
-                    $isFav = Auth::user()->favoritos->contains('recipe_id', $recipe['recipe_id']);
-                @endphp
-
-                <!-- O onclick deve passar o 'event' explicitamente -->
-                <button class="btn-favorite {{ $isFav ? 'active' : '' }}" 
-                        data-id="{{ $recipe['recipe_id'] }}"
-                        data-name="{{ $recipe['recipe_name'] ?? 'Receita' }}"
-                        data-image="{{ $recipe['recipe_image'] ?? '' }}"
-                        data-calories="{{ $recipe['recipe_nutrition']['calories'] ?? '' }}"
-                        onclick="toggleFavorite(event, this)"> <!-- GARANTA QUE ESTÁ ASSIM -->
+    @else
+        <div class="recipes-grid">
+            @foreach($favoritos as $fav)
+                <!-- Note que usamos $fav->recipe_id e $fav->name vindos do banco -->
+                <div class="recipe-card" data-id="{{ $fav->recipe_id }}">
                     
-                    <i class="bi {{ $isFav ? 'bi-heart-fill' : 'bi-heart' }}"></i>
-                </button>
-            @endauth
-            <img 
-                src="{{ $recipe['recipe_image'] ?? asset('img/placeholder.png') }}" 
-                alt="{{ $recipe['recipe_name'] ?? 'Receita sem nome' }}"
-                onerror="this.onerror=null; this.src='{{ asset('assets/img/semImagem.jpeg') }}';"
-            >
-            <h5 class="mt-2">{{ $recipe['recipe_name'] ?? 'Receita Desconhecida' }}</h5>
-            <p>{{ $recipe['recipe_nutrition']['calories'] ?? 'N/A' }} kcal</p>
+                    <!-- Botão para remover dos favoritos nesta tela -->
+                    <button class="btn-favorite active" 
+                            data-id="{{ $fav->recipe_id }}"
+                            onclick="toggleFavorite(event, this)">
+                        <i class="bi bi-heart-fill"></i>
+                    </button>
+
+                    <img 
+                        src="{{ $fav->image && $fav->image != '' ? $fav->image : asset('assets/img/semImagem.jpeg') }}" 
+                        alt="{{ $fav->name }}"
+                        onerror="this.onerror=null; this.src='{{ asset('assets/img/semImagem.jpeg') }}';"
+                    >
+                    <h5 class="mt-2">{{ $fav->name }}</h5>
+                    <p>{{ $fav->calories ? $fav->calories . ' kcal' : 'N/A' }}</p>
+                </div>
+            @endforeach
         </div>
-      @empty
-        <p>Nenhuma receita encontrada.</p>
-      @endforelse
-
-    </div>
-
-    <div id="loading" style="display:none; text-align:center; margin:20px;">
-      <div class="spinner-border text-primary" role="status"></div>
-      <p>Carregando mais receitas...</p>
-    </div>
-
-    <div id="recipeModal" class="modal-overlay" style="display: none;">
-      <div class="modal-card">
-          <button class="close-modal">X</button>
-          <img id="modalImage" src="" alt="">
-          <h2 id="modalName"></h2>
-          <p><strong>Calorias:</strong> <span id="modalCalories"></span></p>
-          <p><strong>Tempo de preparo:</strong> <span id="modalPrep"></span></p>
-
-          <h4>Ingredientes</h4>
-          <ul id="modalIngredients"></ul>
-
-          <h4>Modo de preparo</h4>
-          <p id="modalDirections"></p>
-
-          <h4>Informação Nutricional</h4>
-          <p id="modalNutrition"></p>
-      </div>
-    </div>
-
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        let page = 1;
-        let loading = false;
-        const recipeContainer = document.getElementById('recipes-container');
-        const searchForm = document.getElementById('filter-form');
-        const loadingIndicator = document.getElementById('loading');
-
-        async function loadMoreRecipes() {
-            if (loading) return;
-            loading = true;
-            page++;
-
-            loadingIndicator.style.display = 'block';
-
-            const formData = new FormData();
-
-            // copiar TODOS os valores do formulário manualmente
-            document.querySelectorAll('#filter-form [name]').forEach(el => {
-                if (el.type === 'select-multiple') {
-                    [...el.options].forEach(opt => {
-                        if (opt.selected && opt.value !== "") {
-                            formData.append(el.name, opt.value);
-                        }
-                    });
-                } else if (el.value !== "") {
-                    formData.append(el.name, el.value);
-                }
-            });
-
-            formData.append('page', page);
-            const queryString = new URLSearchParams(formData).toString();
-
-            try {
-                const response = await fetch(`/receitas?${queryString}`, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                });
-
-                if (!response.ok) throw new Error('Erro ao carregar receitas');
-                const html = await response.text();
-
-                if (!html.trim()) {
-                    window.removeEventListener('scroll', handleScroll);
-                    loadingIndicator.innerHTML = '<p>Não há mais receitas.</p>';
-                    return;
-                }
-
-                recipeContainer.insertAdjacentHTML('beforeend', html);
-
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const newCards = doc.querySelectorAll('.recipe-card');
-
-                if (newCards.length === 0) {
-                    window.removeEventListener('scroll', handleScroll);
-                    loadingIndicator.innerHTML = '<p>Não há mais receitas.</p>';
-                }
-
-            } catch (error) {
-                console.error(error);
-            } finally {
-                loadingIndicator.style.display = 'none';
-                loading = false;
-            }
-        }
-
-        function handleScroll() {
-            const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
-            if (nearBottom) loadMoreRecipes();
-        }
-
-        window.addEventListener('scroll', handleScroll);
-    });
-    </script>
-
+    @endif
+</div>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         
@@ -424,8 +267,57 @@
 
     }); // Fim do DOMContentLoaded
 </script>
+<script>
+    // Precisamos do Token CSRF do Laravel para POST via fetch
+    const csrfToken = "{{ csrf_token() }}";
 
-  <footer>
+    function toggleFavorite(event, btn) {
+        // Impede que o clique abra o Modal de detalhes
+        event.stopPropagation();
+
+        const data = {
+            recipe_id: btn.dataset.id,
+            name: btn.dataset.name,
+            image: btn.dataset.image,
+            calories: btn.dataset.calories
+        };
+
+        // Animação visual imediata (UX)
+        const icon = btn.querySelector('i');
+        const isActive = btn.classList.contains('active');
+        
+        if (isActive) {
+            btn.classList.remove('active');
+            icon.classList.remove('bi-heart-fill');
+            icon.classList.add('bi-heart');
+        } else {
+            btn.classList.add('active');
+            icon.classList.remove('bi-heart');
+            icon.classList.add('bi-heart-fill');
+        }
+
+        // Envia para o backend
+        fetch('/favoritos/toggle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(res => {
+            console.log(res.status);
+        })
+        .catch(err => {
+            console.error(err);
+            // Reverte se der erro
+            alert('Erro ao favoritar. Tente novamente.');
+        });
+    }
+</script>
+
+    <!-- Footer -->
     <footer class="main-footer">
     <div class="container py-4">
 
@@ -445,14 +337,14 @@
               
               <div class="footer-nav-grid mx-auto">
                   <ul class="list-unstyled footer-nav-col">
-                      <li><a href="home2" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
-                      <li><a href="receitas" class="footer-link"><i class="fas fa-utensils"></i> Receitas</a></li>
+                      <li><a href="#" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
+                      <li><a href="#" class="footer-link"><i class="fas fa-utensils"></i> Receitas</a></li>
                   </ul>
                   <ul class="list-unstyled footer-nav-col">
                       <li><a href="#" class="footer-link"><i class="fas fa-calendar-alt"></i> Planejamento</a></li>
                       <li><a href="#" class="footer-link"><i class="far fa-heart"></i> Favoritos</a></li>
                   </ul><ul class="list-unstyled footer-nav-col">
-                      <li><a href="geladeira" class="footer-link"><i class="fas fa-snowflake"></i> Geladeira</a></li>
+                      <li><a href="#" class="footer-link"><i class="fas fa-snowflake"></i> Geladeira</a></li>
                   </ul>
               </div>
           </div>
@@ -482,69 +374,8 @@
                 </div>
             </div>
         </div>
-    </div>
-  </footer>
-  <script>
-    const csrfToken = "{{ csrf_token() }}";
+        </div>
+    </footer>
 
-    function toggleFavorite(event, btn) {
-        // 1. ISSO IMPEDE O MODAL DE ABRIR
-        event.stopPropagation();
-        event.preventDefault(); // Adicione isso por segurança
-
-        const icon = btn.querySelector('i');
-        
-        // 2. ALTERAÇÃO VISUAL IMEDIATA (Antes de chamar o backend)
-        if (btn.classList.contains('active')) {
-            // Desfavoritar
-            btn.classList.remove('active');
-            icon.classList.remove('bi-heart-fill');
-            icon.classList.add('bi-heart');
-        } else {
-            // Favoritar
-            btn.classList.add('active');
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill');
-        }
-
-        // 3. ENVIA PRO BACKEND
-        const data = {
-            recipe_id: btn.dataset.id,
-            name: btn.dataset.name,
-            image: btn.dataset.image,
-            calories: btn.dataset.calories
-        };
-
-        fetch('/favoritos/toggle', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
-            body: JSON.stringify(data)
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log('Status:', data.status);
-        })
-        .catch(err => console.error('Erro:', err));
-    }
-</script>
-    <script>
-        const typesBtn = document.getElementById("typesBtn");
-        const filtersBtn = document.getElementById("filtersBtn");
-        const typesBox = document.getElementById("typesBox");
-        const filtersBox = document.getElementById("filtersBox");
-
-        typesBtn.addEventListener("click", () => {
-            typesBox.style.display = typesBox.style.display === "block" ? "none" : "block";
-            filtersBox.style.display = "none";
-        });
-
-        filtersBtn.addEventListener("click", () => {
-            filtersBox.style.display = filtersBox.style.display === "block" ? "none" : "block";
-            typesBox.style.display = "none";
-        });
-    </script>
-</body>
-</html> 
+    
+<body>

@@ -11,14 +11,12 @@ return new class extends Migration
     {
         Schema::create('favoritos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('usuario_id');
+            $table->foreignId('usuario_id')->constrained()->onDelete('cascade');
             $table->string('recipe_id');
             $table->string('name')->nullable();
             $table->string('image')->nullable();
             $table->string('calories')->nullable();
-
-            $table->foreign('usuario_id')->references('id')->on('usuarios');
-        
+    
             $table->timestamps();
 
             $table->unique(['usuario_id','recipe_id']);

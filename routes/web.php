@@ -3,8 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\RecipeController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FavoritoController;
+use App\Http\Controllers\GeladeiraController; // <--- IMPORTANTE: Adicionado aqui
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,13 +59,25 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
-    // Páginas que requerem autenticação
+    
+    // --- PÁGINA DA GELADEIRA (View) ---
     Route::get('/geladeira', function () {
         return view('geladeira');
     })->name('geladeira');
+
+    // --- API DA GELADEIRA (JSON para o JavaScript) ---
+    // Estas rotas respondem às chamadas fetch('/api/...') do seu script
+    Route::prefix('api')->group(function () {
+        Route::get('/ingredientes/search', [GeladeiraController::class, 'search']); // Autocomplete
+        Route::get('/geladeira', [GeladeiraController::class, 'index']);           // Listar itens
+        Route::post('/geladeira', [GeladeiraController::class, 'store']);          // Adicionar
+        Route::put('/geladeira/{id}', [GeladeiraController::class, 'update']);     // Editar
+        Route::delete('/geladeira/{id}', [GeladeiraController::class, 'destroy']); // Excluir
+    });
     
-    Route::get('/favoritos', [FavoritoController::class, 'index'])->name('favoritos.index');
-    Route::post('/favoritos/toggle', [FavoritoController::class, 'toggle'])->name('favoritos.toggle');
+    // --- OUTRAS ROTAS PROTEGIDAS ---
+    Route::get('/favoritos', [FavoritoController::class, 'index'])->name('favorites.index');
+    Route::post('/favoritos/toggle', [FavoritoController::class, 'toggle'])->name('favorites.toggle');
     
     Route::get('/planejamento', function () {
         return view('planejamento');
