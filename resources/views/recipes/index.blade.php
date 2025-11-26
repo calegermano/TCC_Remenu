@@ -131,7 +131,7 @@
     </div>
 
 </form>
-
+    <div class="container py-5">
     <div id="recipes-container" class="recipes-grid">
       @forelse ($recipes as $recipe)
         <div class="recipe-card" data-id="{{ $recipe['recipe_id'] }}">
@@ -483,6 +483,7 @@
             </div>
         </div>
     </div>
+    <div>
   </footer>
   <script>
     const csrfToken = "{{ csrf_token() }}";

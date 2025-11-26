@@ -48,7 +48,7 @@ class FatSecretService
         $params = [
             'method' => 'recipes.search.v3',
             'format' => 'json',
-            'max_results' => 50,
+            'max_results' => 48,
             'page_number' => $page,
             'must_have_images' => true,
             'sort_by' => 'relevance',
