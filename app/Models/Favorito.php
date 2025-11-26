@@ -9,6 +9,8 @@ class Favorito extends Model
 {
     use HasFactory;
 
+    protected $table = 'favoritos';
+
     protected $fillable = [
         'usuario_id',
         'recipe_id',

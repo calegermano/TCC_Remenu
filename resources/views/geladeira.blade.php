@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Geladeira</title>
 
     <link rel="shortcut icon" href="{{ asset('assets/img/logo.png') }}" type="image/x-icon">
@@ -263,147 +264,151 @@ document.addEventListener("DOMContentLoaded", () => {
     const autocompleteBox = document.getElementById("autocomplete");
     const listaCategorias = document.getElementById("listaIngredientes");
 
-    /* ---------------- FUNÇÃO DO PLACEHOLDER ---------------- */
-    function atualizarPlaceholder() {
-        let placeholder = document.getElementById("placeholder-ingredientes");
-
-        if (!placeholder) {
-            placeholder = document.createElement("p");
-            placeholder.id = "placeholder-ingredientes";
-            placeholder.textContent = "Nenhum ingrediente adicionado ainda.";
-            placeholder.style.color = "#888";
-            placeholder.style.textAlign = "center";
-            placeholder.style.padding = "15px 0";
-            placeholder.style.fontSize = "14px";
-        }
-
-        if (listaCategorias.children.length === 0) {
-            listaCategorias.appendChild(placeholder);
-        } else {
-            if (placeholder.parentNode) placeholder.remove();
-        }
+    // Pega o crachá de segurança (Token)
+    function getCsrfToken() {
+        const tokenTag = document.querySelector('meta[name="csrf-token"]');
+        return tokenTag ? tokenTag.content : "";
     }
 
-    /* ---------------- AUTOCOMPLETE ---------------- */
-    searchInput.addEventListener("input", async () => {
-        const query = searchInput.value.trim();
-        if (query.length < 1) {
-            autocompleteBox.innerHTML = "";
-            return;
-        }
-
-        const res = await fetch(`/api/ingredientes/search?query=${query}`, { credentials: "include" });
-        const ingredientes = await res.json();
-
-        autocompleteBox.innerHTML = "";
-        ingredientes.forEach(ing => {
-            const item = document.createElement("div");
-            item.classList.add("autocomplete-item");
-            item.textContent = ing.nome;
-            item.dataset.id = ing.id;
-
-            item.addEventListener("click", () => {
-                searchInput.value = ing.nome;
-                searchInput.dataset.id = ing.id;
-                autocompleteBox.innerHTML = "";
-            });
-
-            autocompleteBox.appendChild(item);
-        });
-    });
-
-    /* ---------------- CARREGAR GELADEIRA ---------------- */
+    /* --- 1. BUSCAR DADOS E MOSTRAR NA TELA --- */
     async function carregarGeladeira() {
-        const res = await fetch("/api/geladeira", { credentials: "include" });
-        const dados = await res.json();
+        try {
+            // O Cliente pede os dados para o Garçom
+            const res = await fetch("/api/geladeira"); 
+            const dadosAgrupados = await res.json();
 
-        listaCategorias.innerHTML = "";
+            listaCategorias.innerHTML = "";
 
-        dados.forEach(item => {
-            const div = document.createElement("div");
-            div.classList.add("ingrediente-item");
-            div.innerHTML = `
-                <strong>${item.ingrediente.nome}</strong>
-                <p>Quantidade: <span>${item.quantidade}</span></p>
-                <p>Validade: <span>${item.validade ?? "—"}</span></p>
+            // Se a geladeira estiver vazia
+            if (!dadosAgrupados || Object.keys(dadosAgrupados).length === 0) {
+                listaCategorias.innerHTML = '<p class="text-muted text-center mt-4">Sua geladeira está vazia.</p>';
+                return;
+            }
 
-                <button class="btn-editar" data-id="${item.id}">Editar</button>
-                <button class="btn-excluir" data-id="${item.id}">Excluir</button>
-            `;
-            listaCategorias.appendChild(div);
-        });
+            // O Controller mandou os dados separados por categoria (Frutas, Legumes...)
+            // Vamos percorrer cada categoria
+            for (const [categoriaNome, itens] of Object.entries(dadosAgrupados)) {
+                
+                // Cria o título da categoria
+                const titulo = document.createElement("h5");
+                titulo.style.color = "#D9682B";
+                titulo.style.marginTop = "20px";
+                titulo.textContent = categoriaNome;
+                listaCategorias.appendChild(titulo);
 
-        atualizarPlaceholder();
-        adicionarEventos();
+                // Cria os itens dessa categoria
+                itens.forEach(item => {
+                    const div = document.createElement("div");
+                    div.className = "ingrediente-item p-3 mb-2 border rounded";
+                    div.innerHTML = `
+                        <div class="d-flex justify-content-between">
+                            <strong>${item.ingrediente}</strong>
+                            <span>Qtd: ${item.quantidade}</span>
+                        </div>
+                        <small>Validade: ${item.validade ? new Date(item.validade).toLocaleDateString('pt-BR') : '—'}</small>
+                        <div class="mt-2 text-end">
+                            <button class="btn btn-sm btn-success btn-editar" data-id="${item.id}">Editar</button>
+                            <button class="btn btn-sm btn-danger btn-excluir" data-id="${item.id}">Excluir</button>
+                        </div>
+                    `;
+                    listaCategorias.appendChild(div);
+                });
+            }
+
+            // Ativa os botões de editar e excluir que acabamos de criar
+            adicionarEventosBotoes();
+
+        } catch (erro) {
+            console.error("Erro ao carregar:", erro);
+        }
     }
 
-    carregarGeladeira();
-
-    /* ---------------- ADICIONAR ---------------- */
+    /* --- 2. ADICIONAR NOVO INGREDIENTE --- */
     document.getElementById("adicionar").addEventListener("click", async () => {
-        const ingredienteId = searchInput.dataset.id;
-        const quantidade = document.getElementById("quantidade").value;
-        const validade = document.getElementById("validade").value;
+        const nome = searchInput.value;
+        const qtd = document.getElementById("quantidade").value;
+        const val = document.getElementById("validade").value;
 
-        if (!ingredienteId) {
-            alert("Escolha um ingrediente da lista!");
-            return;
-        }
+        if (!nome) return alert("Digite o nome do ingrediente!");
+
+        const dados = { ingrediente: nome, quantidade: qtd, validade: val };
 
         await fetch("/api/geladeira", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify({ ingrediente_id: ingredienteId, quantidade, validade })
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": getCsrfToken() // Mostra o crachá de segurança
+            },
+            body: JSON.stringify(dados)
         });
 
+        // Limpa os campos e recarrega a lista
         searchInput.value = "";
-        searchInput.dataset.id = "";
         document.getElementById("quantidade").value = "";
         document.getElementById("validade").value = "";
-
         carregarGeladeira();
     });
 
-    /* ---------------- EDITAR / EXCLUIR ---------------- */
-    function adicionarEventos() {
+    /* --- 3. AUTOCOMPLETE (Sugestão de nomes) --- */
+    searchInput.addEventListener("input", async () => {
+        const texto = searchInput.value;
+        if (texto.length < 1) { autocompleteBox.innerHTML = ""; return; }
 
+        const res = await fetch(`/api/ingredientes/search?query=${texto}`);
+        const lista = await res.json();
+
+        autocompleteBox.innerHTML = "";
+        lista.forEach(ing => {
+            const div = document.createElement("div");
+            div.className = "autocomplete-item p-2 border-bottom";
+            div.style.cursor = "pointer";
+            div.textContent = ing.nome;
+            div.onclick = () => {
+                searchInput.value = ing.nome;
+                autocompleteBox.innerHTML = "";
+            };
+            autocompleteBox.appendChild(div);
+        });
+    });
+
+    /* --- 4. FUNÇÕES DE EDITAR E EXCLUIR --- */
+    function adicionarEventosBotoes() {
+        // Botão Excluir
         document.querySelectorAll(".btn-excluir").forEach(btn => {
-            btn.addEventListener("click", async () => {
+            btn.onclick = async () => {
+                if(!confirm("Remover este item?")) return;
                 const id = btn.dataset.id;
-
                 await fetch(`/api/geladeira/${id}`, {
                     method: "DELETE",
-                    credentials: "include"
+                    headers: { "X-CSRF-TOKEN": getCsrfToken() }
                 });
-
                 carregarGeladeira();
-            });
+            };
         });
 
+        // Botão Editar
         document.querySelectorAll(".btn-editar").forEach(btn => {
-            btn.addEventListener("click", async () => {
+            btn.onclick = async () => {
                 const id = btn.dataset.id;
-                const novaQuantidade = prompt("Nova quantidade:");
-                const novaValidade = prompt("Nova validade (YYYY-MM-DD):");
-
-                await fetch(`/api/geladeira/${id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({
-                        quantidade: novaQuantidade,
-                        validade: novaValidade
-                    })
-                });
-
-                carregarGeladeira();
-            });
+                const novaQtd = prompt("Nova quantidade:");
+                if(novaQtd) {
+                    await fetch(`/api/geladeira/${id}`, {
+                        method: "PUT",
+                        headers: { 
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": getCsrfToken()
+                        },
+                        body: JSON.stringify({ quantidade: novaQtd })
+                    });
+                    carregarGeladeira();
+                }
+            };
         });
     }
 
+    // Carrega a lista assim que a página abre
+    carregarGeladeira();
 });
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 

@@ -12,13 +12,11 @@ body {
 .receitas-banner {
     width: 100%;
     height: 300px;
-    background: url('../assets/img/receitas.jpg') no-repeat center center; 
+    background: url("../assets/img/receitas.jpg") no-repeat center center;
     background-size: cover;
     box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.3);
     border-radius: 0 0 10px 10px;
     margin-bottom: 50px;
-
-    
 }
 
 /* ------------------------------ */
@@ -28,7 +26,6 @@ body {
     text-align: center;
     margin-top: 60px;
     margin-bottom: 20px;
- 
 }
 
 .receitas-title h1 {
@@ -42,12 +39,11 @@ body {
     font-size: 18px;
     color: #6c7280;
     text-align: center;
-    max-width: 400px;   /* controla o tamanho para forçar a quebra */
-    margin: 0 auto;     /* centraliza */
+    max-width: 400px; /* controla o tamanho para forçar a quebra */
+    margin: 0 auto; /* centraliza */
     line-height: 1.5;
     margin-bottom: 60px;
 }
-    
 
 /* ------------------------------ */
 /*   BARRA DE BUSCA E FILTROS     */
@@ -90,7 +86,7 @@ body {
 /* Botões */
 .btn-item {
     cursor: pointer;
-    transition: .2s;
+    transition: 0.2s;
     justify-content: center;
 }
 
@@ -179,8 +175,6 @@ body {
     }
 }
 
-    
-
 /* ------------------------------ */
 /*      GRID DE RECEITAS          */
 /* ------------------------------ */
@@ -228,17 +222,17 @@ body {
     color: #777;
 }
 
-
 /* ------------------------------ */
 /*           MODAL                */
 /* ------------------------------ */
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1050;
 }
 
 .modal-card {
@@ -257,7 +251,7 @@ body {
     float: right;
 }
 
-.modal-card img{
+.modal-card img {
     width: 100%;
     height: 250px;
     object-fit: cover;
@@ -280,7 +274,7 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 10; /* Fica acima da imagem e do clique do card */
+    z-index: 5; /* Fica acima da imagem e do clique do card */
     transition: all 0.2s;
 }
 
