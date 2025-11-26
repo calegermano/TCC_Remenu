@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Favoritos</title>
+  <title>Receitas da Remenu</title>
   <link rel="shortcut icon" href="assets/img/logo.png" type="image/x-icon">
  
   <link rel="stylesheet" href="{{ asset('css/favoritos.css') }}">
@@ -57,8 +57,35 @@
                 </ul>
             </div>
 
-            <a href="#" class="profile-link d-none d-lg-block" aria-label="Perfil"> <i class="bi bi-person-fill"></i>
-            </a>
+            <!-- Início do Dropdown de Perfil -->
+            <div class="dropdown d-none d-lg-block">
+                <a href="#" class="profile-link dropdown-toggle text-decoration-none" 
+                id="profileDropdown" 
+                role="button" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+                    <i class="bi bi-person-fill" style="font-size: 1.5rem; color: #333;"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <!-- NOME DO USUÁRIO AQUI -->
+                    <li>
+                        <span class="dropdown-item-text fw-bold text-center" style="color: #D9682B;">
+                            <!-- Tente 'name' primeiro. Se não aparecer nada, mude para 'nome' -->
+                            Olá, {{ Auth::user()->name ?? Auth::user()->nome ?? 'Visitante' }}
+                        </span>
+                    </li>
+                    
+                    <li><hr class="dropdown-divider"></li>
+
+                    <!-- Botão de Sair -->
+                    <li>
+                        <a class="dropdown-item text-danger" href="{{ route('logout') }}">
+                            <i class="bi bi-box-arrow-right"></i> Sair
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>            
     </nav>
     <!-- fim nav bar -->
@@ -70,7 +97,7 @@
     <!-- A div vira a dona da classe -->
     <div class="titulo text-center my-2"> 
         <h1>Minhas receitas favoritas</h1>
-        <div class="titulo text-center my-4">
+        <div class="subtitulo">
             <p>Suas receitas salvas para acesso rápido.</p>
         </div>
     </div>
@@ -350,14 +377,14 @@
               
               <div class="footer-nav-grid mx-auto">
                   <ul class="list-unstyled footer-nav-col">
-                      <li><a href="{{ route('home2') }}" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
-                      <li><a href="{{ route('recipes.index') }}" class="footer-link"><i class="fas fa-utensils"></i> Receitas</a></li>
+                      <li><a href="#" class="footer-link"><i class="fas fa-home"></i> Home</a></li>
+                      <li><a href="#" class="footer-link"><i class="fas fa-utensils"></i> Receitas</a></li>
                   </ul>
                   <ul class="list-unstyled footer-nav-col">
-                      <li><a href="{{ route('planejamento') }}" class="footer-link"><i class="fas fa-calendar-alt"></i> Planejamento</a></li>
-                      <li><a href="{{ route('favoritos') }}" class="footer-link"><i class="far fa-heart"></i> Favoritos</a></li>
+                      <li><a href="#" class="footer-link"><i class="fas fa-calendar-alt"></i> Planejamento</a></li>
+                      <li><a href="#" class="footer-link"><i class="far fa-heart"></i> Favoritos</a></li>
                   </ul><ul class="list-unstyled footer-nav-col">
-                      <li><a href="{{ route('geladeira') }}" class="footer-link"><i class="fas fa-snowflake"></i> Geladeira</a></li>
+                      <li><a href="#" class="footer-link"><i class="fas fa-snowflake"></i> Geladeira</a></li>
                   </ul>
               </div>
           </div>
@@ -390,5 +417,5 @@
         </div>
     </footer>
 
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <body>

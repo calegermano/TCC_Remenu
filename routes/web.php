@@ -17,17 +17,9 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/home2', function () {
-    return view('home2');
-})->name('home2');
-
 Route::get('/senha', function () {
     return view('senha');
 })->name('senha');
-
-// Rotas de receitas (públicas - apenas visualização)
-Route::get('/receitas', [RecipeController::class, 'index'])->name('recipes.index');
-Route::get('/receitas/{id}', [RecipeController::class, 'show'])->name('recipes.show');
 
 // Rotas de componentes estáticos
 Route::get('/footer', function () {
@@ -64,6 +56,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/geladeira', function () {
         return view('geladeira');
     })->name('geladeira');
+    
+    Route::get('/home2', [RecipeController::class, 'home'])->name('home2');
+
+    // Rotas de receitas (públicas - apenas visualização)
+    Route::get('/receitas', [RecipeController::class, 'index'])->name('recipes.index');
+    Route::get('/receitas/{id}', [RecipeController::class, 'show'])->name('recipes.show');
+
 
     Route::get('/favoritos', [FavoritoController::class, 'index'])->name('favoritos');
 

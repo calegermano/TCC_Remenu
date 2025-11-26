@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Geladeira;
-use App\Models\Ingrediente;
+use App\Models\Ingredientes; // <--- AGORA NO PLURAL, IGUAL SEU MODEL
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,18 +15,25 @@ class GeladeiraController extends Controller
     {
         $usuarioId = Auth::id();
 
+        // Carrega: Geladeira -> func ingrediente() -> func categoria()
+        // No seu model Geladeira a função chama 'ingrediente' (singular), isso tá certo.
+        // No model Ingredientes a função chama 'categoria' (singular), isso tá certo.
         $itens = Geladeira::with('ingrediente.categoria')
             ->where('usuario_id', $usuarioId)
             ->get();
 
         $organizado = $itens->groupBy(function ($item) {
-            return $item->ingrediente->categoria->nome;
+            // Verifica se o ingrediente e a categoria existem para não dar erro
+            if ($item->ingrediente && $item->ingrediente->categoria) {
+                return $item->ingrediente->categoria->nome;
+            }
+            return 'Outros';
         })->map(function ($grupo) {
             return $grupo->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'ingrediente' => $item->ingrediente->nome,
-                    'categoria' => $item->ingrediente->categoria->nome,
+                    'ingrediente' => $item->ingrediente->nome ?? 'Item desconhecido',
+                    'categoria' => $item->ingrediente->categoria->nome ?? 'Outros',
                     'quantidade' => $item->quantidade,
                     'validade' => $item->validade,
                 ];
@@ -41,13 +48,14 @@ class GeladeiraController extends Controller
     {
         $query = $request->query('query', '');
 
-        return Ingrediente::where('nome', 'LIKE', "%$query%")
+        // <--- MUDANÇA AQUI: Usa 'Ingredientes' (Plural)
+        return Ingredientes::where('nome', 'LIKE', "%$query%")
+            ->orderBy('nome')
             ->limit(10)
             ->get();
     }
 
     // ADICIONAR INGREDIENTE À GELADEIRA
-    // CASO JÁ EXISTA -> SOMA QUANTIDADE
     public function store(Request $request)
     {
         $request->validate([
@@ -58,36 +66,32 @@ class GeladeiraController extends Controller
 
         $usuarioId = Auth::id();
 
-        $ingrediente = Ingrediente::where('nome', $request->ingrediente)->first();
+        // <--- MUDANÇA AQUI: Usa 'Ingredientes' (Plural)
+        $ingredienteDB = Ingredientes::where('nome', $request->ingrediente)->first();
 
-        if (!$ingrediente) {
+        if (!$ingredienteDB) {
+            // Retorna 404 para o front mostrar o alerta
             return response()->json([
-                'erro' => 'Ingrediente não encontrado no banco de dados.'
+                'erro' => 'Ingrediente não encontrado no sistema. Tente usar o autocomplete.'
             ], 404);
         }
 
         $item = Geladeira::where('usuario_id', $usuarioId)
-            ->where('ingrediente_id', $ingrediente->id)
+            ->where('ingrediente_id', $ingredienteDB->id)
             ->first();
 
         if ($item) {
             $item->quantidade += $request->quantidade;
-
             if ($request->validade) {
                 $item->validade = $request->validade;
             }
-
             $item->save();
-
-            return response()->json([
-                'mensagem' => 'Quantidade atualizada.',
-                'item' => $item
-            ]);
+            return response()->json(['mensagem' => 'Atualizado', 'item' => $item]);
         }
 
         $novo = Geladeira::create([
             'usuario_id' => $usuarioId,
-            'ingrediente_id' => $ingrediente->id,
+            'ingrediente_id' => $ingredienteDB->id,
             'quantidade' => $request->quantidade,
             'validade' => $request->validade,
         ]);
@@ -104,12 +108,6 @@ class GeladeiraController extends Controller
         ]);
 
         $item = Geladeira::findOrFail($id);
-
-        if ($request->ingrediente_id || $request->ingrediente) {
-            return response()->json([
-                'erro' => 'O ingrediente não pode ser alterado, apenas quantidade e validade.'
-            ], 400);
-        }
 
         if ($request->quantidade) {
             $item->quantidade = $request->quantidade;
