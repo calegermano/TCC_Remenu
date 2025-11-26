@@ -15,7 +15,6 @@ body {
     background: url("../assets/img/receitas.jpg") no-repeat center center;
     background-size: cover;
     box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 0 0 10px 10px;
     margin-bottom: 50px;
 }
 
@@ -92,6 +91,26 @@ body {
 
 .btn-item:hover {
     background: #f5f5f5;
+}
+
+/* Cor do switch quando marcado (Laranja) */
+.form-check-input:checked {
+    background-color: #e67e22 !important;
+    border-color: #e67e22 !important;
+    /* Removi o margin-left daqui para evitar pulos */
+}
+
+/* Cor da borda/sombra quando clica (Foco) */
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(230, 126, 34, 0.25) !important;
+    border-color: #e67e22 !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23e67e22'/%3e%3c/svg%3e");
+}
+
+/* Ajuste opcional para garantir que o switch desligado tenha a borda certa */
+.form-check-input {
+    background-color: #ffffff;
+    border-color: #ccc;
 }
 
 /* ----------------------------- */
