@@ -27,13 +27,7 @@ body {
     margin: 0 auto; /* Centraliza o bloco na tela */
 }
 
-.titulo {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #4FE3C1; /* Aquele verde piscina da imagem */
-    margin: 0 0 15px 0; /* Espaço embaixo do título */
-    line-height: 1.2;
-}
+
 
 .subtexto {
     font-size: 1.2rem;
