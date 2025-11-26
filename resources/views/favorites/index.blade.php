@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Receitas da Remenu</title>
+  <title>Favoritos</title>
   <link rel="shortcut icon" href="assets/img/logo.png" type="image/x-icon">
  
   <link rel="stylesheet" href="{{ asset('css/favoritos.css') }}">

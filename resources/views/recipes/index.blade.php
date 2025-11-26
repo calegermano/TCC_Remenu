@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Receitas da Remenu</title>
+    <link rel="shortcut icon" href="assets/img/logo.png" type="image/x-icon">
   
   <link rel="stylesheet" href="{{ asset('css/index.css') }}">
   

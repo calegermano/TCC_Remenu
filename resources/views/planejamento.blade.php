@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Receitas da Remenu</title>
+  <title>Planejamento</title>
   <link rel="shortcut icon" href="assets/img/logo.png" type="image/x-icon">
  
   <link rel="stylesheet" href="{{ asset('css/planejamento.css') }}">
@@ -128,7 +128,6 @@
         /* Destaque para o dia atual */
         .day-column.today {
             border: 2px solid var(--accent-color);
-            i
             box-shadow: 0 0 10px rgba(230, 126, 34, 0.3);
         }
 
