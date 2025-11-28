@@ -387,9 +387,13 @@
                     if (ingredientsRaw.length > 0) {
                         ingredientsRaw.forEach(item => {
                             const li = document.createElement('li');
-                            const text = item.ingredient_description ?? item.food_name ?? item;
-                            const measurement = item.measurement_description ?? '';
-                            li.textContent = measurement ? `${measurement} ${text}` : text;
+                            
+                            // CORREÇÃO: Usa apenas a descrição completa se ela existir, ignorando a medida separada
+                            const text = item.ingredient_description 
+                                        ? item.ingredient_description 
+                                        : (item.food_name ?? (typeof item === 'string' ? item : 'Ingrediente'));
+                            
+                            li.textContent = text;
                             ingList.appendChild(li);
                         });
                     } else {
