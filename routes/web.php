@@ -7,22 +7,14 @@ use App\Http\Controllers\FavoritoController;
 use App\Http\Controllers\GeladeiraController;
 use App\Http\Controllers\PlanejamentoController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
 | Rotas Públicas (acessíveis sem login) - SEM MIDDLEWARE
 |--------------------------------------------------------------------------
 */
-
-// Rota temporária para descobrir os modelos do Gemini
-Route::get('/debug-gemini', function () {
-    $apiKey = env('GEMINI_API_KEY');
-    
-    // Pergunta pro Google: "Quais modelos eu posso usar?"
-    $response = Http::get("https://generativelanguage.googleapis.com/v1beta/models?key={$apiKey}");
-    
-    return $response->json();
-});
 
 Route::get('/', function () {
     return view('home');
@@ -70,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/home2', [RecipeController::class, 'home'])->name('home2');
 
-    // Rotas de receitas (públicas - apenas visualização)
+    // Rotas de receitas
     Route::get('/receitas', [RecipeController::class, 'index'])->name('recipes.index');
     Route::get('/receitas/{id}', [RecipeController::class, 'show'])->name('recipes.show');
 
@@ -106,3 +98,18 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/dashboard', [DashBoardController::class, 'index'])->name('dashboard');
     Route::get('/admin/dashboard', [DashBoardController::class, 'index'])->name('admin.dashboard');
 });
+
+
+Route::get('/email/verify', function () {
+    return view('auth.verify');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect()->route('home2');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Link reenviado!');
+})->middleware(['auth'])->name('verification.send');

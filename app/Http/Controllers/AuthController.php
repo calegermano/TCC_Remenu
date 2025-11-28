@@ -45,6 +45,12 @@ class AuthController extends Controller
         return back()->withErrors(['email' => 'Email ou senha inválidos']);
     }
 
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/');
+    }
+
     public function register(Request $request)
     {
         $request->validate([
@@ -61,22 +67,10 @@ class AuthController extends Controller
             'tipo_id' => 2, // SEMPRE COMUM
         ]);
 
-        Auth::login($usuario);
+        $usuario->sendEmailVerificationNotification();
 
-        // DEBUG
-        \Log::info('REGISTRO - Novo usuário: ' . $usuario->email . ', Tipo ID: ' . $usuario->tipo_id . ', isAdmin: ' . ($usuario->isAdmin() ? 'SIM' : 'NÃO'));
-
-        // Redirecionamento após o registro
-        if ($usuario->isAdmin()) {
-            return redirect()->intended('/admin/dashboard');
-        } else {
-            return redirect()->intended('/home2');
-        }
+        return redirect()->route('verification.notice');
+        
     }
 
-    public function logout()
-    {
-        Auth::logout();
-        return redirect('/');
-    }
 }
