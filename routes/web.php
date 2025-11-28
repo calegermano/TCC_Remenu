@@ -13,6 +13,17 @@ use Illuminate\Support\Facades\Route;
 | Rotas Públicas (acessíveis sem login) - SEM MIDDLEWARE
 |--------------------------------------------------------------------------
 */
+
+// Rota temporária para descobrir os modelos do Gemini
+Route::get('/debug-gemini', function () {
+    $apiKey = env('GEMINI_API_KEY');
+    
+    // Pergunta pro Google: "Quais modelos eu posso usar?"
+    $response = Http::get("https://generativelanguage.googleapis.com/v1beta/models?key={$apiKey}");
+    
+    return $response->json();
+});
+
 Route::get('/', function () {
     return view('home');
 })->name('home');
