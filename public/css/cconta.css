@@ -1,17 +1,17 @@
 * {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url('/assets/img/salada-frutas.png');
+    background-image: url("/assets/img/salada-frutas.png");
     background-size: cover;
 }
 
@@ -40,7 +40,6 @@ body {
     margin-bottom: 15px;
 }
 
-
 #top-logo {
     width: 150px;
     height: auto;
@@ -48,7 +47,7 @@ body {
 }
 
 #top-logo {
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
 }
 
 .form-grid {
@@ -64,7 +63,7 @@ body {
 }
 
 .form-grid label {
-    color: #D9682B;
+    color: #d9682b;
     font-weight: bold;
     margin-bottom: 6px;
     align-items: center;
@@ -83,16 +82,15 @@ body {
 
 .form-grid input:focus {
     outline: none;
-    border-color: #50D9B0;
+    border-color: #50d9b0;
 }
 
 .cconta-box h2 {
     font-size: 35px;
-    color:#D9682B;
+    color: #d9682b;
     margin-bottom: 50px;
     font-weight: bolder;
 }
-
 
 .error-message {
     background: #fee;
@@ -116,11 +114,12 @@ body {
     width: 100%;
     margin-bottom: 8px;
     background-color: white;
-    color: #D9682B;
+    color: #d9682b;
     font-weight: bold;
 }
 
-.input-group input { /*!!!!!!!*/
+.input-group input {
+    /*!!!!!!!*/
     width: 300px;
     padding: 12px 15px;
     border: 2px solid #cccccc;
@@ -135,14 +134,13 @@ body {
     border-color: #cccccc;
 }
 
-
 .cconta-btn {
-    background-color: #50D9b0;
+    background-color: #50d9b0;
     border: none;
     border-radius: 10px;
     padding: 14px 0;
     width: 50%;
-    margin: 30px auto 20px; 
+    margin: 30px auto 20px;
     font-size: 16px;
     font-weight: bold;
     color: white;
@@ -155,22 +153,18 @@ body {
 
 .nome {
     font-size: 20px;
-    color: #D9682B;
+    color: #d9682b;
 }
-
 
 .email {
     font-size: 20px;
-    color: #D9682B;
+    color: #d9682b;
 }
 
 .senha {
     font-size: 20px;
-    color: #D9682B;
+    color: #d9682b;
 }
-
-
-
 
 .cconta-btn:hover {
     transform: translateY(-2px);
@@ -179,7 +173,7 @@ body {
     .cconta-container {
         padding: 10px;
     }
-    
+
     .cconta-box {
         padding: 30px 20px;
     }
@@ -209,4 +203,37 @@ body {
 .cconta-links span {
     color: #ccc;
     margin-top: 20px;
+}
+
+.error-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.error-message i {
+    font-size: 1.5rem;
+    color: #dc3545;
+}
+
+.error-message ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.error-message li {
+    margin-bottom: 5px;
+}
+
+.error-message li:last-child {
+    margin-bottom: 0;
 }
