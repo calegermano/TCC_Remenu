@@ -101,6 +101,11 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/admin/dashboard', [DashBoardController::class, 'index'])->name('admin.dashboard');
 });
 
+// APIs do Dashboard
+Route::get('/admin/dashboard/stats', [DashBoardController::class, 'getStats'])->name('admin.dashboard.stats');
+Route::get('/admin/dashboard/chart-data', [DashBoardController::class, 'getChartData'])->name('admin.dashboard.chart-data');
+// Relatório PDF
+Route::get('/admin/dashboard/report', [DashBoardController::class, 'generateReport'])->name('admin.dashboard.report');
 
 Route::get('/email/verify', function () {
     return view('auth.verify');
@@ -121,4 +126,3 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Link reenviado!');
     
 })->middleware('auth')->name('verification.send');
-

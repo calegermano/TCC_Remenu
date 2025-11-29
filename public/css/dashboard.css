@@ -1,0 +1,66 @@
+/* Dashboard Charts Styles */
+.chart-bar,
+.chart-pie {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+.card .card-body .chart-bar,
+.card .card-body .chart-pie {
+    height: 250px;
+    min-height: 250px;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Loading state para gráficos */
+.chart-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #6c757d;
+}
+
+@media (max-width: 768px) {
+    .chart-bar,
+    .chart-pie {
+        height: 250px;
+    }
+}
+
+/* SB Admin 2 Chart Overrides */
+.chartjs-render-monitor {
+    border-radius: 0.35rem;
+}
+
+/* Card hover effects */
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Custom colors for charts */
+.bg-gradient-primary {
+    background: linear-gradient(45deg, #4e73df, #224abe);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(45deg, #1cc88a, #13855c);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(45deg, #36b9cc, #258391);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(45deg, #f6c23e, #dda20a);
+}

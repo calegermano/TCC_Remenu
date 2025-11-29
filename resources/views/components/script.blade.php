@@ -8,5 +8,11 @@
 <!-- Chart.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
-<!-- Custom Scripts -->
+<!-- ELES CONFLITAM -->
+<!-- {{-- <script src="{{ asset('js/demo/chart-area-demo.js') }}"></script> --}} -->
+<!-- {{-- <script src="{{ asset('js/demo/chart-bar-demo.js') }}"></script> --}} -->
+<!-- {{-- <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script> --}} -->
+
+<!-- Dashboard Custom -->
+<script src="{{ asset('js/dashboard-chart.js') }}"></script>
 <script src="{{ asset('js/dashboard.js') }}"></script>
