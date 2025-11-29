@@ -9,6 +9,8 @@ use App\Http\Controllers\PlanejamentoController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Usuario;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,10 +108,17 @@ Route::get('/email/verify', function () {
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
+
+    Auth::loginUsingId($request->user()->id);
+
     return redirect()->route('home2');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+})->middleware(['signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
+
     $request->user()->sendEmailVerificationNotification();
+
     return back()->with('message', 'Link reenviado!');
-})->middleware(['auth'])->name('verification.send');
+    
+})->middleware('auth')->name('verification.send');
+

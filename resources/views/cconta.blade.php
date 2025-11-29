@@ -30,17 +30,26 @@
                 </div>
             @endif
 
+            {{-- Exibe mensagens de aviso gerais --}}
             @if (session('warning'))
                 <div class="alert alert-warning">
                     {{ session('warning') }}
                 </div>
             @endif
 
+            {{-- Exibe mensagem de sucesso se o link for reenviado --}}
+            @if (session('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+            @endif
+
+            <!-- 1. O Formulário de cadastro termina AQUI -->
             <form method="POST" action="{{ route('register') }}">
                 @csrf
                 <div class="form-grid">
                     <div class="input-group">
-                        <label for="nome">Nome completo:</label>
+                        <label for="nome">Nome:</label>
                         <input type="text" id="nome" name="nome" value="{{ old('nome', $formData['nome'] ?? '') }}" required>
                     </div>
 
@@ -61,13 +70,28 @@
                 </div>
 
                 <button type="submit" class="cconta-btn">Cadastrar</button>
+            </form> 
+            <!-- Fim do form principal -->
 
-                <div class="cconta-links">
-                    <a href="{{ route('senha') }}">Esqueci a senha</a>
-                    <span>|</span>
-                    <a href="{{ route('login.form') }}">Já tenho uma conta</a>
+            <!-- 2. O Bloco de verificação fica FORA do form principal -->
+            @if(session('verify_email'))
+                <div class="alert alert-warning" style="margin-top: 20px;">
+                    <p>Enviamos um link de verificação para: <strong>{{ session('email_registered') }}</strong></p>
+                    <p>Verifique seu e-mail e clique no link para ativar sua conta.</p>
+
+                    <form method="POST" action="{{ route('verification.send') }}">
+                        @csrf
+                        <button class="btn btn-primary">Reenviar e-mail</button>
+                    </form>
                 </div>
-            </form>
+            @endif
+
+            <div class="cconta-links">
+                <a href="{{ route('senha') }}">Esqueci a senha</a>
+                <span>|</span>
+                <a href="{{ route('login.form') }}">Já tenho uma conta</a>
+            </div>
+            
         </div>
     </div>
 
