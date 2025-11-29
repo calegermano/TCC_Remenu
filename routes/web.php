@@ -11,6 +11,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
+use App\Http\Controllers\PasswordResetController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -125,3 +127,13 @@ Route::post('/email/verification-notification', function (Request $request) {
 
     return back()->with('message', 'Link de verificação reenviado!');
 })->middleware(['auth'])->name('verification.send');
+
+
+// Rota que processa o envio do email (action do form da view senha)
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])->name('password.email');
+
+// Rota que exibe o formulário de reset (link que chega no email)
+Route::get('/reset-password/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+
+// Rota que processa a troca de senha
+Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
