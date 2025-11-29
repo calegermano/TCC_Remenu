@@ -113,16 +113,15 @@ Route::get('/email/verify', function () {
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-
-    Auth::loginUsingId($request->user()->id);
-
-    return redirect()->route('home2');
+    return redirect()->route('home2')->with('success', 'Email verificado com sucesso!');
 })->middleware(['signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        return redirect()->route('home2');
+    }
 
     $request->user()->sendEmailVerificationNotification();
 
-    return back()->with('message', 'Link reenviado!');
-    
-})->middleware('auth')->name('verification.send');
+    return back()->with('message', 'Link de verificação reenviado!');
+})->middleware(['auth'])->name('verification.send');
