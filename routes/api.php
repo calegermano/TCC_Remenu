@@ -4,9 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RecipeController;
-use App\Http\Controllers\FavoritoController;
-use App\Http\Controllers\PlanejamentoController;
-use App\Http\Controllers\GeladeiraController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,36 +11,29 @@ use App\Http\Controllers\GeladeiraController;
 |--------------------------------------------------------------------------
 */
 
-// Rotas públicas
+// ROTAS PÚBLICAS
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// Rotas protegidas
+// RECEITAS FATSECRET (Públicas - não precisam de autenticação)
+Route::get('/recipes', [RecipeController::class, 'index']);
+Route::get('/recipes/featured', [RecipeController::class, 'featured']);
+Route::get('/recipes/search/{query}', [RecipeController::class, 'search']);
+Route::get('/recipes/{id}', [RecipeController::class, 'show']);
+
+// ROTAS PROTEGIDAS (apenas para ações do usuário)
 Route::middleware(['auth:sanctum'])->group(function () {
-    // Auth
+    
+    // AUTENTICAÇÃO
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
 
-    // Receitas - Flexíveis (local ou fatsecret)
-    Route::get('/recipes', [RecipeController::class, 'index']);
-    Route::get('/recipes/{id}', [RecipeController::class, 'show']);
-    Route::get('/recipes/search/{query}', [RecipeController::class, 'search']);
-    Route::get('/recipes/local', [RecipeController::class, 'localRecipes']);
-    Route::get('/recipes/fatsecret', [RecipeController::class, 'fatsecretRecipes']);
-
-    // Favoritos
-    Route::get('/favorites', [FavoritoController::class, 'index']);
-    Route::post('/favorites/toggle', [FavoritoController::class, 'toggle']);
+    // FAVORITOS (próxima implementação)
+    // Route::get('/favorites', [FavoritoController::class, 'index']);
+    // Route::post('/favorites/{recipeId}', [FavoritoController::class, 'toggle']);
     
-    // Planejamento
-    Route::get('/meal-plans', [PlanejamentoController::class, 'index']);
-    Route::post('/meal-plans', [PlanejamentoController::class, 'store']);
-    Route::delete('/meal-plans/{id}', [PlanejamentoController::class, 'destroy']);
-
-    // Geladeira
-    Route::get('/pantry', [GeladeiraController::class, 'index']);
-    Route::post('/pantry', [GeladeiraController::class, 'store']);
-    Route::put('/pantry/{id}', [GeladeiraController::class, 'update']);
-    Route::delete('/pantry/{id}', [GeladeiraController::class, 'destroy']);
-    Route::get('/pantry/search', [GeladeiraController::class, 'search']);
+    // PLANEJAMENTO (próxima implementação)
+    // Route::get('/meal-plans', [PlanejamentoController::class, 'index']);
+    // Route::post('/meal-plans', [PlanejamentoController::class, 'store']);
+    // Route::delete('/meal-plans/{id}', [PlanejamentoController::class, 'destroy']);
 });
