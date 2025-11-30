@@ -6,47 +6,102 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nome' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:usuarios',
+            'senha' => 'required|string|min:6|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dados inválidos',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = Usuario::create([
+            'nome' => $request->nome,
+            'email' => $request->email,
+            'senha' => Hash::make($request->senha),
+            'tipo_id' => 2, // Usuário comum
+        ]);
+
+        $token = $user->createToken('mobile_app')->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuário criado com sucesso',
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'nome' => $user->nome,
+                'email' => $user->email,
+                'isAdmin' => $user->isAdmin(),
+            ]
+        ], 201);
+    }
+
     public function login(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'senha' => 'required',
         ]);
 
-        // Busca o usuário pelo email
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dados inválidos',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
         $user = Usuario::where('email', $request->email)->first();
 
-        // Verifica se o usuário existe e se a senha bate
         if (!$user || !Hash::check($request->senha, $user->senha)) {
             return response()->json([
+                'success' => false,
                 'message' => 'Credenciais inválidas'
             ], 401);
         }
 
-        // Cria o Token (Isso é o que o App vai guardar na memória)
         $token = $user->createToken('mobile_app')->plainTextToken;
 
         return response()->json([
+            'success' => true,
             'message' => 'Login realizado com sucesso',
             'token' => $token,
             'user' => [
                 'id' => $user->id,
                 'nome' => $user->nome,
                 'email' => $user->email,
-                'isAdmin' => $user->isAdmin(), // Se você tiver esse método no model
+                'isAdmin' => $user->isAdmin(),
             ]
         ]);
     }
 
     public function logout(Request $request)
     {
-        // Apaga o token que estava sendo usado (desloga o app)
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Logout realizado com sucesso']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Logout realizado com sucesso'
+        ]);
+    }
+
+    public function user(Request $request)
+    {
+        return response()->json([
+            'success' => true,
+            'user' => $request->user()
+        ]);
     }
 }
