@@ -11,7 +11,7 @@ body {
 /* Banner no topo */
 .receitas-banner {
     width: 100%;
-    height: 300px;
+    height: 250px;
     background: url("../assets/img/receitas.jpg") no-repeat center center;
     background-size: cover;
     box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.3);
@@ -309,4 +309,189 @@ body {
 
 .btn-favorite.active i {
     color: #e74c3c; /* Vermelho quando favoritado */
+}
+
+/* =========================================
+   1. ESTILO DO LOADING (Carregando...)
+   ========================================= */
+#loading {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-family: 'Poppins', sans-serif;
+    color: #666;
+}
+
+/* Força o spinner do Bootstrap a ficar laranja (cor da marca) */
+#loading .spinner-border {
+    color: #D9682B !important; 
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 10px;
+}
+
+/* =========================================
+   2. ESTILO DO MODAL (Fundo e Card)
+   ========================================= */
+
+/* Fundo escuro atrás do modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Preto transparente */
+    z-index: 9999; /* Garante que fique acima de tudo */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    backdrop-filter: blur(4px); /* Desfoque suave no fundo */
+    opacity: 0;
+    animation: fadeIn 0.3s forwards; /* Animação de entrada */
+}
+
+/* O cartão branco do modal */
+.modal-card {
+    background: #fff;
+    width: 90%;
+    max-width: 600px; /* Largura máxima boa para leitura */
+    max-height: 90vh; /* Altura máxima (90% da tela) */
+    border-radius: 16px;
+    position: relative;
+    overflow-y: auto; /* Permite rolar o conteúdo dentro do card */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 25px; /* Espaço no final */
+}
+
+/* Scrollbar personalizada para o modal (Chrome/Edge/Safari) */
+.modal-card::-webkit-scrollbar {
+    width: 8px;
+}
+.modal-card::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+/* =========================================
+   3. CONTEÚDO DO MODAL
+   ========================================= */
+
+/* IMAGEM: Estilo "Banner" no topo */
+#modalImage {
+    width: 100%;
+    height: 250px;       /* Altura fixa */
+    object-fit: cover;   /* Corta a imagem para não esticar */
+    border-radius: 16px 16px 0 0; /* Arredonda só em cima */
+    display: block;
+    background-color: #f0f0f0;
+}
+
+/* BOTÃO FECHAR (X) */
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; /* Círculo perfeito */
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    z-index: 10;
+}
+
+.close-modal:hover {
+    background: #ff4d4d;
+    color: white;
+}
+
+/* --- TIPOGRAFIA E ESPAÇAMENTO --- */
+/* Como a imagem vai de ponta a ponta, aplicamos padding nos textos */
+
+/* Título da Receita */
+#modalName {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #D9682B; /* Laranja */
+    font-size: 1.8rem;
+    margin: 20px 25px 10px 25px; /* Top Dir Inf Esq */
+    line-height: 1.2;
+}
+
+/* Textos gerais (Calorias, Tempo) */
+.modal-card p {
+    font-family: 'Poppins', sans-serif;
+    color: #555;
+    margin: 5px 25px; /* Margem lateral */
+    font-size: 0.95rem;
+}
+
+/* Subtítulos (Ingredientes, Modo de Preparo) */
+.modal-card h4 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #4cd1a7; /* Verde */
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    margin: 25px 25px 10px 25px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 5px;
+}
+
+/* Lista de Ingredientes */
+#modalIngredients {
+    list-style: none; /* Remove bolinhas padrão */
+    padding: 0 25px;  /* Padding lateral */
+    margin: 0;
+}
+
+#modalIngredients li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+    color: #444;
+    font-size: 0.95rem;
+}
+
+/* Informação Nutricional (Caixa destaque) */
+#modalNutrition {
+    background-color: #f8f9fa;
+    border-left: 4px solid #D9682B; /* Borda laranja na esquerda */
+    padding: 15px;
+    margin: 10px 25px 0 25px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Animação de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Responsividade para celular */
+@media (max-width: 576px) {
+    .modal-card {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0; /* Tela cheia no celular */
+    }
+    #modalImage {
+        height: 200px;
+        border-radius: 0;
+    }
+    .close-modal {
+        top: 10px; right: 10px;
+    }
 }

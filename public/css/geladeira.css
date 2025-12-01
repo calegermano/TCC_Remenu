@@ -1,144 +1,53 @@
-/* NAVBAR*/
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-}
+    body { background-color: #fff; font-family: 'Poppins', sans-serif; }
+        
+    .geladeira-banner {
+        width: 100%;
+        height: 250px;
+            background-image: url('../assets/img/geladeira.jpg');
+            background-size: cover; 
+            background-position: center;
+            box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 50px;
+        }
 
+        .geladeira-title h1 { color: #50D9B0; text-align: center; margin-top: 35px; font-weight: bolder; }
+        .geladeira-title p { text-align: center; color: #555; margin-bottom: 30px; padding-bottom: 20px; }
 
-.navbar-nav .nav-link {
-    color: #A2A2A2 !important;
-    font-weight: 500;
-    display: block;
-    justify-content: center;
-    align-items: center;
-    margin-left: 3.0rem;
-    gap: 70px;
-    transition: color 0.3s ease;
-}
+        .card { border-radius: 14px; padding: 20px; background: #f8f9fa; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card h3 { font-size: 1.25rem; margin-bottom: 1rem; color: #D9682B; font-weight: 600; }
 
-.navbar-collapse {
-    justify-content: center !important;
-    position: relative;
-}
+        .autocomplete-box {
+            position: absolute; background: white; border: 1px solid #ccc;
+            width: 100%; max-height: 180px; overflow-y: auto; z-index: 100; border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .autocomplete-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #eee; }
+        .autocomplete-item:hover { background: #f0f0f0; }
 
-.navbar-nav .nav-link i {
-    color: inherit;
-}
+        .ingrediente-item { background: white; border-radius: 10px; border-left: 5px solid #50D9B0; transition: transform 0.2s; }
+        .ingrediente-item:hover { transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .ingrediente-item strong { color: #333; }
+        
+        .btn-primary-custom { background-color: #D9682B; border-color: #D9682B; color: white; }
+        .btn-primary-custom:hover { background-color: #bf5b26; border-color: #bf5b26; color: white; }
+        
+        .btn-editar { background: #4cd964; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; }
+        .btn-excluir { background: #ff6b6b; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; }
 
-.navbar-nav .nav-link:hover {
-    color: #50D9B0 !important;
-}
+        .lista-basicos { max-height: 250px; overflow-y: auto; background: white; padding: 10px; border-radius: 8px; border: 1px solid #eee; }
+        .form-check-label { font-size: 0.9rem; color: #555; cursor: pointer; }
+        
+        .form-control:focus { box-shadow: 0 0 0 0.25rem rgba(217, 104, 43, 0.25); border-color: #D9682B; }
+        label { color: #666; font-weight: 600; font-size: 0.9rem; margin-bottom: 5px; }
 
-.navbar-nav .nav-link.active {
-    color: #A2A2A2;
-}
-
-.profile-link {
-    font-size: 28px;
-    color: #A2A2A2 !important;
-    transition: color 0.3s ease;
-}
-
-.profile-link i:hover {
-    color: #50D9B0 !important;
-}
-
-.titulo {
-    color: #50D9B0;
-    font-size: 20px;
-    font-weight: bold;
-}
-/*----------------*/
-
-
-/* banner */
-.geladeira-banner {
-    width: 100%;
-    height: 250px;
-    background-image: url('../assets/img/geladeira.jpg'); 
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 20px;
- }
-
-.geladeira-title {
-    text-align: center;
-    padding: 35px 0 20px 0;
-}
-
-.geladeira-title h1 {
-    font-size: 28px;
-    font-weight: 600;
-}
-
-.geladeira-title p {
-    color: #777;
-    margin-top: 5px;
-}
-
-.card {
-    background: white;
-    border-radius: 18px;
-    padding: 25px;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.12);
-    border: none;
-}
-
-/* titulo cards */
-.card h3 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-/* inputs */
-.form-control {
-    border-radius: 10px;
-    border: 1px solid #d9d9d9;
-    height: 42px;
-}
-
-.autocomplete-box {
-    position: absolute;
-    background: white;
-    width: 100%;
-    border-radius: 10px;
-    top: 43px;
-    left: 0;
-    box-shadow: 0px 6px 12px rgba(0,0,0,0.15);
-    z-index: 50;
-}
-
-.autocomplete-item {
-    padding: 10px 12px;
-    cursor: pointer;
-}
-
-.autocomplete-item:hover {
-    background: #f2f2f2;
-}
-
-.btn {
-    border-radius: 10px;
-    height: 42px;
-    font-weight: 500;
-}
-
-.ingrediente-item {
-    background: #f4f4f4;
-    padding: 15px;
-    border-radius: 14px;
-    margin-bottom: 12px;
-}
-
-.lista-basicos button {
-    margin: 5px;
-}
-
-
+        /* Estilo do Modal de Edição */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 9999;
+            align-items: center; justify-content: center;
+        }
+        .modal-content-custom {
+            background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+   

@@ -211,6 +211,51 @@
       </div>
     </div>
 
+    <footer class="main-footer">
+    <div class="container py-4">
+        
+        <!-- Uma única ROW com alinhamento vertical centralizado (align-items-center) -->
+        <div class="row align-items-center">
+            
+            <!-- 1. ESQUERDA: Logo e Texto -->
+            <div class="col-md-4 text-md-start text-center mb-4 mb-md-0">
+                <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-3">
+                    <img src="{{asset('assets/img/logo.png')}}" alt="logo" width="40" height="40" class="me-2 footer-logo-img">
+                    <!-- Se tiver nome da marca, pode por aqui -->
+                </div>
+                <p class="mb-0 footer-text">
+                    Plataforma de receitas saudáveis<br>
+                    com foco em reduzir desperdício alimentar
+                </p>
+            </div>
+
+            <!-- 2. CENTRO: Copyright e Links (O que você queria no meio) -->
+            <div class="col-md-4 text-center mb-4 mb-md-0">
+                <!-- Copyright -->
+                <p class="mb-2 footer-text">© 2025 REMENU. Todos os direitos reservados.</p>
+                
+                <!-- Links -->
+                <div class="footer-links d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="#" class="footer-link">Privacidade</a>
+                    <a href="#" class="footer-link">Termos</a> <!-- Encurtei para caber melhor -->
+                    <a href="#" class="footer-link">FAQ</a>
+                    <a href="#" class="footer-link">Suporte</a>
+                </div>
+            </div>
+
+            <!-- 3. DIREITA: Contato -->
+            <div class="col-md-4 text-md-end text-center">
+                <h5 class="footer-title" style="color: #50D9B0;">Contato & Suporte</h5>
+                <ul class="list-unstyled footer-text mb-0">
+                    <li class="mb-1">contato@remenu.com.br</li>
+                    <li>(11) 9999-9999</li>
+                </ul>
+            </div>
+
+        </div> <!-- Fim da row -->
+    </div>
+</footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
