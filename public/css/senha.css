@@ -165,6 +165,100 @@ body {
     color: #D9682B;
 }
 
+.description-text {
+    font-family: 'Poppins', sans-serif; /* Mesma fonte do site */
+    font-size: 0.95rem;                 /* Tamanho legível */
+    color: #6c757d;                     /* Cinza suave (não preto total) para elegância */
+    text-align: center;                 /* Centraliza o texto */
+    margin-bottom: 25px;                /* Espaço antes do input */
+    line-height: 1.5;                   /* Melhora a leitura */
+    max-width: 90%;                     /* Evita que toque nas bordas em telas pequenas */
+    margin-left: auto;                  /* Centraliza o bloco do parágrafo */
+    margin-right: auto;
+}
+
+/* Ajuste opcional para o input ocupar a largura total e ficar bonito */
+.input-group {
+    display: flex;             /* Transforma em flexbox */
+    flex-direction: column;    /* Coloca um item embaixo do outro (Coluna) */
+    align-items: center;       /* Centraliza horizontalmente o Label e o Input */
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #e67e22; /* A cor laranja da sua imagem */
+    margin-bottom: 8px; /* Espaço entre o nome e a caixa */
+    text-align: center;
+}
+
+.input-group input {
+    width: 100%;             /* Tenta ocupar a largura disponível */
+    max-width: 330px;        /* TRAVA a largura para não ficar gigante em telas grandes */
+    padding: 10px 15px;      /* Espaço interno para o texto não colar na borda */
+    border-radius: 8px;      /* Bordas arredondadas */
+    border: 1px solid #ccc;  /* Borda sutil */
+    background-color: #cfcfcf; /* Cor cinza de fundo (ajuste conforme seu gosto) */
+    text-align: left;        /* O texto digitado dentro fica na esquerda */
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #e67e22;
+    box-shadow: 0 0 5px rgba(230, 126, 34, 0.3);
+}
+
+
+/* Se a form-grid estiver dividindo em colunas (grid), precisamos 'desligar' isso 
+   apenas nesta página ou garantir que ela tenha 1 coluna só */
+.form-grid {
+    display: block;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Caixa estilo "Card Tracejado" */
+.instruction-box {
+    background-color: #FFF9F4; /* Fundo creme bem suave */
+    border: 1.5px dashed #F2994A; /* Borda laranja tracejada */
+    border-radius: 12px;       /* Cantos arredondados */
+    padding: 15px 20px;        /* Espaçamento interno */
+    margin-bottom: 25px;       /* Espaço até o campo de email */
+    
+    /* Alinhamento dos itens (Ícone + Texto) */
+    display: flex;
+    align-items: center; 
+    gap: 15px;                 /* Espaço entre ícone e texto */
+    text-align: left;          /* Texto alinhado à esquerda */
+}
+
+/* Estilo do ícone (Opcional, mas ajuda a ficar parecido com o layout do exemplo) */
+.instruction-box i {
+    font-size: 1.8rem;
+    color: #F2994A;
+}
+
+/* Título em negrito (para imitar o "Repetir na semana toda") */
+.instruction-text strong {
+    display: block;
+    color: #333;
+    font-size: 1rem;
+    margin-bottom: 4px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* O texto descritivo */
+.instruction-text p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.4;
+}
+
 
 
 

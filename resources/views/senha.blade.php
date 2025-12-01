@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Senha - Remenu</title>
     <link rel="stylesheet" href="{{ asset('css/cconta.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/senha.css') }}"> 
+    <link rel="shortcut icon" href="{{ asset('assets/img/logo.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -37,20 +39,27 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('password.email') }}">
-                @csrf
-                <div class="form-grid">
-                    <p style="margin-bottom: 20px; font-size: 0.9rem;">
-                        Digite seu e-mail cadastrado e enviaremos um link para você redefinir sua senha.
-                    </p>
-                    
-                    <div class="input-group">
-                        <label for="email">E-mail:</label>
-                        <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus>
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
+    
+        <!-- NOVA CAIXA DE INSTRUÇÃO -->
+            <div class="instruction-box">
+                <i class="bi bi-envelope-exclamation"></i> <!-- Ícone opcional para decorar -->
+                    <div class="instruction-text">
+                        <strong>Instruções de Recuperação</strong>
+                        <p>Digite seu e-mail cadastrado e enviaremos um link para você redefinir sua senha.</p>
                     </div>
-                </div>
+            </div>
+    <!-- FIM DA NOVA CAIXA -->
 
-                <button type="submit" class="cconta-btn">Enviar Link</button>
+            <div class="form-grid">
+                <div class="input-group" style="width: 100%;">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus>
+                </div>
+            </div>
+
+            <button type="submit" class="cconta-btn">Enviar Link</button>
 
                 <div class="cconta-links">
                     <a href="{{ route('login.form') }}">Voltar para o Login</a>
@@ -58,8 +67,6 @@
                     <a href="{{ route('register.form') }}">Cadastre-se</a>
                 </div>
             </form>
-        </div>
-    </div>
 
 </body>
 </html>

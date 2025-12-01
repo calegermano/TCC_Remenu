@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>REMENU - Receitas Saudáveis</title>
+  <title> Início - Remenu</title>
 
   <link rel="shortcut icon" href="assets/img/logo.png" type="image/x-icon">
 
@@ -125,9 +125,9 @@
     </div>
 
     <div class="imagens">
-      <img src="../assets/img/card1.jpg" class="img-principal" alt="Tigela de Açaí e frutas">
-      <img src="../assets/img/card1.jpg" class="img-secundaria" alt="Salada com atum e ovos">
-      <img src="../assets/img/card1.jpg" class="img-secundaria2" alt="Torrada com abacate e ovos">
+      <img src="{{ asset('assets/img/card2.jpg') }}" class="img-principal" alt="Tigela de Açaí e frutas">
+      <img src="../assets/img/card3.jpg" class="img-secundaria" alt="Salada com atum e ovos">
+      <img src="../assets/img/card4.jpg" class="img-secundaria2" alt="Torrada com abacate e ovos">
     </div>
   </div>
 </section>
