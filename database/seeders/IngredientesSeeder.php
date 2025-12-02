@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
  
 class IngredientesSeeder extends Seeder
 {
+
+    //php artisan db:seed --class=IngredientesSeeder//
     public function run(): void
     {
  

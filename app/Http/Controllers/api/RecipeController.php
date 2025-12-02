@@ -15,104 +15,79 @@ class RecipeController extends Controller
         $this->fatSecretService = $fatSecretService;
     }
 
-    /**
-     * Listar receitas da FatSecret
-     */
     public function index(Request $request)
     {
         try {
             $page = $request->get('page', 0);
             $search = $request->get('search', '');
+
+            // Captura filtros vindos do React Native
+            $filters = [
+                'calories_from' => $request->get('calories_from'),
+                'calories_to'   => $request->get('calories_to'),
+                'prep_time_from'=> $request->get('prep_time_from'),
+                'prep_time_to'  => $request->get('prep_time_to'),
+                'recipe_types'  => $request->get('recipe_types', []), // Array de tipos
+            ];
             
-            $recipes = $this->fatSecretService->getRecipes($search, [], $page);
+            // Chama o serviço (que já tem a tradução embutida)
+            $recipesData = $this->fatSecretService->getRecipes($search, $filters, $page);
             
+            // Normaliza a resposta para garantir que 'recipe' seja sempre array
+            $recipesList = $recipesData['recipe'] ?? [];
+            if (isset($recipesList['recipe_id'])) {
+                $recipesList = [$recipesList];
+            }
+
             return response()->json([
                 'success' => true,
-                'data' => $recipes['recipes'] ?? [],
-                'total_results' => $recipes['total_results'] ?? 0,
-                'page_number' => $recipes['page_number'] ?? 0,
-                'has_more' => isset($recipes['page_number']) && $recipes['page_number'] < ceil($recipes['total_results'] / 50)
+                'data' => $recipesList,
+                'total_results' => $recipesData['total_results'] ?? 0,
+                'page_number' => $recipesData['page_number'] ?? 0,
             ]);
             
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erro ao buscar receitas'
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Erro ao buscar receitas: ' . $e->getMessage()], 500);
         }
     }
 
-    /**
-     * Detalhes de uma receita específica
-     */
     public function show($id)
     {
         try {
-            $recipe = $this->fatSecretService->getRecipe($id);
+            // CORREÇÃO: O nome do método no Service é getRecipeDetails
+            $recipe = $this->fatSecretService->getRecipeDetails($id);
             
+            if (!$recipe) {
+                return response()->json(['success' => false, 'message' => 'Receita não encontrada'], 404);
+            }
+
             return response()->json([
                 'success' => true,
                 'data' => $recipe
             ]);
             
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Receita não encontrada'
-            ], 404);
+            return response()->json(['success' => false, 'message' => 'Erro interno'], 500);
         }
     }
 
-    /**
-     * Pesquisar receitas
-     */
-    public function search(Request $request, $query)
+    public function featured()
     {
-        try {
-            $page = $request->get('page', 0);
-            
-            $recipes = $this->fatSecretService->searchRecipes($query, $page);
-            
-            return response()->json([
-                'success' => true,
-                'data' => $recipes['recipes'] ?? [],
-                'total_results' => $recipes['total_results'] ?? 0,
-                'page_number' => $recipes['page_number'] ?? 0,
-                'search_query' => $query,
-                'has_more' => isset($recipes['page_number']) && $recipes['page_number'] < ceil($recipes['total_results'] / 50)
-            ]);
-            
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erro na pesquisa'
-            ], 500);
-        }
-    }
+        // Busca receitas genéricas para a Home do App
+        $termos = ['chicken', 'salad', 'pasta', 'healthy'];
+        $termo = $termos[array_rand($termos)];
+        
+        $recipesData = $this->fatSecretService->getRecipes($termo, [], 0);
+        $recipesList = $recipesData['recipe'] ?? [];
 
-    /**
-     * Receitas em destaque (mais populares)
-     */
-    public function featured(Request $request)
-    {
-        try {
-            $page = $request->get('page', 0);
-            
-            // Busca receitas populares
-            $recipes = $this->fatSecretService->getRecipes('', ['sort_by' => 'rating'], $page);
-            
-            return response()->json([
-                'success' => true,
-                'data' => $recipes['recipes'] ?? [],
-                'total_results' => $recipes['total_results'] ?? 0,
-                'page_number' => $recipes['page_number'] ?? 0
-            ]);
-            
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erro ao buscar receitas em destaque'
-            ], 500);
-        }
+        if (isset($recipesList['recipe_id'])) $recipesList = [$recipesList];
+
+        // Pega 5 aleatórias
+        $destaques = collect($recipesList)->shuffle()->take(5)->values();
+
+        return response()->json([
+            'success' => true,
+            'data' => $destaques
+        ]);
     }
 }
