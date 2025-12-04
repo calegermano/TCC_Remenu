@@ -20,34 +20,45 @@ class RecipeController extends Controller
         try {
             $page = $request->get('page', 0);
             $search = $request->get('search', '');
+            
+            // FUNÇÃO DE LIMPEZA:
+            // Transforma "20" em 20, e "" em null.
+            $clean = function($val) {
+                return ($val === '' || $val === null) ? null : $val;
+            };
 
-            // Captura filtros vindos do React Native
+            // AQUI ESTÁ A CORREÇÃO DO FILTRO:
+            // Mapeamos o que vem do celular (min_time) para o que o Service entende (prep_time_from)
             $filters = [
-                'calories_from' => $request->get('calories_from'),
-                'calories_to'   => $request->get('calories_to'),
-                'prep_time_from'=> $request->get('prep_time_from'),
-                'prep_time_to'  => $request->get('prep_time_to'),
-                'recipe_types'  => $request->get('recipe_types', []), // Array de tipos
+                'recipe_types'   => $request->get('types'),
+                
+                // Calorias
+                'calories_from'  => $clean($request->get('min_cal')),
+                'calories_to'    => $clean($request->get('max_cal')),
+                
+                // Tempo (Onde estava o erro provável)
+                'prep_time_from' => $clean($request->get('min_time')), // Mobile manda 'min_time'
+                'prep_time_to'   => $clean($request->get('max_time')), // Mobile manda 'max_time'
             ];
+
+            // Chama o serviço
+            $result = $this->fatSecretService->getRecipes($search, $filters, $page);
             
-            // Chama o serviço (que já tem a tradução embutida)
-            $recipesData = $this->fatSecretService->getRecipes($search, $filters, $page);
+            $recipes = $result['recipe'] ?? [];
             
-            // Normaliza a resposta para garantir que 'recipe' seja sempre array
-            $recipesList = $recipesData['recipe'] ?? [];
-            if (isset($recipesList['recipe_id'])) {
-                $recipesList = [$recipesList];
+            // Normaliza se vier apenas 1 item
+            if (isset($recipes['recipe_id'])) {
+                $recipes = [$recipes];
             }
 
             return response()->json([
                 'success' => true,
-                'data' => $recipesList,
-                'total_results' => $recipesData['total_results'] ?? 0,
-                'page_number' => $recipesData['page_number'] ?? 0,
+                'data' => $recipes,
+                'total_results' => $result['total_results'] ?? 0,
             ]);
             
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Erro ao buscar receitas: ' . $e->getMessage()], 500);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 

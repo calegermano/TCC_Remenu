@@ -51,105 +51,116 @@ class FatSecretService
     // --- BUSCA E LISTAGEM (CORRIGIDO) ---
     public function getRecipes($search = '', $filters = [], $page = 0)
     {
+        // 1. CONFIGURAÇÃO INICIAL (Baseado no CÓDIGO 1 para manter a tela inicial igual)
         $params = [
             'method' => 'recipes.search.v3',
             'format' => 'json',
             'max_results' => 48,
             'page_number' => $page,
-            'must_have_images' => true,
+            'must_have_images' => true, // Mantido true para não quebrar o layout inicial
             'sort_by' => 'relevance',
         ];
 
-        // 1. TRADUÇÃO DA BUSCA (PT -> EN)
-        // Isso permite pesquisar "Frango" e achar resultados de "Chicken"
+        // 2. TRADUÇÃO DA BUSCA (PT -> EN) - Mantida a lógica do CÓDIGO 1
         if (!empty($search) && $search !== 'a') {
             try {
-                // Traduz para inglês rapidinho antes de buscar
                 $tr = new GoogleTranslate('en'); 
                 $searchEn = $tr->translate($search);
                 $params['search_expression'] = $searchEn;
                 
                 $palavrasDeBebida = [
-                    'juice', 'suco', 
-                    'smoothie', 'vitamina', 
-                    'shake', 'milkshake', 
-                    'tea', 'chá', 
-                    'coffee', 'café', 
-                    'drink', 'bebida', 
-                    'cocktail', 'coquetel',
-                    'lemonade', 'limonada'
+                    'juice', 'suco', 'smoothie', 'vitamina', 'shake', 'milkshake', 
+                    'tea', 'chá', 'coffee', 'café', 'drink', 'bebida', 
+                    'cocktail', 'coquetel', 'lemonade', 'limonada'
                 ];
 
-                // Verifica se a busca (em PT ou EN) contém alguma dessas palavras
                 foreach ($palavrasDeBebida as $palavra) {
-                    // stripos busca sem diferenciar maiúscula/minúscula
                     if (stripos($search, $palavra) !== false || stripos($searchEn, $palavra) !== false) {
-                        // Se encontrou, FORÇA o tipo ser Bebida (se o usuário não marcou outro filtro)
                         if (empty($filters['recipe_types'])) {
                             $params['recipe_types'] = 'Beverage';
                         }
-                        break; // Para de procurar
+                        break;
                     }
                 }
-                // ---------------------------------------------------
-
             } catch (\Exception $e) {
                 $params['search_expression'] = $search;
             }
         }
 
-        // Filtros (Mantidos iguais)
+        // 3. FILTROS NUMÉRICOS
         if (!empty($filters['calories_from'])) $params['calories.from'] = (int)$filters['calories_from'];
         if (!empty($filters['calories_to'])) $params['calories.to'] = (int)$filters['calories_to'];
         if (!empty($filters['prep_time_from'])) $params['prep_time.from'] = (int)$filters['prep_time_from'];
         if (!empty($filters['prep_time_to'])) $params['prep_time.to'] = (int)$filters['prep_time_to'];
 
+        // 4. LÓGICA DE TIPOS (AQUI ESTÁ A CORREÇÃO HÍBRIDA)
         if (!empty($filters['recipe_types']) && is_array($filters['recipe_types'])) {
             $types = $filters['recipe_types'];
-            // Lógica de Smoothie e Salada mantida...
-            if (count($types) === 1 && in_array('Smoothie', $types)) {
-                $params['search_expression'] = "smoothie OR juice OR tea OR coffee";
+            
+            // Verifica se "Salad" foi selecionado
+            if (in_array('Salad', $types)) {
+                // Pega o termo que já está sendo buscado (ex: "Chicken")
+                $currentSearch = $params['search_expression'] ?? '';
+                
+                // Lógica do CÓDIGO 2: Adiciona "salad" na busca textual
+                if (empty($currentSearch)) {
+                    $params['search_expression'] = "salad";
+                } else {
+                    $params['search_expression'] = trim($currentSearch . " salad");
+                }
+                
+                // IMPORTANTE: Removemos o filtro 'recipe_types' rígido para saladas
+                // Isso força a API a procurar pela palavra-chave, que funciona melhor
+                unset($params['recipe_types']); 
+            } 
+            elseif (in_array('Soup', $types)) {
+                // Aplicando a mesma lógica para Sopas (opcional, mas recomendado)
+                $currentSearch = $params['search_expression'] ?? '';
+                if (empty($currentSearch)) {
+                    $params['search_expression'] = "soup";
+                } else {
+                    $params['search_expression'] = trim($currentSearch . " soup");
+                }
+                unset($params['recipe_types']);
             }
-            if (count($types) === 1 && in_array('Salad', $types)) {
-                $params['search_expression'] = "salad";
+            else {
+                // Para outros tipos (como Smoothie padrão), mantém comportamento normal
+                if (count($types) === 1 && in_array('Smoothie', $types)) {
+                    $params['search_expression'] = "smoothie OR juice OR tea OR coffee";
+                }
+                $params['recipe_types'] = implode(',', $types);
             }
-            $params['recipe_types'] = implode(',', $types);
         }
 
-        // 2. CHAMADA API
+        // 5. CHAMADA API
         $response = $this->callApi($params);
         $recipesData = $response['recipes'] ?? ['recipe' => [], 'total_results' => 0];
 
-        // Se não tem receitas, retorna vazio agora
         if (empty($recipesData['recipe'])) {
             return $recipesData;
         }
 
-        // 3. NORMALIZAÇÃO (Array ou Objeto)
+        // 6. NORMALIZAÇÃO
         $recipesList = isset($recipesData['recipe']['recipe_id']) 
-                       ? [$recipesData['recipe']] 
-                       : $recipesData['recipe'];
+                    ? [$recipesData['recipe']] 
+                    : $recipesData['recipe'];
 
-        // 4. TRADUÇÃO EM LOTE DOS TÍTULOS (EN -> PT)
-        
-        // Extrai apenas os nomes
+        // 7. TRADUÇÃO DOS TÍTULOS (CÓDIGO 1 - Lógica Batch)
         $titlesEn = array_column($recipesList, 'recipe_name');
         
-        // Cacheia a tradução dos títulos baseada na busca
+        // Cache key baseado nos títulos
         $cacheKey = 'titles_' . md5(json_encode($titlesEn));
         
         $titlesPt = Cache::remember($cacheKey, 3600, function() use ($titlesEn) {
             return $this->translateBatchWithGemini($titlesEn);
         });
 
-        // Substitui os nomes originais pelos traduzidos
         foreach ($recipesList as $index => &$recipe) {
             if (isset($titlesPt[$index])) {
                 $recipe['recipe_name'] = $titlesPt[$index];
             }
         }
 
-        // Atualiza a lista e retorna
         $recipesData['recipe'] = $recipesList;
         return $recipesData;
     }

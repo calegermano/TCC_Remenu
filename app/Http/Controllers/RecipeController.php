@@ -85,7 +85,7 @@ class RecipeController extends Controller
 
     }
 
-public function home()
+    public function home()
     {
         
         $termos = ['chicken', 'salad', 'pasta', 'soup', 'rice', 'beef', 'healthy', 'fish'];
