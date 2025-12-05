@@ -24,9 +24,13 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/senha', function () {
-    return view('senha');
-})->name('senha');
+Route::get('/forgot-password', function () {
+    return view('senha'); 
+})->middleware('guest')->name('password.request');
+
+//Route::get('/senha', function () {
+//    return view('senha');
+//})->name('senha');
 
 // Rotas de componentes estáticos
 Route::get('/footer', function () {

@@ -8,6 +8,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use App\Notifications\CustomResetPassword;  // Adicione esta linha
+use App\Notifications\CustomVerifyEmail;    // Adicione esta linha
 
 class Usuario extends Authenticatable implements MustVerifyEmail
 {
@@ -21,6 +23,40 @@ class Usuario extends Authenticatable implements MustVerifyEmail
         'senha',
         'tipo_id',
     ];
+
+    // Adicione estes métodos para email verification
+    public function getEmailForVerification()
+    {
+        return $this->email;
+    }
+
+    public function hasVerifiedEmail()
+    {
+        return !is_null($this->email_verified_at);
+    }
+
+    public function markEmailAsVerified()
+    {
+        return $this->forceFill([
+            'email_verified_at' => $this->freshTimestamp(),
+        ])->save();
+    }
+
+    // Método para reset de senha
+    public function getEmailForPasswordReset()
+    {
+        return $this->email;
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPassword($token, $this));
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new CustomVerifyEmail());
+    }
 
     public function getAuthPassword()
     {
@@ -36,6 +72,7 @@ class Usuario extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
+            'senha' => 'hashed',
         ];
     }
 
@@ -46,7 +83,6 @@ class Usuario extends Authenticatable implements MustVerifyEmail
 
     public function isAdmin()
     {
-        // Verificação simples e direta
         return $this->tipo_id === 1;
     }
 
