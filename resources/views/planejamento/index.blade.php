@@ -277,18 +277,23 @@
 
         // 1. Data
         function getWeekDays() {
-            const currentDay = referenceDate.getDay(); 
-            const distanceToMonday = (currentDay + 6) % 7; 
-            const monday = new Date(referenceDate);
-            monday.setDate(referenceDate.getDate() - distanceToMonday);
+            const currentDay = referenceDate.getDay(); // 0 (Dom) ... 6 (Sáb)
+            
+            const distanceToSunday = currentDay; 
+            
+            const sunday = new Date(referenceDate);
+            sunday.setDate(referenceDate.getDate() - distanceToSunday);
 
-            monthTitle.innerText = monday.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+            monthTitle.innerText = sunday.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
             const week = [];
             for (let i = 0; i < 7; i++) {
-                const day = new Date(monday);
-                day.setDate(monday.getDate() + i);
-                const sqlDate = day.toISOString().split('T')[0];
+                const day = new Date(sunday);
+                day.setDate(sunday.getDate() + i);
+                
+                const offset = day.getTimezoneOffset() * 60000;
+                const localDate = new Date(day.getTime() - offset);
+                const sqlDate = localDate.toISOString().split('T')[0];
 
                 week.push({
                     name: day.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', ''),
@@ -299,6 +304,7 @@
             }
             return week;
         }
+        
 
         // 2. Fetch
         async function fetchPlans() {
