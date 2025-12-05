@@ -1,29 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Geladeira;
 use App\Models\Ingredientes;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class GeladeiraController extends Controller
 {
-    
-    // LISTAR INGREDIENTES DO USUÁRIO AGRUPADOS POR CATEGORIA
+    // 1. LISTAR ITENS (Agrupados por Categoria)
     public function index()
     {
         $usuarioId = Auth::id();
 
-        // Carrega: Geladeira -> func ingrediente() -> func categoria()
-        // No seu model Geladeira a função chama 'ingrediente' (singular), isso tá certo.
-        // No model Ingredientes a função chama 'categoria' (singular), isso tá certo.
+        // Carrega Geladeira -> Ingrediente -> Categoria
         $itens = Geladeira::with('ingrediente.categoria')
             ->where('usuario_id', $usuarioId)
             ->get();
 
+        // Agrupa os dados para o SectionList do Mobile
         $organizado = $itens->groupBy(function ($item) {
-            // Verifica se o ingrediente e a categoria existem para não dar erro
             if ($item->ingrediente && $item->ingrediente->categoria) {
                 return $item->ingrediente->categoria->nome;
             }
@@ -33,29 +31,33 @@ class GeladeiraController extends Controller
                 return [
                     'id' => $item->id,
                     'ingrediente' => $item->ingrediente->nome ?? 'Item desconhecido',
-                    'categoria' => $item->ingrediente->categoria->nome ?? 'Outros',
                     'quantidade' => $item->quantidade,
                     'validade' => $item->validade,
                 ];
-            });
+            })->values(); // values() garante que vire array JSON limpo
         });
 
         return response()->json($organizado);
     }
 
-    // AUTOCOMPLETE PARA PESQUISAS DE INGREDIENTES
+    // 2. BUSCA DE INGREDIENTES (Autocomplete)
     public function search(Request $request)
     {
         $query = $request->query('query', '');
 
-        // <--- MUDANÇA AQUI: Usa 'Ingredientes' (Plural)
-        return Ingredientes::where('nome', 'LIKE', "%$query%")
+        if (strlen($query) < 2) {
+            return response()->json([]);
+        }
+
+        $results = Ingredientes::where('nome', 'LIKE', "%{$query}%")
             ->orderBy('nome')
             ->limit(10)
             ->get();
+
+        return response()->json($results);
     }
 
-    // ADICIONAR INGREDIENTE À GELADEIRA
+    // 3. ADICIONAR ITEM
     public function store(Request $request)
     {
         $request->validate([
@@ -66,29 +68,31 @@ class GeladeiraController extends Controller
 
         $usuarioId = Auth::id();
 
-        // <--- MUDANÇA AQUI: Usa 'Ingredientes' (Plural)
+        // Busca o ingrediente no banco de dados
         $ingredienteDB = Ingredientes::where('nome', $request->ingrediente)->first();
 
         if (!$ingredienteDB) {
-            // Retorna 404 para o front mostrar o alerta
             return response()->json([
-                'erro' => 'Ingrediente não encontrado no sistema. Tente usar o autocomplete.'
+                'erro' => 'Ingrediente não encontrado. Selecione da lista.'
             ], 404);
         }
 
+        // Verifica se o usuário já tem esse item na geladeira
         $item = Geladeira::where('usuario_id', $usuarioId)
             ->where('ingrediente_id', $ingredienteDB->id)
             ->first();
 
         if ($item) {
+            // Se já tem, soma a quantidade
             $item->quantidade += $request->quantidade;
             if ($request->validade) {
                 $item->validade = $request->validade;
             }
             $item->save();
-            return response()->json(['mensagem' => 'Atualizado', 'item' => $item]);
+            return response()->json(['mensagem' => 'Quantidade atualizada', 'item' => $item]);
         }
 
+        // Se não tem, cria novo
         $novo = Geladeira::create([
             'usuario_id' => $usuarioId,
             'ingrediente_id' => $ingredienteDB->id,
@@ -99,21 +103,19 @@ class GeladeiraController extends Controller
         return response()->json($novo, 201);
     }
 
-    // ATUALIZAR QUANTIDADE E VALIDADE
+    // 4. ATUALIZAR (Editar quantidade/validade)
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'quantidade' => 'nullable|integer|min:1',
-            'validade' => 'nullable|date',
-        ]);
+        $item = Geladeira::where('usuario_id', Auth::id())->where('id', $id)->first();
 
-        $item = Geladeira::findOrFail($id);
-
-        if ($request->quantidade) {
-            $item->quantidade = $request->quantidade;
+        if (!$item) {
+            return response()->json(['erro' => 'Item não encontrado'], 404);
         }
 
-        if ($request->validade) {
+        if ($request->has('quantidade')) {
+            $item->quantidade = $request->quantidade;
+        }
+        if ($request->has('validade')) {
             $item->validade = $request->validade;
         }
 
@@ -122,12 +124,16 @@ class GeladeiraController extends Controller
         return response()->json($item);
     }
 
-    // REMOVER ITEM DA GELADEIRA
+    // 5. REMOVER
     public function destroy($id)
     {
-        $item = Geladeira::findOrFail($id);
-        $item->delete();
+        $item = Geladeira::where('usuario_id', Auth::id())->where('id', $id)->first();
 
-        return response()->json(['mensagem' => 'Ingrediente removido.']);
+        if ($item) {
+            $item->delete();
+            return response()->json(['status' => 'deleted']);
+        }
+
+        return response()->json(['erro' => 'Item não encontrado'], 404);
     }
 }

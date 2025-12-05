@@ -5,12 +5,13 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RecipeController;
 use App\Http\Controllers\Api\FavoritoController;
 use App\Http\Controllers\Api\PlanejamentoController; 
-use App\Http\Controllers\GeladeiraController;
+use App\Http\Controllers\Api\GeladeiraController;
 use App\Http\Controllers\Api\PasswordResetController;
 
 // --- ROTAS PÚBLICAS ---
 Route::post('/register', [AuthController::class, 'register']); // Adicionei registro
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/ingredientes/search', [GeladeiraController::class, 'search']);
 
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
 Route::post('/reset-password', [PasswordResetController::class, 'reset']);
@@ -41,5 +42,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/geladeira/{id}', [GeladeiraController::class, 'update']);
     Route::delete('/geladeira/{id}', [GeladeiraController::class, 'destroy']);
     // Autocomplete da geladeira
-    Route::get('/ingredientes/search', [GeladeiraController::class, 'search']);
 });

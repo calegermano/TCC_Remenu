@@ -191,7 +191,7 @@ class FatSecretService
     }
 
     // --- TRADUÇÃO COM GEMINI (DETALHES) ---
-    protected function translateWithGemini($recipeData)
+    public function translateWithGemini($recipeData)
     {
         if (empty($this->geminiKey)) {
             return $this->translateWithFallback($recipeData);
@@ -239,7 +239,7 @@ class FatSecretService
     }
 
     // --- TRADUÇÃO EM LOTE (LISTAGEM) ---
-    protected function translateBatchWithGemini(array $titles)
+    public function translateBatchWithGemini(array $titles)
     {
         if (empty($this->geminiKey) || empty($titles)) {
             return $titles; 
@@ -275,7 +275,7 @@ class FatSecretService
     }
 
     // --- PLANO B: GOOGLE TRANSLATE (SEM IA) ---
-    protected function translateWithFallback($recipe)
+    public function translateWithFallback($recipe)
     {
         try {
             $tr = new GoogleTranslate('pt-br'); 

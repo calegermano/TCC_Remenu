@@ -51,6 +51,16 @@ class RecipeController extends Controller
                 $recipes = [$recipes];
             }
 
+            $user = auth()->user();
+            if ($user) {
+                // Pega todos os IDs que esse usuário favoritou
+                $favoritosIds = $user->favoritos()->pluck('recipe_id')->toArray();
+
+                // Percorre as receitas da API e marca true/false
+                foreach ($recipes as &$recipe) {
+                    $recipe['is_favorite'] = in_array($recipe['recipe_id'], $favoritosIds);
+                }
+            }
             return response()->json([
                 'success' => true,
                 'data' => $recipes,
