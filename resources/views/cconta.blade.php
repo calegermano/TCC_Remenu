@@ -15,7 +15,7 @@
         <div class="logo">
             <img src="{{ asset('assets/img/logobranca.png') }}" alt="Logo Remenu" id="top-logo">
         </div>
-
+    
         <div class="cconta-box">
 
             <h2>Cadastre-se</h2>

@@ -237,3 +237,68 @@ body {
 .error-message li:last-child {
     margin-bottom: 0;
 }
+
+/* =========================================
+   Estilização da Área de Verificação de Email
+   (Classes do Bootstrap personalizadas)
+   ========================================= */
+
+/* A caixa de aviso */
+.alert {
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 25px;
+    font-size: 14px;
+    line-height: 1.6;
+    width: 100%;
+    text-align: center;
+}
+
+/* Estilo específico do alerta amarelo/laranja */
+.alert-warning {
+    background-color: #fff8f3; /* Fundo laranja bem clarinho */
+    border: 1px dashed #d9682b; /* Borda tracejada na cor do tema */
+    color: #555;
+}
+
+/* Destaque para o e-mail dentro do texto */
+.alert-warning strong {
+    color: #d9682b;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+/* Espaçamento dos parágrafos dentro do alerta */
+.alert-warning p {
+    margin-bottom: 10px;
+}
+
+/* Reset básico para botões que usam a classe .btn */
+.btn {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid transparent;
+    padding: 8px 25px;
+    font-size: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 10px;
+}
+
+/* Estilização do botão 'Reenviar e-mail' (btn-primary) */
+.btn-primary {
+    background-color: white;
+    border: 2px solid #50d9b0; /* Borda Verde do tema */
+    color: #50d9b0; /* Texto Verde */
+}
+
+/* Efeito ao passar o mouse no botão */
+.btn-primary:hover {
+    background-color: #50d9b0;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(80, 217, 176, 0.3);
+}
