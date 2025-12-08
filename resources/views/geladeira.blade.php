@@ -187,12 +187,86 @@
 
         // Lista de Ingredientes Básicos
         const ingredientesBasicos = [
-            "Arroz branco", "Feijão carioca", "Feijão preto", "Macarrão", 
-            "Óleo de soja", "Azeite de oliva", "Sal", "Açúcar", "Café", 
-            "Leite integral", "Ovos", "Manteiga", "Farinha de trigo", 
-            "Cebola", "Alho", "Tomate", "Batata inglesa", "Cenoura", 
-            "Alface", "Limão", "Banana prata", "Maçã", "Pão francês"
+            // Carnes
+            'Carne moída bovina',
+            'Acém',
+            'Patinho',
+            'Peito de frango',
+            'Coxa de frango',
+            'Frango inteiro',
+            'Linguiça calabresa',
+            'Bacon',
+            'Ovo de galinha branco',
+
+            // Grãos
+            'Arroz branco',
+            'Arroz integral',
+            'Feijão carioca',
+            'Feijão preto',
+            'Milho para pipoca',
+            'Aveia em flocos',
+
+            // Verduras e Legumes
+            'Alho',
+            'Cebola branca',
+            'Cebola roxa',
+            'Tomate',
+            'Batata inglesa',
+            'Cenoura',
+            'Alface americana',
+            'Couve-manteiga',
+            'Pimentão verde',
+            'Abobrinha italiana',
+            'Salsinha',
+            'Cebolinha',
+            'Limão tahiti',
+
+            // Frutas
+            'Banana prata',
+            'Maçã gala',
+            'Laranja pera',
+            'Mamão papaia',
+
+            // Laticínios
+            'Leite integral',
+            'Manteiga com sal',
+            'Requeijão tradicional',
+            'Creme de leite UHT',
+            'Leite condensado',
+            'Queijo mussarela',
+            'Queijo parmesão nacional', // Ajustado para bater com sua lista
+
+            // Farinhas e Pães
+            'Farinha de trigo tradicional',
+            'Farinha de mandioca torrada',
+            'Fubá mimoso',
+            'Amido de milho',
+            'Massa de espaguete nº 8',
+            'Massa de fusilli',
+            'Pão francês',
+            'Pão de forma branco',
+
+            // Temperos
+            'Sal refinado',
+            'Açúcar refinado',
+            'Pimenta-do-reino moída',
+            'Orégano seco',
+            'Louro seco',
+            'Fermento químico em pó',
+
+            // Industrializados
+            'Molho de tomate tradicional',
+            'Maionese tradicional',
+            'Ketchup tradicional',
+            'Mostarda amarela',
+            'Molho de soja (shoyu tradicional)',
+            'Vinagre de vinho branco',
+
+            // Óleos
+            'Óleo de soja',
+            'Óleo de oliva extravirgem' // Ajustado (na sua lista não está como "Azeite")
         ];
+
 
         /* --- 1. CARREGAR GELADEIRA --- */
         async function carregarGeladeira() {

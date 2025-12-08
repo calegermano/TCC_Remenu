@@ -6,21 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Geladeira;
 use App\Models\Ingredientes;
-use Illuminate\Support\Facades\Auth;
 
-class GeladeiraController extends Controller
+class GeladeiraApiController extends Controller
 {
-    // 1. LISTAR ITENS (Agrupados por Categoria)
-    public function index()
+    
+    public function index(Request $request)
     {
-        $usuarioId = Auth::id();
+        
+        $usuarioId = $request->user()->id;
 
-        // Carrega Geladeira -> Ingrediente -> Categoria
         $itens = Geladeira::with('ingrediente.categoria')
             ->where('usuario_id', $usuarioId)
             ->get();
 
-        // Agrupa os dados para o SectionList do Mobile
         $organizado = $itens->groupBy(function ($item) {
             if ($item->ingrediente && $item->ingrediente->categoria) {
                 return $item->ingrediente->categoria->nome;
@@ -34,7 +32,7 @@ class GeladeiraController extends Controller
                     'quantidade' => $item->quantidade,
                     'validade' => $item->validade,
                 ];
-            })->values(); // values() garante que vire array JSON limpo
+            })->values();
         });
 
         return response()->json($organizado);
@@ -57,7 +55,7 @@ class GeladeiraController extends Controller
         return response()->json($results);
     }
 
-    // 3. ADICIONAR ITEM
+    // 3. ADICIONAR ITEM (Corrigido ✅)
     public function store(Request $request)
     {
         $request->validate([
@@ -66,9 +64,8 @@ class GeladeiraController extends Controller
             'validade' => 'nullable|date',
         ]);
 
-        $usuarioId = Auth::id();
+        $usuarioId = $request->user()->id;
 
-        // Busca o ingrediente no banco de dados
         $ingredienteDB = Ingredientes::where('nome', $request->ingrediente)->first();
 
         if (!$ingredienteDB) {
@@ -77,13 +74,11 @@ class GeladeiraController extends Controller
             ], 404);
         }
 
-        // Verifica se o usuário já tem esse item na geladeira
         $item = Geladeira::where('usuario_id', $usuarioId)
             ->where('ingrediente_id', $ingredienteDB->id)
             ->first();
 
         if ($item) {
-            // Se já tem, soma a quantidade
             $item->quantidade += $request->quantidade;
             if ($request->validade) {
                 $item->validade = $request->validade;
@@ -92,7 +87,6 @@ class GeladeiraController extends Controller
             return response()->json(['mensagem' => 'Quantidade atualizada', 'item' => $item]);
         }
 
-        // Se não tem, cria novo
         $novo = Geladeira::create([
             'usuario_id' => $usuarioId,
             'ingrediente_id' => $ingredienteDB->id,
@@ -103,10 +97,13 @@ class GeladeiraController extends Controller
         return response()->json($novo, 201);
     }
 
-    // 4. ATUALIZAR (Editar quantidade/validade)
+    // 4. ATUALIZAR (Correção Aplicada Aqui ⚠️)
     public function update(Request $request, $id)
     {
-        $item = Geladeira::where('usuario_id', Auth::id())->where('id', $id)->first();
+        // Mudei de Auth::id() para $request->user()->id
+        $usuarioId = $request->user()->id;
+        
+        $item = Geladeira::where('usuario_id', $usuarioId)->where('id', $id)->first();
 
         if (!$item) {
             return response()->json(['erro' => 'Item não encontrado'], 404);
@@ -124,10 +121,14 @@ class GeladeiraController extends Controller
         return response()->json($item);
     }
 
-    // 5. REMOVER
-    public function destroy($id)
+    // 5. REMOVER (Correção Aplicada Aqui ⚠️)
+    // Adicionei Request $request nos parâmetros
+    public function destroy(Request $request, $id)
     {
-        $item = Geladeira::where('usuario_id', Auth::id())->where('id', $id)->first();
+        // Mudei de Auth::id() para $request->user()->id
+        $usuarioId = $request->user()->id;
+
+        $item = Geladeira::where('usuario_id', $usuarioId)->where('id', $id)->first();
 
         if ($item) {
             $item->delete();
