@@ -48,7 +48,7 @@
                 </button>
 
                 <div class="login-links">
-                    <a href="{{ route('password.request') }}">Esqueci a senha</a>
+                    <a href="{{ route('senha') }}">Esqueci a senha</a>
                     <span>|</span>
                     <a href="{{ route('register.form') }}">Criar conta</a>
                 </div>
