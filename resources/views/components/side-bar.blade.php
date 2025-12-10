@@ -25,6 +25,22 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
+        Navegação
+    </div>
+
+    <!-- Nav Item - Página Principal -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('home2') }}">
+            <i class="fas fa-fw fa-home"></i>
+            <span>Página Principal</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
         Administração
     </div>
 

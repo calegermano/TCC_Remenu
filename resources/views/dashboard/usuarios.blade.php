@@ -4,6 +4,9 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Gerenciar Administradores</h1>
+            <a href="{{ route('home2') }}" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left"></i> Voltar para Página Principal
+            </a>
         </div>
 
         @if(session('success'))
