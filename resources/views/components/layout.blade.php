@@ -2,9 +2,8 @@
 <html lang="en">
 
 <head>
-
     <x-header/>
-    
+    @stack('styles')
 </head>
 
 <body id="page-top">
@@ -51,6 +50,7 @@
     <x-modal/>
 
     <x-script/>
+    @stack('scripts')
 
 </body>
 

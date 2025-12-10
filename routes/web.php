@@ -98,16 +98,22 @@ Route::middleware(['auth'])->group(function () {
 | Rotas Protegidas - Apenas ADMIN
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/dashboard', [DashBoardController::class, 'index'])->name('dashboard');
-    Route::get('/admin/dashboard', [DashBoardController::class, 'index'])->name('admin.dashboard');
+Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
+    // Dashboard principal
+    Route::get('/dashboard', [DashBoardController::class, 'index'])->name('admin.dashboard');
+    
+    // Gerenciamento de usuários administradores
+    Route::get('/usuarios', [DashBoardController::class, 'usuarios'])->name('admin.usuarios');
+    Route::delete('/usuarios/{id}', [DashBoardController::class, 'deletarUsuario'])->name('admin.usuarios.delete');
+    Route::post('/usuarios/adicionar-admin', [DashBoardController::class, 'adicionarAdmin'])->name('admin.usuarios.add-admin');
+    
+    // APIs do Dashboard
+    Route::get('/dashboard/stats', [DashBoardController::class, 'getStats'])->name('admin.dashboard.stats');
+    Route::get('/dashboard/chart-data', [DashBoardController::class, 'getChartData'])->name('admin.dashboard.chart-data');
+    
+    // Relatório PDF
+    Route::get('/dashboard/report', [DashBoardController::class, 'generateReport'])->name('admin.dashboard.report');
 });
-
-// APIs do Dashboard
-Route::get('/admin/dashboard/stats', [DashBoardController::class, 'getStats'])->name('admin.dashboard.stats');
-Route::get('/admin/dashboard/chart-data', [DashBoardController::class, 'getChartData'])->name('admin.dashboard.chart-data');
-// Relatório PDF
-Route::get('/admin/dashboard/report', [DashBoardController::class, 'generateReport'])->name('admin.dashboard.report');
 
 Route::get('/email/verify', function () {
     return view('auth.verify');

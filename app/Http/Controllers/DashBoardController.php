@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class DashBoardController extends Controller
 {
@@ -61,6 +63,50 @@ class DashBoardController extends Controller
                 'graficoPesquisas' => []
             ]);
         }
+    }
+
+    /**
+     * Gerenciamento de Usuários Administradores
+     */
+    public function usuarios()
+    {
+        $admins = Usuario::where('tipo_id', 1)->orderBy('created_at', 'desc')->get();
+        return view('dashboard.usuarios', compact('admins'));
+    }
+
+    public function deletarUsuario($id)
+    {
+        // Impedir que o próprio usuário se delete
+        if ($id == auth()->id()) {
+            return back()->with('error', 'Você não pode deletar sua própria conta.');
+        }
+
+        $usuario = Usuario::where('tipo_id', 1)->findOrFail($id);
+        $usuario->delete();
+
+        return back()->with('success', 'Usuário administrador deletado com sucesso.');
+    }
+
+    public function adicionarAdmin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nome' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:usuarios',
+            'senha' => 'required|string|min:8|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        Usuario::create([
+            'nome' => $request->nome,
+            'email' => $request->email,
+            'senha' => Hash::make($request->senha),
+            'tipo_id' => 1,
+        ]);
+
+        return back()->with('success', 'Novo administrador adicionado com sucesso.');
     }
 
     /**

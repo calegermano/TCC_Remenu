@@ -25,30 +25,14 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Conteúdo
-    </div>
-
-    <!-- Nav Item - Receitas -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('recipes.index') }}">
-            <i class="fas fa-fw fa-utensils"></i>
-            <span>Receitas</span>
-        </a>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
         Administração
     </div>
 
     <!-- Nav Item - Usuários -->
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+    <li class="nav-item {{ request()->routeIs('admin.usuarios') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.usuarios') }}">
             <i class="fas fa-fw fa-users"></i>
-            <span>Usuários</span>
+            <span>Usuários Administradores</span>
         </a>
     </li>
 
