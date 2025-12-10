@@ -40,7 +40,6 @@
                                 <th>ID</th>
                                 <th>Nome</th>
                                 <th>Email</th>
-                                <th>Verificado</th>
                                 <th>Data de Cadastro</th>
                                 <th>Ações</th>
                             </tr>
@@ -51,13 +50,6 @@
                                 <td>{{ $admin->id }}</td>
                                 <td>{{ $admin->nome }}</td>
                                 <td>{{ $admin->email }}</td>
-                                <td>
-                                    @if($admin->email_verified_at)
-                                        <span class="badge badge-success">Sim</span>
-                                    @else
-                                        <span class="badge badge-warning">Não</span>
-                                    @endif
-                                </td>
                                 <td>{{ $admin->created_at->format('d/m/Y H:i') }}</td>
                                 <td>
                                     @if($admin->id != auth()->id())
