@@ -63,9 +63,13 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $user = Usuario::where('email', $request->email)->first();
+        $emailLimpo = trim($request->email);
 
-        if (!$user || !Hash::check($request->senha, $user->senha)) {
+        $user = Usuario::where('email', $emailLimpo)->first();
+
+        $hashNoBanco = $user->senha ?? $user->password;
+
+        if (!$user || !Hash::check($request->senha, $hashNoBanco)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Credenciais inválidas'
@@ -82,7 +86,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'nome' => $user->nome,
                 'email' => $user->email,
-                'isAdmin' => $user->isAdmin(),
+                'isAdmin' => method_exists($user, 'isAdmin') ? $user->isAdmin() : false,
             ]
         ]);
     }
